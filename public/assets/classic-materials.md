@@ -1,0 +1,7 @@
+# Classic cabinet material atlas
+
+Built-in imagegen tool. Style reference: user-provided gameb.png. Final asset: classic-materials.png in this folder. Used as material maps on real Three.js geometry; game controls, pegs, ball, and spring remain live.
+
+Prompt:
+
+Use case: product-mockup. Asset type: flat PBR-style diffuse material atlas for a real-time Three.js classic wooden pinball cabinet. Reference image is style reference only. Generate ONE square image organized as a precise 2x2 grid of four equal square material swatches, filling all image area with no gutters, borders, shadows, text, labels, objects, or perspective. Each swatch must be flat, evenly lit, detailed and naturally tileable. TOP LEFT: rich antique dark walnut wood with realistic vertical grain, caramel edge wear, restrained grain contrast, like the reference cabinet's brown wooden frame. TOP RIGHT: brushed aged brass/bronze with subtle tarnish and tiny surface scratches, gold highlights kept muted, no severe mottling. BOTTOM LEFT: very dark forest-green textured enamel/leather-like painted metal, subtle fine wear, no circuit patterns. BOTTOM RIGHT: the same deep forest-green enamel surface with delicate sparse antique gold PCB circuit traces and tiny circular terminals, elegantly understated and evenly spread. Materials should look realistic and classic, matching the photo's green/walnut/brass palette, not plastic, not bright, no baked highlights or directional light. All four quadrants perfectly aligned and equal size.

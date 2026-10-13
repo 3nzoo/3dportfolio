@@ -1,0 +1,241 @@
+{
+  "profile": {
+    "name": "Enzo Dinglasan",
+    "initials": "FD",
+    "role": "Senior Full-Stack Engineer",
+    "email": "awsflorenzodinglasan@gmail.com",
+    "resume": "assets/enzo.pdf",
+    "location": "Quezon City, Philippines",
+    "github": "https://github.com/3nzoo",
+    "linkedin": "https://www.linkedin.com/in/florenzo-dinglasan",
+    "summary": "I build web products and browser games, from the first prototype through production. Over 10 years, my work has covered SaaS, e-commerce, fintech, logistics, and interactive 3D experiences, with React, Next.js, TypeScript, Node.js, AWS, and Three.js at the core.",
+    "skills": [
+      {
+        "label": "Web & interfaces",
+        "items": ["React", "Next.js", "TypeScript", "JavaScript", "Angular", "Tailwind CSS", "Redux", "Zustand", "React Query", "Material UI"]
+      },
+      {
+        "label": "Backend & data",
+        "items": ["Node.js", "Express.js", "Python", "Django", "REST APIs", "GraphQL", "WebSockets", "PostgreSQL", "MongoDB", "Firestore"]
+      },
+      {
+        "label": "Games & 3D",
+        "items": ["Three.js", "WebGL", "Blender", "Rapier", "Cannon.js", "PixiJS", "Phaser.js", "Spine", "ImpactJS"]
+      },
+      {
+        "label": "Cloud & delivery",
+        "items": ["AWS", "Docker", "Nginx", "GitHub Actions", "Microsoft Azure", "Google Cloud", "Git", "Figma", "Jira", "Power BI"]
+      }
+    ]
+  },
+  "projects": [
+    {
+      "title": "Arckyv",
+      "eyebrow": "Latest independent project",
+      "period": "Latest independent project",
+      "description": "A chronological way to explore pop culture across movies, music, television, books, and video games.",
+      "url": "https://www.arckyv.com/",
+      "tags": ["Google AI Studio", "Gemini", "Firebase", "Firestore"],
+      "bullets": [
+        "Explore a shared cultural timeline with filters and flexible views.",
+        "Built with Google AI Studio / Gemini as part of my independent product work."
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "company": "Pixelbro",
+      "role": "3D Game Developer",
+      "period": "Feb 2025 - Aug 2026",
+      "summary": "Built browser-based Plinko and slot games, owning development from the initial technical setup to production delivery.",
+      "bullets": [
+        "Built a 3D Plinko game from scratch with Three.js and TypeScript, including gameplay and physics integration.",
+        "Evaluated Rapier and Cannon.js to refine physics behavior and performance.",
+        "Created 2D Plinko and casino slot games with PixiJS, and extended existing game-engine components for new 3-by-8 slot layouts.",
+        "Optimized Three.js for mobile devices and shipped games to AWS S3 through GitHub Actions."
+      ],
+      "tags": ["Three.js", "TypeScript", "Rapier", "Cannon.js", "PixiJS", "Blender", "Vite", "AWS S3", "GitHub Actions"]
+    },
+    {
+      "company": "KEA Trucking",
+      "role": "Full-Stack Developer",
+      "period": "Jul 2024 - Sep 2024",
+      "summary": "Created an MVP logistics platform for tracking daily deliveries and transaction records.",
+      "bullets": [
+        "Built the application from the ground up using Next.js, Python, and PostgreSQL.",
+        "Designed backend APIs and relational data models for delivery locations, status updates, comments, and timestamps.",
+        "Containerized the application and deployed it with Docker, Nginx, and AWS EC2."
+      ],
+      "tags": ["Next.js", "TypeScript", "Python", "PostgreSQL", "REST APIs", "Docker", "Nginx", "AWS EC2"]
+    },
+    {
+      "company": "Mir Tech",
+      "role": "Full-Stack Developer",
+      "period": "Mar 2023 - Mar 2024",
+      "summary": "Delivered features across planning, fintech, and equipment-rental products while taking over existing applications and supporting production releases.",
+      "bullets": [
+        "Worked across frontend applications, backend APIs, database structures, security fixes, and cloud deployments.",
+        "Adapted to existing Angular and Django applications and guided a junior developer on implementation work."
+      ],
+      "tags": ["Angular", "React", "Next.js", "Express.js", "Django", "PostgreSQL", "GraphQL", "Azure", "AWS"],
+      "projects": [
+        {
+          "title": "TRAQPLAN — Project planning & portfolio visualization",
+          "description": "Took over an existing Angular 13 and Express.js SaaS application after the lead developer's departure.",
+          "bullets": [
+            "Continued feature delivery across Angular, RxJS, PrimeNG, Express.js, PostgreSQL, and Power BI.",
+            "Supported the core application, Power BI solution, and Next.js marketing-site deployments using Docker, Rancher, and Microsoft Azure.",
+            "Fixed high-risk application vulnerabilities identified through penetration testing."
+          ],
+          "tags": ["Angular 13", "RxJS", "PrimeNG", "Express.js", "PostgreSQL", "Power BI", "Docker", "Rancher", "Azure"]
+        },
+        {
+          "title": "TERASEKONE — Fintech web platform",
+          "description": "Joined an existing fintech application to help deliver the project, adapting to Python and Django while working across the frontend and backend.",
+          "bullets": [
+            "Built React / Vite components and Django API endpoints in an existing PostgreSQL application.",
+            "Worked with AWS S3 and RDS alongside the lead developer."
+          ],
+          "tags": ["Python", "Django", "React", "Vite", "PostgreSQL", "AWS S3", "AWS RDS", "Bootstrap"]
+        },
+        {
+          "title": "SMARTRENTAL — Equipment rental & subscriptions",
+          "description": "Developed features for an office-equipment rental e-commerce platform.",
+          "bullets": [
+            "Implemented Next.js frontend features and GraphQL integrations, contributing to data-structure decisions.",
+            "Guided a junior developer through assigned components and provided technical support."
+          ],
+          "tags": ["Next.js", "TypeScript", "GraphQL", "Jira"]
+        }
+      ]
+    },
+    {
+      "company": "HCUISINE",
+      "role": "Full-Stack Developer",
+      "period": "Dec 2022 - Feb 2023",
+      "summary": "Built a restaurant e-commerce platform for online ordering and customer transactions.",
+      "bullets": [
+        "Developed the application with React and TypeScript.",
+        "Implemented cloud functionality using AWS Lambda, API Gateway, DynamoDB, SNS, S3, IAM, Route 53, and EC2."
+      ],
+      "tags": ["React", "TypeScript", "AWS Lambda", "API Gateway", "DynamoDB", "AWS SNS", "AWS S3"]
+    },
+    {
+      "company": "DEFI DEVSHOP",
+      "role": "Full-Stack Developer",
+      "period": "Oct 2022 - Nov 2022",
+      "summary": "Delivered dashboard pages and features for the ToothAndCoin app.",
+      "bullets": [
+        "Built application interfaces using Next.js, TypeScript, Material UI, and Tailwind CSS.",
+        "Integrated data with Sequelize and PostgreSQL in a Docker-based environment."
+      ],
+      "tags": ["Next.js", "TypeScript", "Sequelize", "PostgreSQL", "Docker", "Material UI", "Tailwind CSS"]
+    },
+    {
+      "company": "MUNISIPYO",
+      "role": "Full-Stack Developer",
+      "period": "Oct 2021 - Aug 2022",
+      "summary": "Developed a serverless directory web application.",
+      "bullets": [
+        "Built the frontend with Next.js, TypeScript, Material UI, and GraphQL.",
+        "Worked with AWS S3, Lambda@Edge, DynamoDB, CloudFront, CloudFormation, Route 53, and CloudWatch."
+      ],
+      "tags": ["Next.js", "TypeScript", "GraphQL", "Material UI", "AWS Lambda", "DynamoDB", "CloudFront", "CloudFormation"]
+    },
+    {
+      "company": "Experience Digital",
+      "role": "Web Developer",
+      "period": "Jun 2020 - Jan 2021",
+      "summary": "Developed features for Upflowy, a SaaS platform for building customer flows and improving conversion.",
+      "bullets": [
+        "Built reusable components with React, TypeScript, Node.js, GrapesJS, and Tailwind CSS.",
+        "Integrated and maintained Firebase / Firestore and HubSpot services for application data and customer workflows."
+      ],
+      "tags": ["React", "TypeScript", "Node.js", "GrapesJS", "Tailwind CSS", "Firebase", "Firestore", "HubSpot", "Google Cloud"]
+    },
+    {
+      "company": "Banana Banners",
+      "role": "Full-Stack Engineer",
+      "period": "Nov 2018 - Jun 2020",
+      "summary": "Designed and built an e-commerce platform for a digital printing company, while managing a small Agile development team.",
+      "bullets": [
+        "Designed the application structure and implemented it with MongoDB, Express.js, React, Node.js, and TypeScript.",
+        "Delivered state management, authentication, payments, and email functionality with Redux, JWT, Passport.js, Stripe, and Nodemailer.",
+        "Coordinated the team's development work through delivery, with Docker and Heroku supporting development and deployment."
+      ],
+      "tags": ["React", "TypeScript", "Node.js", "MongoDB", "Redux", "JWT", "Passport.js", "Stripe", "Docker", "Heroku"]
+    },
+    {
+      "company": "New Oriental Club 88",
+      "role": "HTML5 Game Developer",
+      "period": "Nov 2016 - May 2018",
+      "summary": "Built and maintained HTML5 casino games and white-label gaming websites.",
+      "bullets": [
+        "Developed browser games with Phaser.js, WebSockets, Node.js, and JavaScript.",
+        "Temporarily managed the development department, coordinated project status with the CEO and other managers, and participated in developer interviews."
+      ],
+      "tags": ["HTML5", "JavaScript", "Phaser.js", "WebSockets", "Node.js", "Grunt"]
+    },
+    {
+      "company": "1STAPPEARS",
+      "role": "Shopify Developer",
+      "period": "Jun 2016 - Oct 2016",
+      "summary": "Customized Shopify themes and supported the day-to-day needs of an online store.",
+      "bullets": [
+        "Modified storefront themes using Shopify and Liquid.",
+        "Supported product and inventory management."
+      ],
+      "tags": ["Shopify", "Liquid"]
+    },
+    {
+      "company": "Hari Manila Digital",
+      "role": "Web & Game Developer",
+      "period": "Oct 2015 - Jun 2016",
+      "summary": "Built browser games, websites, and mobile applications while supporting the company's technical environment.",
+      "bullets": [
+        "Created a side-scrolling browser game with ImpactJS and the Bayang Matuwid website with WordPress.",
+        "Converted the browser game and a volunteer web application into mobile apps using AngularJS, Ionic, and Cordova.",
+        "Maintained computer networks, hardware, software, and related configurations."
+      ],
+      "tags": ["JavaScript", "AngularJS", "Ionic", "Cordova", "WordPress", "ImpactJS"]
+    },
+    {
+      "company": "Earlier technical experience",
+      "role": "Software, Web & IT Support",
+      "period": "Mar 2009 - Dec 2013",
+      "summary": "Early work across software development, inventory systems, networks, IT infrastructure, and technical support.",
+      "bullets": [
+        "EES Enterprise: 2009 - 2011.",
+        "Tres Hermanas Inc: 2010 - 2013.",
+        "Earlier technical experience at the Philippine Stock Exchange: 2008."
+      ],
+      "tags": ["Visual Basic", "MySQL", "Adobe Flash", "Networking", "CCTV", "Photoshop"]
+    }
+  ],
+  "education": [
+    {
+      "title": "Bachelor of Science in Information Technology",
+      "institution": "Systems Technology Institute",
+      "period": "2005 - 2009",
+      "detail": "Undergraduate degree in Information Technology."
+    },
+    {
+      "title": "Google Tools for Election Workshop",
+      "institution": "Google",
+      "period": "2015",
+      "detail": "Professional workshop."
+    },
+    {
+      "title": "Web Design and Development",
+      "institution": "First Academy of Computer Arts",
+      "period": "2015",
+      "detail": "Professional training in web design and development."
+    },
+    {
+      "title": "Adobe Flash ActionScript 3.0",
+      "institution": "Philippine Center for Creative Imaging",
+      "period": "2013",
+      "detail": "Professional training in ActionScript 3.0."
+    }
+  ]
+}
