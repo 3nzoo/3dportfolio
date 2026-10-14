@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <title>EnzoLabs — A portfolio you can play</title>
-  <desc>Enzo Dinglasan, full-stack engineer and game developer, with an illustrated brass pachinko board.</desc>
+  <title>Enzo Dinglasan — Senior Full-Stack Engineer</title>
+  <desc>Enzo Dinglasan, Senior Full-Stack Engineer. Web applications, APIs, and cloud delivery, with an illustrated brass and green interactive portfolio board.</desc>
   <defs>
     <radialGradient id="background" cx="80%" cy="35%" r="90%"><stop stop-color="#254333"/><stop offset=".6" stop-color="#10261d"/><stop offset="1" stop-color="#071611"/></radialGradient>
     <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f6deab"/><stop offset=".4" stop-color="#c4a46a"/><stop offset="1" stop-color="#72552c"/></linearGradient>
@@ -12,32 +12,31 @@
   <circle cx="951" cy="305" r="267" fill="none" stroke="#d2b67d" stroke-opacity=".05"/>
   <g font-family="Arial, Helvetica, sans-serif">
     <text x="76" y="80" font-size="19" font-weight="bold" letter-spacing="4" fill="#e6cc98">ENZOLABS.DEV</text>
-    <text x="77" y="137" font-size="12" letter-spacing="3" fill="#9dab96">INTERACTIVE 3D PORTFOLIO</text>
-    <text x="73" y="217" font-size="68" letter-spacing="-3" font-weight="bold" fill="#f3efde">A portfolio</text>
-    <text x="73" y="294" font-size="68" letter-spacing="-3" font-weight="bold" fill="#e4c78c">you can play.</text>
-    <text x="77" y="342" font-size="21" fill="#b0bfad">Full-stack engineering. Game development.</text>
-    <rect x="76" y="386" width="390" height="56" rx="7" fill="#dbbc80"/>
-    <text x="99" y="421" font-size="19" font-weight="bold" fill="#13271c">Launch a ball. Explore my work.</text>
-    <path d="M430 407l8 7-8 7m-9-7h17" fill="none" stroke="#13271c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M77 484H661" stroke="#c3a46a" stroke-opacity=".24"/>
-    <text x="76" y="526" font-size="28" fill="#f0ead5">Enzo Dinglasan</text>
-    <text x="77" y="556" font-size="17" fill="#a9b8a4">Senior Full-Stack Engineer</text>
+    <text x="77" y="137" font-size="12" letter-spacing="3" fill="#9dab96">ENGINEERING PORTFOLIO</text>
+    <text x="73" y="218" font-size="68" letter-spacing="-3" font-weight="bold" fill="#f3efde">Enzo Dinglasan</text>
+    <text x="77" y="264" font-size="30" letter-spacing="-.5" fill="#e4c78c">Senior Full-Stack Engineer</text>
+    <text x="77" y="326" font-size="23" fill="#bac7b5">Web applications. APIs.</text>
+    <text x="77" y="358" font-size="23" fill="#bac7b5">Cloud delivery.</text>
+    <rect x="76" y="397" width="268" height="56" rx="7" fill="#dbbc80"/>
+    <text x="95" y="432" font-size="18" font-weight="bold" fill="#13271c">Explore work &amp; skills</text>
+    <path d="M309 418l8 7-8 7m-9-7h17" fill="none" stroke="#13271c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M77 490H661" stroke="#c3a46a" stroke-opacity=".24"/>
+    <text x="76" y="540" font-size="29" letter-spacing="-.5" fill="#f0ead5">A portfolio you can play.</text>
     <g transform="rotate(-5 943 308)">
       <rect x="781" y="96" width="324" height="435" rx="7" fill="#030b08" opacity=".5"/>
       <rect x="771" y="86" width="324" height="435" rx="7" fill="#29251b" stroke="#5b482c" stroke-width="4"/>
       <rect x="780" y="95" width="306" height="417" rx="3" fill="#0a2018" stroke="url(#gold)" stroke-width="5"/>
       <rect x="792" y="108" width="281" height="68" rx="2" fill="#11291f" stroke="#9e8150"/>
-      <text x="933" y="140" text-anchor="middle" font-size="23" fill="#e5ce98">Enzo Dinglasan</text>
-      <text x="933" y="159" text-anchor="middle" font-size="10" letter-spacing="2" fill="#adb59a">EVERY DROP TELLS A STORY</text>
+      <path d="M840 144h55m76 0h55" stroke="#9e8150"/><text x="933" y="153" text-anchor="middle" font-size="29" fill="#e5ce98">ED</text>
       <circle cx="815" cy="215" r="4" fill="url(#gold)"/><circle cx="851" cy="215" r="4" fill="url(#gold)"/><circle cx="887" cy="215" r="4" fill="url(#gold)"/><circle cx="923" cy="215" r="4" fill="url(#gold)"/><circle cx="959" cy="215" r="4" fill="url(#gold)"/><circle cx="995" cy="215" r="4" fill="url(#gold)"/><circle cx="1031" cy="215" r="4" fill="url(#gold)"/><circle cx="830" cy="244" r="4" fill="url(#gold)"/><circle cx="866" cy="244" r="4" fill="url(#gold)"/><circle cx="902" cy="244" r="4" fill="url(#gold)"/><circle cx="938" cy="244" r="4" fill="url(#gold)"/><circle cx="974" cy="244" r="4" fill="url(#gold)"/><circle cx="1010" cy="244" r="4" fill="url(#gold)"/><circle cx="815" cy="273" r="4" fill="url(#gold)"/><circle cx="851" cy="273" r="4" fill="url(#gold)"/><circle cx="887" cy="273" r="4" fill="url(#gold)"/><circle cx="923" cy="273" r="4" fill="url(#gold)"/><circle cx="959" cy="273" r="4" fill="url(#gold)"/><circle cx="995" cy="273" r="4" fill="url(#gold)"/><circle cx="1031" cy="273" r="4" fill="url(#gold)"/><circle cx="830" cy="302" r="4" fill="url(#gold)"/><circle cx="866" cy="302" r="4" fill="url(#gold)"/><circle cx="902" cy="302" r="4" fill="url(#gold)"/><circle cx="938" cy="302" r="4" fill="url(#gold)"/><circle cx="974" cy="302" r="4" fill="url(#gold)"/><circle cx="1010" cy="302" r="4" fill="url(#gold)"/><circle cx="815" cy="331" r="4" fill="url(#gold)"/><circle cx="851" cy="331" r="4" fill="url(#gold)"/><circle cx="887" cy="331" r="4" fill="url(#gold)"/><circle cx="923" cy="331" r="4" fill="url(#gold)"/><circle cx="959" cy="331" r="4" fill="url(#gold)"/><circle cx="995" cy="331" r="4" fill="url(#gold)"/><circle cx="1031" cy="331" r="4" fill="url(#gold)"/><circle cx="830" cy="360" r="4" fill="url(#gold)"/><circle cx="866" cy="360" r="4" fill="url(#gold)"/><circle cx="902" cy="360" r="4" fill="url(#gold)"/><circle cx="938" cy="360" r="4" fill="url(#gold)"/><circle cx="974" cy="360" r="4" fill="url(#gold)"/><circle cx="1010" cy="360" r="4" fill="url(#gold)"/><circle cx="815" cy="389" r="4" fill="url(#gold)"/><circle cx="851" cy="389" r="4" fill="url(#gold)"/><circle cx="887" cy="389" r="4" fill="url(#gold)"/><circle cx="923" cy="389" r="4" fill="url(#gold)"/><circle cx="959" cy="389" r="4" fill="url(#gold)"/><circle cx="995" cy="389" r="4" fill="url(#gold)"/><circle cx="1031" cy="389" r="4" fill="url(#gold)"/><circle cx="830" cy="418" r="4" fill="url(#gold)"/><circle cx="866" cy="418" r="4" fill="url(#gold)"/><circle cx="902" cy="418" r="4" fill="url(#gold)"/><circle cx="938" cy="418" r="4" fill="url(#gold)"/><circle cx="974" cy="418" r="4" fill="url(#gold)"/><circle cx="1010" cy="418" r="4" fill="url(#gold)"/>
       <path d="M1043 191h25v251" fill="none" stroke="#baa06c" stroke-width="11" stroke-linecap="round"/>
       <path d="M1013 225l-36 29 16 29-40 29 12 29-43 29" fill="none" stroke="#dfbf7a" stroke-opacity=".38" stroke-width="2" stroke-dasharray="4 7"/>
       <circle cx="921" cy="371" r="10" fill="url(#ball)"/>
-      <rect x="797" y="441" width="62" height="42" rx="2" fill="#102b22" stroke="#aa8c52"/><text x="828" y="469" text-anchor="middle" fill="#e4ca91" font-size="24" font-weight="bold">2×</text><rect x="863" y="441" width="62" height="42" rx="2" fill="#102b22" stroke="#aa8c52"/><text x="894" y="469" text-anchor="middle" fill="#e4ca91" font-size="24" font-weight="bold">3×</text><rect x="929" y="441" width="62" height="42" rx="2" fill="#102b22" stroke="#aa8c52"/><text x="960" y="469" text-anchor="middle" fill="#e4ca91" font-size="24" font-weight="bold">1×</text><rect x="995" y="441" width="62" height="42" rx="2" fill="#102b22" stroke="#aa8c52"/><text x="1026" y="469" text-anchor="middle" fill="#e4ca91" font-size="24" font-weight="bold">2×</text>
+      <rect x="797" y="441" width="128" height="42" rx="2" fill="#102b22" stroke="#aa8c52"/><text x="861" y="467" text-anchor="middle" fill="#e4ca91" font-size="11" font-weight="bold">WORK &amp; SKILLS</text><rect x="929" y="441" width="128" height="42" rx="2" fill="#102b22" stroke="#aa8c52"/><text x="993" y="467" text-anchor="middle" fill="#e4ca91" font-size="11" font-weight="bold">CONTACT</text>
       <path d="M1068 477l12 4-12 4 12 4-12 4 12 4" fill="none" stroke="#e0c795" stroke-width="2"/>
       <path d="M798 495h244" stroke="#9c8151" stroke-width="3"/>
       <g fill="#cfb47c"><circle cx="781" cy="100" r="3"/><circle cx="1085" cy="100" r="3"/><circle cx="781" cy="507" r="3"/><circle cx="1085" cy="507" r="3"/></g>
     </g>
-    <text x="936" y="572" text-anchor="middle" font-size="12" letter-spacing="2" fill="#bbbd9f">10 BALLS. ONE HIGH SCORE.</text>
+    <text x="936" y="572" text-anchor="middle" font-size="12" letter-spacing="2" fill="#bbbd9f">ENGINEERING IN PRACTICE</text>
   </g>
 </svg>

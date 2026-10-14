@@ -8,37 +8,101 @@
     "location": "Quezon City, Philippines",
     "github": "https://github.com/3nzoo",
     "linkedin": "https://www.linkedin.com/in/florenzo-dinglasan",
-    "summary": "I build web products and browser games, from the first prototype through production. Over 10 years, my work has covered SaaS, e-commerce, fintech, logistics, and interactive 3D experiences, with React, Next.js, TypeScript, Node.js, AWS, and Three.js at the core.",
+    "summary": "I build and deliver full-stack web applications across SaaS, e-commerce, fintech, and logistics. My work spans interfaces, APIs, databases, and deployment, using React, Next.js, TypeScript, Node.js, PostgreSQL, and AWS.",
     "skills": [
       {
         "label": "Web & interfaces",
-        "items": ["React", "Next.js", "TypeScript", "JavaScript", "Angular", "Tailwind CSS", "Redux", "Zustand", "React Query", "Material UI"]
+        "items": [
+          "React",
+          "Next.js",
+          "TypeScript",
+          "JavaScript",
+          "Angular",
+          "Tailwind CSS",
+          "Redux",
+          "Zustand",
+          "React Query",
+          "Material UI"
+        ]
       },
       {
         "label": "Backend & data",
-        "items": ["Node.js", "Express.js", "Python", "Django", "REST APIs", "GraphQL", "WebSockets", "PostgreSQL", "MongoDB", "Firestore"]
+        "items": [
+          "Node.js",
+          "Express.js",
+          "Python",
+          "Django",
+          "REST APIs",
+          "GraphQL",
+          "WebSockets",
+          "PostgreSQL",
+          "MongoDB",
+          "Firestore"
+        ]
       },
       {
-        "label": "Games & 3D",
-        "items": ["Three.js", "WebGL", "Blender", "Rapier", "Cannon.js", "PixiJS", "Phaser.js", "Spine", "ImpactJS"]
+        "label": "Additional tools · 3D & interaction",
+        "items": [
+          "Three.js",
+          "WebGL",
+          "Blender",
+          "Rapier",
+          "Cannon.js",
+          "PixiJS",
+          "Phaser.js",
+          "Spine",
+          "ImpactJS"
+        ],
+        "optional": true
       },
       {
         "label": "Cloud & delivery",
-        "items": ["AWS", "Docker", "Nginx", "GitHub Actions", "Microsoft Azure", "Google Cloud", "Git", "Figma", "Jira", "Power BI"]
+        "items": [
+          "AWS",
+          "Docker",
+          "Nginx",
+          "GitHub Actions",
+          "Microsoft Azure",
+          "Google Cloud",
+          "Git",
+          "Figma",
+          "Jira",
+          "Power BI"
+        ]
+      }
+    ],
+    "headline": "I build and deliver full-stack web applications, from interface to APIs and cloud deployment.",
+    "proofPoints": [
+      {
+        "label": "Product ownership",
+        "detail": "From taking over existing SaaS to building independent products."
+      },
+      {
+        "label": "Across the stack",
+        "detail": "Interfaces, APIs, databases, security fixes, and cloud delivery."
+      },
+      {
+        "label": "Delivery & leadership",
+        "detail": "Hands-on full-stack development and small-team coordination through delivery."
       }
     ]
   },
   "projects": [
     {
       "title": "Arckyv",
-      "eyebrow": "Latest independent project",
+      "eyebrow": "AI-assisted independent project",
       "period": "Latest independent project",
       "description": "A chronological way to explore pop culture across movies, music, television, books, and video games.",
       "url": "https://www.arckyv.com/",
-      "tags": ["Google AI Studio", "Gemini", "Firebase", "Firestore"],
+      "tags": [
+        "Google AI Studio",
+        "Gemini",
+        "Firebase",
+        "Firestore"
+      ],
       "bullets": [
         "Explore a shared cultural timeline with filters and flexible views.",
-        "Built with Google AI Studio / Gemini as part of my independent product work."
+        "Built with Google AI Studio / Gemini assisting development as part of my independent product work."
       ]
     }
   ],
@@ -47,14 +111,24 @@
       "company": "Pixelbro",
       "role": "3D Game Developer",
       "period": "Feb 2025 - Aug 2026",
-      "summary": "Built browser-based Plinko and slot games, owning development from the initial technical setup to production delivery.",
+      "summary": "Built interactive browser experiences, owning development from the initial technical setup to production delivery.",
       "bullets": [
-        "Built a 3D Plinko game from scratch with Three.js and TypeScript, including gameplay and physics integration.",
+        "Built 3D browser experiences from scratch with Three.js and TypeScript, including interaction and physics integration.",
         "Evaluated Rapier and Cannon.js to refine physics behavior and performance.",
-        "Created 2D Plinko and casino slot games with PixiJS, and extended existing game-engine components for new 3-by-8 slot layouts.",
-        "Optimized Three.js for mobile devices and shipped games to AWS S3 through GitHub Actions."
+        "Created 2D browser experiences with PixiJS and extended existing engine components for new layouts.",
+        "Optimized Three.js for mobile devices and shipped browser applications to AWS S3 through GitHub Actions."
       ],
-      "tags": ["Three.js", "TypeScript", "Rapier", "Cannon.js", "PixiJS", "Blender", "Vite", "AWS S3", "GitHub Actions"]
+      "tags": [
+        "Three.js",
+        "TypeScript",
+        "Rapier",
+        "Cannon.js",
+        "PixiJS",
+        "Blender",
+        "Vite",
+        "AWS S3",
+        "GitHub Actions"
+      ]
     },
     {
       "company": "KEA Trucking",
@@ -66,7 +140,16 @@
         "Designed backend APIs and relational data models for delivery locations, status updates, comments, and timestamps.",
         "Containerized the application and deployed it with Docker, Nginx, and AWS EC2."
       ],
-      "tags": ["Next.js", "TypeScript", "Python", "PostgreSQL", "REST APIs", "Docker", "Nginx", "AWS EC2"]
+      "tags": [
+        "Next.js",
+        "TypeScript",
+        "Python",
+        "PostgreSQL",
+        "REST APIs",
+        "Docker",
+        "Nginx",
+        "AWS EC2"
+      ]
     },
     {
       "company": "Mir Tech",
@@ -77,7 +160,17 @@
         "Worked across frontend applications, backend APIs, database structures, security fixes, and cloud deployments.",
         "Adapted to existing Angular and Django applications and guided a junior developer on implementation work."
       ],
-      "tags": ["Angular", "React", "Next.js", "Express.js", "Django", "PostgreSQL", "GraphQL", "Azure", "AWS"],
+      "tags": [
+        "Angular",
+        "React",
+        "Next.js",
+        "Express.js",
+        "Django",
+        "PostgreSQL",
+        "GraphQL",
+        "Azure",
+        "AWS"
+      ],
       "projects": [
         {
           "title": "TRAQPLAN — Project planning & portfolio visualization",
@@ -87,7 +180,17 @@
             "Supported the core application, Power BI solution, and Next.js marketing-site deployments using Docker, Rancher, and Microsoft Azure.",
             "Fixed high-risk application vulnerabilities identified through penetration testing."
           ],
-          "tags": ["Angular 13", "RxJS", "PrimeNG", "Express.js", "PostgreSQL", "Power BI", "Docker", "Rancher", "Azure"]
+          "tags": [
+            "Angular 13",
+            "RxJS",
+            "PrimeNG",
+            "Express.js",
+            "PostgreSQL",
+            "Power BI",
+            "Docker",
+            "Rancher",
+            "Azure"
+          ]
         },
         {
           "title": "TERASEKONE — Fintech web platform",
@@ -96,7 +199,16 @@
             "Built React / Vite components and Django API endpoints in an existing PostgreSQL application.",
             "Worked with AWS S3 and RDS alongside the lead developer."
           ],
-          "tags": ["Python", "Django", "React", "Vite", "PostgreSQL", "AWS S3", "AWS RDS", "Bootstrap"]
+          "tags": [
+            "Python",
+            "Django",
+            "React",
+            "Vite",
+            "PostgreSQL",
+            "AWS S3",
+            "AWS RDS",
+            "Bootstrap"
+          ]
         },
         {
           "title": "SMARTRENTAL — Equipment rental & subscriptions",
@@ -105,7 +217,12 @@
             "Implemented Next.js frontend features and GraphQL integrations, contributing to data-structure decisions.",
             "Guided a junior developer through assigned components and provided technical support."
           ],
-          "tags": ["Next.js", "TypeScript", "GraphQL", "Jira"]
+          "tags": [
+            "Next.js",
+            "TypeScript",
+            "GraphQL",
+            "Jira"
+          ]
         }
       ]
     },
@@ -118,7 +235,15 @@
         "Developed the application with React and TypeScript.",
         "Implemented cloud functionality using AWS Lambda, API Gateway, DynamoDB, SNS, S3, IAM, Route 53, and EC2."
       ],
-      "tags": ["React", "TypeScript", "AWS Lambda", "API Gateway", "DynamoDB", "AWS SNS", "AWS S3"]
+      "tags": [
+        "React",
+        "TypeScript",
+        "AWS Lambda",
+        "API Gateway",
+        "DynamoDB",
+        "AWS SNS",
+        "AWS S3"
+      ]
     },
     {
       "company": "DEFI DEVSHOP",
@@ -129,7 +254,15 @@
         "Built application interfaces using Next.js, TypeScript, Material UI, and Tailwind CSS.",
         "Integrated data with Sequelize and PostgreSQL in a Docker-based environment."
       ],
-      "tags": ["Next.js", "TypeScript", "Sequelize", "PostgreSQL", "Docker", "Material UI", "Tailwind CSS"]
+      "tags": [
+        "Next.js",
+        "TypeScript",
+        "Sequelize",
+        "PostgreSQL",
+        "Docker",
+        "Material UI",
+        "Tailwind CSS"
+      ]
     },
     {
       "company": "MUNISIPYO",
@@ -140,7 +273,16 @@
         "Built the frontend with Next.js, TypeScript, Material UI, and GraphQL.",
         "Worked with AWS S3, Lambda@Edge, DynamoDB, CloudFront, CloudFormation, Route 53, and CloudWatch."
       ],
-      "tags": ["Next.js", "TypeScript", "GraphQL", "Material UI", "AWS Lambda", "DynamoDB", "CloudFront", "CloudFormation"]
+      "tags": [
+        "Next.js",
+        "TypeScript",
+        "GraphQL",
+        "Material UI",
+        "AWS Lambda",
+        "DynamoDB",
+        "CloudFront",
+        "CloudFormation"
+      ]
     },
     {
       "company": "Experience Digital",
@@ -151,30 +293,58 @@
         "Built reusable components with React, TypeScript, Node.js, GrapesJS, and Tailwind CSS.",
         "Integrated and maintained Firebase / Firestore and HubSpot services for application data and customer workflows."
       ],
-      "tags": ["React", "TypeScript", "Node.js", "GrapesJS", "Tailwind CSS", "Firebase", "Firestore", "HubSpot", "Google Cloud"]
+      "tags": [
+        "React",
+        "TypeScript",
+        "Node.js",
+        "GrapesJS",
+        "Tailwind CSS",
+        "Firebase",
+        "Firestore",
+        "HubSpot",
+        "Google Cloud"
+      ]
     },
     {
       "company": "Banana Banners",
       "role": "Full-Stack Engineer",
       "period": "Nov 2018 - Jun 2020",
-      "summary": "Designed and built an e-commerce platform for a digital printing company, while managing a small Agile development team.",
+      "summary": "Designed and built an e-commerce platform for a digital printing company, serving as project lead and project manager for a junior developer and an artist.",
       "bullets": [
         "Designed the application structure and implemented it with MongoDB, Express.js, React, Node.js, and TypeScript.",
         "Delivered state management, authentication, payments, and email functionality with Redux, JWT, Passport.js, Stripe, and Nodemailer.",
-        "Coordinated the team's development work through delivery, with Docker and Heroku supporting development and deployment."
+        "Led one junior developer and one artist, coordinating implementation and project delivery, with Docker and Heroku supporting development and deployment."
       ],
-      "tags": ["React", "TypeScript", "Node.js", "MongoDB", "Redux", "JWT", "Passport.js", "Stripe", "Docker", "Heroku"]
+      "tags": [
+        "React",
+        "TypeScript",
+        "Node.js",
+        "MongoDB",
+        "Redux",
+        "JWT",
+        "Passport.js",
+        "Stripe",
+        "Docker",
+        "Heroku"
+      ]
     },
     {
       "company": "New Oriental Club 88",
       "role": "HTML5 Game Developer",
       "period": "Nov 2016 - May 2018",
-      "summary": "Built and maintained HTML5 casino games and white-label gaming websites.",
+      "summary": "Built and maintained HTML5 browser experiences and white-label websites.",
       "bullets": [
-        "Developed browser games with Phaser.js, WebSockets, Node.js, and JavaScript.",
+        "Developed interactive browser functionality with Phaser.js, WebSockets, Node.js, and JavaScript.",
         "Temporarily managed the development department, coordinated project status with the CEO and other managers, and participated in developer interviews."
       ],
-      "tags": ["HTML5", "JavaScript", "Phaser.js", "WebSockets", "Node.js", "Grunt"]
+      "tags": [
+        "HTML5",
+        "JavaScript",
+        "Phaser.js",
+        "WebSockets",
+        "Node.js",
+        "Grunt"
+      ]
     },
     {
       "company": "1STAPPEARS",
@@ -185,19 +355,29 @@
         "Modified storefront themes using Shopify and Liquid.",
         "Supported product and inventory management."
       ],
-      "tags": ["Shopify", "Liquid"]
+      "tags": [
+        "Shopify",
+        "Liquid"
+      ]
     },
     {
       "company": "Hari Manila Digital",
       "role": "Web & Game Developer",
       "period": "Oct 2015 - Jun 2016",
-      "summary": "Built browser games, websites, and mobile applications while supporting the company's technical environment.",
+      "summary": "Built interactive browser experiences, websites, and mobile applications while supporting the company’s technical environment.",
       "bullets": [
-        "Created a side-scrolling browser game with ImpactJS and the Bayang Matuwid website with WordPress.",
-        "Converted the browser game and a volunteer web application into mobile apps using AngularJS, Ionic, and Cordova.",
+        "Created an interactive browser experience with ImpactJS and the Bayang Matuwid website with WordPress.",
+        "Converted a browser experience and a volunteer web application into mobile apps using AngularJS, Ionic, and Cordova.",
         "Maintained computer networks, hardware, software, and related configurations."
       ],
-      "tags": ["JavaScript", "AngularJS", "Ionic", "Cordova", "WordPress", "ImpactJS"]
+      "tags": [
+        "JavaScript",
+        "AngularJS",
+        "Ionic",
+        "Cordova",
+        "WordPress",
+        "ImpactJS"
+      ]
     },
     {
       "company": "Earlier technical experience",
@@ -209,7 +389,14 @@
         "Tres Hermanas Inc: 2010 - 2013.",
         "Earlier technical experience at the Philippine Stock Exchange: 2008."
       ],
-      "tags": ["Visual Basic", "MySQL", "Adobe Flash", "Networking", "CCTV", "Photoshop"]
+      "tags": [
+        "Visual Basic",
+        "MySQL",
+        "Adobe Flash",
+        "Networking",
+        "CCTV",
+        "Photoshop"
+      ]
     }
   ],
   "education": [
@@ -237,5 +424,156 @@
       "period": "2013",
       "detail": "Professional training in ActionScript 3.0."
     }
-  ]
+  ],
+  "selectedWork": {
+    "intro": "Three projects that show how I build across the stack, take responsibility for existing products, and turn independent ideas into working experiences.",
+    "projects": [
+      {
+        "id": "banana-banners",
+        "title": "Banana Banners",
+        "eyebrow": "E-commerce · Full-stack & team lead",
+        "summary": "Led a junior developer and an artist to deliver an e-commerce platform, building the storefront, backend, payments, and email integrations.",
+        "facts": [
+          {
+            "label": "Context",
+            "value": "Banana Banners · Nov 2018 – Jun 2020"
+          },
+          {
+            "label": "Responsibility",
+            "value": "Project lead and project manager · application design and full-stack delivery"
+          },
+          {
+            "label": "Team",
+            "value": "Led two collaborators: one junior developer and one artist"
+          }
+        ],
+        "outcome": "Delivered the application structure, storefront functionality, authentication, payments, and email integrations, with Docker and Heroku supporting development and deployment.",
+        "details": [
+          {
+            "title": "The project",
+            "body": "My first full-stack project brought together the customer-facing experience, backend services, data, and integrations for a digital printing business. It remains one of my strongest experiences of building across the whole application."
+          },
+          {
+            "title": "My contribution",
+            "bullets": [
+              "Led the project and coordinated delivery with one junior developer and one artist.",
+              "Designed the application structure and implemented full-stack functionality with MongoDB, Express.js, React, Node.js, and TypeScript.",
+              "Built authentication, payment, and email functionality with Redux, JWT, Passport.js, Stripe, and Nodemailer.",
+              "Used Docker and Heroku to support development and deployment."
+            ]
+          },
+          {
+            "title": "Engineering focus",
+            "body": "The work combined hands-on development with coordination: connecting the interface to backend functionality, choosing the application structure, and helping a small team deliver the product."
+          },
+          {
+            "title": "Growing into backend ownership",
+            "body": "This was my first full-stack development experience. Coming from a frontend background, backend development was the main learning challenge while I also handled project leadership and delivery."
+          }
+        ],
+        "tags": [
+          "React",
+          "TypeScript",
+          "Node.js",
+          "MongoDB",
+          "Stripe",
+          "Docker",
+          "Heroku"
+        ]
+      },
+      {
+        "id": "traqplan",
+        "title": "TRAQPLAN",
+        "eyebrow": "SaaS · Product ownership",
+        "summary": "Took over an Angular and Power BI planning product after its lead developer left, delivering features, security fixes, and production releases.",
+        "facts": [
+          {
+            "label": "Context",
+            "value": "Mir Tech · Mar 2023 – Mar 2024"
+          },
+          {
+            "label": "Responsibility",
+            "value": "Angular application, Power BI version, security fixes, and releases"
+          }
+        ],
+        "outcome": "Continued feature delivery and production support across the core application, Power BI solution, and marketing site.",
+        "details": [
+          {
+            "title": "The problem",
+            "body": "An existing SaaS product needed engineering continuity after the lead developer’s departure. The work spanned the Angular application, a Power BI version, and a separate marketing site."
+          },
+          {
+            "title": "My contribution",
+            "bullets": [
+              "Took over an Angular 13 and Express.js application, working with RxJS, PrimeNG, and PostgreSQL.",
+              "Supported the core application, Power BI solution, and Next.js marketing-site deployments using Docker, Rancher, and Microsoft Azure.",
+              "Fixed high-risk application vulnerabilities identified through penetration testing."
+            ]
+          },
+          {
+            "title": "Engineering focus",
+            "body": "The work required understanding the existing system while continuing feature delivery, addressing security findings, and supporting its deployment environment."
+          },
+          {
+            "title": "The learning curve",
+            "body": "This was one of my most demanding projects. My recent work was primarily in React, and my previous Angular experience was with Angular 1 around 2015. Taking over the Angular 13 application meant adapting to a different framework while continuing delivery and supporting the existing system."
+          }
+        ],
+        "tags": [
+          "Angular",
+          "Express.js",
+          "PostgreSQL",
+          "Power BI",
+          "Azure"
+        ]
+      },
+      {
+        "id": "arckyv",
+        "title": "Arckyv",
+        "eyebrow": "Independent product · AI-assisted development",
+        "summary": "Built a cultural timeline with AI assistance, guiding API and stack choices, the data model, and the approach to testing updates.",
+        "facts": [
+          {
+            "label": "Context",
+            "value": "Independent product work"
+          },
+          {
+            "label": "Development approach",
+            "value": "API and stack decisions, data model, and update-testing approach"
+          },
+          {
+            "label": "Delivery approach",
+            "value": "Google AI Studio / Gemini for fast deployment"
+          }
+        ],
+        "outcome": "A live timeline experience with filters and flexible views for exploring pop culture across different media.",
+        "details": [
+          {
+            "title": "The product",
+            "body": "Explore movies, music, television, books, and video games through a shared cultural timeline, with filters and flexible views."
+          },
+          {
+            "title": "My contribution",
+            "bullets": [
+              "Decided which APIs and technologies to use.",
+              "Worked on the data model and defined how updates should be automatically tested.",
+              "Used AI-assisted development with Google AI Studio and Gemini, including the deployment workflow for a fast path to publishing."
+            ]
+          },
+          {
+            "title": "Development approach",
+            "body": "This is a new independent product. The focus is on product and technical decisions, using AI assistance to develop and deploy the experience."
+          }
+        ],
+        "tags": [
+          "Google AI Studio",
+          "Gemini",
+          "Firebase",
+          "Firestore"
+        ],
+        "url": "https://www.arckyv.com/",
+        "linkLabel": "Explore Arckyv"
+      }
+    ]
+  }
 }

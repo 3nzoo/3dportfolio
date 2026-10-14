@@ -9,14 +9,15 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { SoftwareRenderer } from './renderers/software-renderer.js';
 import { createDestinationGamePhysics, POCKETS, BALL_RADIUS } from './game/physics.js';
 import { createHologram } from './ui/hologram.js';
+import { POCKET_GROUPS, normalizePortfolioSection, sectionForPocket, pocketForSection, pocketLabel, sectionName } from './ui/portfolio-sections.js';
 import { createPlayModeUI } from './ui/play-mode.js';
 import { createPlayRound, createRecordStore, MULTIPLIERS } from './game/play-round.js';
-import { getResumeUrl } from './ui/resume.js';
 import { createBoardAudio } from './audio/board-audio.js';
 import { createBackgroundMusic } from './audio/background-music.js';
 import portfolio from './content/portfolio.json';
 import './styles/style.css';
 import './styles/play-mode.css';
+import './styles/professional.css';
 
 THREE.Cache.enabled = true;
 const scene = new THREE.Scene();
@@ -59,13 +60,9 @@ soundButton.addEventListener('click', () => {
 updateSoundButton();
 const connector = document.querySelector('#connector-path');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-document.querySelector('#portfolio-name').textContent = portfolio.profile.name;
-document.querySelector('#portfolio-role').textContent = portfolio.profile.role;
-document.querySelector('#portfolio-initials').textContent = portfolio.profile.initials;
-const resumeLink = document.querySelector('#download-resume');
-const resumeUrl = getResumeUrl(portfolio.profile);
-resumeLink.hidden = !resumeUrl;
-if (resumeUrl) resumeLink.href = resumeUrl;
+document.querySelector('#hero-name').firstChild.textContent = portfolio.profile.name;
+document.querySelector('.hero-role').textContent = portfolio.profile.role;
+if (portfolio.profile.headline) document.querySelector('.scene-description').textContent = portfolio.profile.headline;
 
 function renderPixelRatio(software = false) {
   // Supersample standard-density desktop displays as well as honoring Retina
@@ -167,8 +164,10 @@ const materials = {
   glow: new THREE.MeshStandardMaterial({ color: 0x9debd4, emissive: 0x59d6b3, emissiveIntensity: 1.3, metalness: 0.4, roughness: 0.3 }),
 };
 const mechanicalBoard = createMechanicalBoard(scene);
-const identityElement = document.querySelector('.identity');
-identityElement.classList.add('board-identity');
+const identityElement = document.createElement('div');
+identityElement.className = 'board-monogram';
+identityElement.setAttribute('aria-hidden', 'true');
+identityElement.innerHTML = '<span>ED</span>';
 // A fixed-size surface follows the plate's perspective, unlike a CSS2D billboard.
 const boardIdentity = new CSS3DObject(identityElement);
 boardIdentity.position.set(0, NAMEPLATE_LAYOUT.y, NAMEPLATE_LAYOUT.z);
@@ -200,10 +199,9 @@ let selectionProgress = 0.375;
 let releaseRecoil = 0;
 const pocketObjects = new Map();
 const pocketLabels = new Map();
+const pocketLabelObjects = new Map();
 const pocketIcons = {
-  about: '<circle cx="12" cy="8" r="3.5"/><path d="M5 21v-3a7 7 0 0 1 14 0v3Z"/>',
-  experiences: '<rect x="3" y="7" width="18" height="14" rx="1"/><path d="M8 7V3h8v4M3 12h18M10 12v3h4v-3"/>',
-  education: '<path d="m2 9 10-5 10 5-10 5ZM6 12v5c4 3 8 3 12 0v-5M22 9v8"/>',
+  about: '<rect x="3" y="7" width="18" height="14" rx="1"/><path d="M8 7V3h8v4M3 12h18M10 12v3h4v-3"/>',
   contact: '<rect x="2" y="5" width="20" height="15" rx="1"/><path d="m2 6 10 8 10-8"/>',
 };
 function box(width, height, depth, material, x, y, z) {
@@ -224,14 +222,15 @@ POCKETS.forEach(pocket => {
   button.className = 'pocket-label';
   button.dataset.pocket = pocket.id;
   button.style.setProperty('--pocket-color', pocket.color);
-  button.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${pocketIcons[pocket.id]}</svg><span class="pocket-title">${pocket.label}</span>`;
-  button.setAttribute('aria-label', `Open ${pocket.label}`);
+  button.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${pocketIcons[sectionForPocket(pocket.id)]}</svg><span class="pocket-title">${pocketLabel(pocket.id)}</span>`;
+  button.setAttribute('aria-label', `Open ${pocketLabel(pocket.id)}`);
   button.setAttribute('aria-pressed', 'false');
-  button.addEventListener('click', () => openSection(pocket.id));
+  button.addEventListener('click', () => openSection(sectionForPocket(pocket.id)));
   const label = new CSS2DObject(button);
   label.position.set(pocket.x, 2.24, 0.7);
   scene.add(label);
   pocketLabels.set(pocket.id, button);
+  pocketLabelObjects.set(pocket.id, label);
   labels.domElement.appendChild(button);
 });
 [-3.6, -1.8, 0, 1.8, 3.6].forEach(x => {
@@ -260,6 +259,8 @@ hologramFrame.visible = false;
 scene.add(hologramFrame);
 let game;
 let activeSection = null;
+let activePocket = null;
+let pendingPanelFocus = false;
 let playing = false;
 let portfolioSliderValue = slider.value;
 let playPower = 7.25;
@@ -291,6 +292,7 @@ function updatePlayHud() {
 }
 function clearPocketSelection() {
   activeSection = null;
+  activePocket = null;
   for (const pocket of POCKETS) {
     const { material, accent } = pocketObjects.get(pocket.id);
     material.emissiveIntensity = 0.008;
@@ -323,6 +325,22 @@ function restartPlayRound() {
   setStatus('New round. Ten balls ready. Choose your launch strength.');
   dropButton.focus({ preventScroll: true });
 }
+function updatePocketPresentation() {
+  for (const pocket of POCKETS) {
+    const group = POCKET_GROUPS.find(group => group.pockets.includes(pocket.id));
+    const visible = playing || group.pockets[0] === pocket.id;
+    const object = pocketLabelObjects.get(pocket.id);
+    object.visible = visible;
+    object.position.x = playing ? pocket.x : group.pockets.reduce((sum, id) => sum + POCKETS.find(item => item.id === id).x, 0) / group.pockets.length;
+    const label = pocketLabels.get(pocket.id);
+    label.innerHTML = playing ? `<span class="pocket-multiplier">${MULTIPLIERS[pocket.id]}×</span><span class="pocket-multiplier-caption">POINTS</span>`
+      : `<svg viewBox="0 0 24 24" aria-hidden="true">${pocketIcons[sectionForPocket(pocket.id)]}</svg><span class="pocket-title">${pocketLabel(pocket.id)}</span>`;
+    label.setAttribute('aria-label', playing ? `${MULTIPLIERS[pocket.id]} times pin hits` : `Open ${pocketLabel(pocket.id)}`);
+    label.tabIndex = playing || !visible ? -1 : 0;
+    label.disabled = playing || !visible;
+    label.setAttribute('aria-hidden', String(!visible));
+  }
+}
 function setPlayMode(enabled) {
   if (!game || enabled === playing) return;
   if (enabled) portfolioSliderValue = slider.value;
@@ -334,31 +352,28 @@ function setPlayMode(enabled) {
   Object.assign(slider, playing ? { min: '0.5', max: '14', step: '0.05', value: String(playPower) }
     : { min: '-3.2', max: '3.2', step: '0.05', value: portfolioSliderValue });
   slider.setAttribute('aria-label', playing ? 'Launch strength' : 'Select destination');
-  for (const pocket of POCKETS) {
-    const label = pocketLabels.get(pocket.id);
-    label.innerHTML = playing ? `<span class="pocket-multiplier">${MULTIPLIERS[pocket.id]}×</span><span class="pocket-multiplier-caption">POINTS</span>`
-      : `<svg viewBox="0 0 24 24" aria-hidden="true">${pocketIcons[pocket.id]}</svg><span class="pocket-title">${pocket.label}</span>`;
-    label.setAttribute('aria-label', playing ? `${MULTIPLIERS[pocket.id]} times pin hits` : `Open ${pocket.label}`);
-    label.tabIndex = playing ? -1 : 0;
-  }
+  updatePocketPresentation();
   updateLauncher();
   updatePlayHud();
   frameCamera();
   setStatus(playing ? 'Play mode. Ten balls. Pin hits multiplied by your landing pocket earn points.' : 'Portfolio mode. Choose a section and launch a ball.');
 }
+updatePocketPresentation();
 updatePlayHud();
 function selectPocket(section) {
   const pocket = POCKETS.find(item => item.id === section);
   if (!pocket) return;
-  activeSection = section;
+  activePocket = section;
+  activeSection = sectionForPocket(section);
   POCKETS.forEach(item => {
     const active = item.id === section;
     const { material, accent } = pocketObjects.get(item.id);
     material.emissiveIntensity = active ? 0.13 : 0.008;
     accent.emissiveIntensity = active ? 0.5 : 0.035;
     const label = pocketLabels.get(item.id);
-    label.classList.toggle('is-active', active);
-    label.setAttribute('aria-pressed', String(active));
+    const labelActive = playing ? active : sectionForPocket(item.id) === activeSection;
+    label.classList.toggle('is-active', labelActive);
+    label.setAttribute('aria-pressed', String(labelActive));
   });
   renderer.invalidate?.();
   const positions = beam.geometry.attributes.position;
@@ -366,22 +381,54 @@ function selectPocket(section) {
   positions.needsUpdate = true;
   beam.geometry.computeBoundingSphere();
 }
-function openSection(section) {
+function openSection(section, landedPocket) {
   if (playing) return;
+  section = normalizePortfolioSection(section);
+  const pocketId = landedPocket && sectionForPocket(landedPocket) === section ? landedPocket : pocketForSection(section);
+  if (!pocketId) return;
   const wasOpen = hologram.isOpen;
-  selectPocket(section);
+  selectPocket(pocketId);
   hologram.open(section);
   if (!wasOpen && hologram.isOpen) audio.popup();
   frameCamera();
   refreshDropButton();
-  setStatus(`${POCKETS.find(pocket => pocket.id === section)?.label || 'Archive'} open · close the panel to drop again`);
+  setStatus(`${sectionName(section)} open · close the panel to launch again`);
 }
+function openDirectSection(section, trigger) {
+  if (playing) setPlayMode(false);
+  if (game?.inFlight) { game.reset(); audio.stopRoll(); }
+  trigger?.focus({ preventScroll: true });
+  openSection(section);
+}
+document.querySelectorAll('[data-open-section]').forEach(link => link.addEventListener('click', event => {
+  event.preventDefault();
+  openDirectSection(link.dataset.openSection, link);
+}));
+const routeSections = new Set(['about', 'work', 'skills', 'experiences', 'experience', 'exp', 'build', 'education', 'contact']);
+function openHashSection() {
+  const section = location.hash.slice(1);
+  if (routeSections.has(section)) openDirectSection(section);
+  else if (!location.hash) hologram.close();
+}
+window.addEventListener('hashchange', openHashSection);
+hologram.element.addEventListener('hologram:open', event => {
+  const section = event.detail.sectionId;
+  if (!event.detail.wasOpen) pendingPanelFocus = true;
+  if (location.hash !== `#${section}`) history.replaceState(null, '', `#${section}`);
+  document.querySelectorAll('[data-open-section]').forEach(link => {
+    if (link.dataset.openSection === section) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  });
+});
 hologram.onClose(() => {
+  pendingPanelFocus = false;
   beam.visible = hologramFrame.visible = false;
   connector.setAttribute('d', '');
   frameCamera();
   refreshDropButton();
   setStatus(game?.inFlight ? 'Ball in motion…' : '');
+  if (routeSections.has(location.hash.slice(1))) history.replaceState(null, '', location.pathname + location.search);
+  document.querySelectorAll('[data-open-section]').forEach(link => link.removeAttribute('aria-current'));
 });
 function frameCamera(immediate = false) {
   launchCamera.stop();
@@ -390,15 +437,16 @@ function frameCamera(immediate = false) {
   const open = hologram.isOpen && !mobile;
   const tangent = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
   const availableWidth = Math.max(200, width - (mobile ? 28 : 130));
-  const playBounds = mobile && playing ? {
-    top: document.querySelector('.play-scoreboard').getBoundingClientRect().bottom + 12,
+  const landscape = mobile && width > height && height < 560;
+  const playBounds = mobile && !landscape ? {
+    top: (playing ? document.querySelector('.play-scoreboard') : document.querySelector('.scene-caption')).getBoundingClientRect().bottom + 18,
     bottom: document.querySelector('.launch-dock').getBoundingClientRect().top - 18,
   } : null;
   const availableHeight = playBounds ? Math.max(120, playBounds.bottom - playBounds.top)
     : Math.max(180, height - (mobile ? (height <= 650 ? 310 : 255) : 215));
   const distance = Math.max(CABINET_LAYOUT.fitHeight / (2 * tangent) * height / availableHeight,
     (open ? 20.5 : 10.6) / (2 * tangent * camera.aspect) * width / availableWidth);
-  const centerX = open ? 3.7 : 0;
+  const centerX = open ? 3.7 : landscape && !playing ? -5 : 0;
   desiredTarget.set(centerX, CABINET_LAYOUT.centerY, 0);
   desiredPosition.set(centerX + 0.7, CABINET_LAYOUT.centerY + 1.4, distance);
   if (playBounds) {
@@ -514,19 +562,19 @@ function updateLauncher() {
     playUI.setPower(percent);
     return;
   }
-  slider.setAttribute('aria-valuetext', destination.label);
+  slider.setAttribute('aria-valuetext', pocketLabel(destination.id));
   slider.dataset.destination = destination.id;
   slider.closest('.aim-control').style.setProperty('--destination-color', destination.color);
   document.querySelectorAll('button[data-destination]').forEach(button => {
-    const selected = button.dataset.destination === destination.id;
+    const selected = sectionForPocket(button.dataset.destination) === sectionForPocket(destination.id);
     button.classList.toggle('is-selected', selected);
     button.setAttribute('aria-pressed', String(selected));
   });
 }
 slider.addEventListener('input', updateLauncher);
 document.querySelectorAll('button[data-destination]').forEach(button => button.addEventListener('click', () => {
-  const index = POCKETS.findIndex(pocket => pocket.id === button.dataset.destination);
-  slider.value = Number(slider.min) + (index + 0.5) / POCKETS.length * (Number(slider.max) - Number(slider.min));
+  const groupIndex = POCKET_GROUPS.findIndex(group => group.section === sectionForPocket(button.dataset.destination));
+  slider.value = Number(slider.min) + (groupIndex + 0.5) / POCKET_GROUPS.length * (Number(slider.max) - Number(slider.min));
   updateLauncher();
 }));
 updateLauncher();
@@ -574,7 +622,7 @@ const handleGameKeys = event => {
   }
 };
 window.addEventListener('keydown', handleGameKeys);
-document.querySelector('.identity').addEventListener('click', event => {
+document.querySelector('.site-brand').addEventListener('click', event => {
   event.preventDefault();
   if (playing) setPlayMode(false);
   hologram.close();
@@ -596,8 +644,8 @@ async function initializeGame() {
         setStatus(`${shot.bounces} pin hits times ${shot.multiplier}: ${shot.points} points. Total ${round.score}.`);
         if (round.completed) { audio.popup(); playUI.finish(round, records.best); }
       } else {
-        openSection(result.pocket.id);
-        setStatus(`${result.pocket.label} unlocked · ${result.bounces} peg bounces`);
+        openSection(sectionForPocket(result.pocket.id), result.pocket.id);
+        setStatus(`${pocketLabel(result.pocket.id)} unlocked · ${result.bounces} peg bounces`);
       }
     }, hit => {
       mechanicalBoard.hitPin(hit);
@@ -616,17 +664,19 @@ async function initializeGame() {
     setStatus('');
   } catch (error) {
     console.error('Could not load portfolio stage:', error);
-    document.querySelector('#loading-message').textContent = 'The stage could not load. You can still choose a section below.';
+    document.querySelector('#loading-message').textContent = 'The stage could not load. You can still explore the portfolio using the navigation.';
     loading.classList.add('has-error');
     loading.classList.add('is-loaded');
     setStatus('Choose a section to read the archive');
   }
 }
 initializeGame();
+openHashSection();
 const projectedPocket = new THREE.Vector3();
 function updateConnector() {
   if (!hologram.isOpen || !activeSection) return;
-  const pocket = POCKETS.find(item => item.id === activeSection);
+  const pocket = POCKETS.find(item => item.id === activePocket);
+  if (!pocket) { connector.setAttribute('d', ''); return; }
   projectedPocket.set(pocket.x, 2.5, 0.7).project(camera);
   const x = (projectedPocket.x + 1) * viewport.width / 2;
   const y = (1 - projectedPocket.y) * viewport.height / 2;
@@ -678,14 +728,22 @@ renderer.setAnimationLoop(now => {
     mount.dataset.ballY = game.position.y.toFixed(3);
   }
   if (hologram.isOpen && hologram.activeSection !== activeSection) {
-    selectPocket(hologram.activeSection);
-    setStatus(`${POCKETS.find(pocket => pocket.id === activeSection).label} open · close the panel to drop again`);
+    const section = hologram.activeSection;
+    if (pocketForSection(section)) selectPocket(pocketForSection(section));
+    else { clearPocketSelection(); activeSection = section; }
+    setStatus(`${sectionName(section)} open · close the panel to launch again`);
   }
-  beam.visible = hologramFrame.visible = hologram.isOpen && !viewport.mobile;
+  hologramFrame.visible = hologram.isOpen && !viewport.mobile;
+  beam.visible = hologramFrame.visible && Boolean(activePocket);
   renderer.render(scene, camera);
   labels.render(scene, camera);
   nameplateRenderer.render(nameplateScene, camera);
   if (!viewport.mobile) hologramRenderer.render(hologramScene, camera);
+  // CSS3DRenderer attaches the panel on its first render; focus after that move.
+  if (pendingPanelFocus && hologram.isOpen) {
+    hologram.element.querySelector('.hologram-close').focus({ preventScroll: true });
+    pendingPanelFocus = false;
+  }
   updateConnector();
 });
 if (import.meta.hot) import.meta.hot.dispose(() => {
@@ -708,4 +766,5 @@ if (import.meta.hot) import.meta.hot.dispose(() => {
   scene.traverse(object => { if (object.isMesh) object.geometry.dispose(); });
   window.removeEventListener('resize', resize);
   window.removeEventListener('keydown', handleGameKeys);
+  window.removeEventListener('hashchange', openHashSection);
 });
