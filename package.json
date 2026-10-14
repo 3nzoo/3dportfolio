@@ -7,6 +7,7 @@
     "dev": "vite",
     "prepare:stage": "node scripts/prepare-stage.mjs",
     "test:physics": "node scripts/verify-physics.mjs",
+    "test:play": "node scripts/verify-play-mode.mjs",
     "test:music": "node scripts/verify-music.mjs",
     "test:contact": "node scripts/verify-contact.mjs",
     "record:paths": "node scripts/record-destination-paths.mjs",

@@ -185,6 +185,19 @@ export function createDestinationGamePhysics(RAPIER, pins, onLand = () => {}, on
     get position() { return game.position; },
     get phase() { return game.phase; },
     get lastLaunchRoute() { return lastLaunchRoute; },
+    // Free play uses the selected power directly, without selecting a destination.
+    launchFree(power) {
+      if (game.inFlight || !Number.isFinite(power)) return false;
+      game.dispose();
+      game = createGamePhysics(RAPIER, pins, landed, onPinHit);
+      lastLaunchRoute = null;
+      return game.launch(power);
+    },
+    reset() {
+      game.dispose();
+      game = createGamePhysics(RAPIER, pins, landed, onPinHit);
+      lastLaunchRoute = null;
+    },
     launchDestination(destination) {
       if (game.inFlight || !pools.has(destination)) return false;
       game.dispose();

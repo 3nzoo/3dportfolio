@@ -9,11 +9,14 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { SoftwareRenderer } from './renderers/software-renderer.js';
 import { createDestinationGamePhysics, POCKETS, BALL_RADIUS } from './game/physics.js';
 import { createHologram } from './ui/hologram.js';
+import { createPlayModeUI } from './ui/play-mode.js';
+import { createPlayRound, createRecordStore, MULTIPLIERS } from './game/play-round.js';
 import { getResumeUrl } from './ui/resume.js';
 import { createBoardAudio } from './audio/board-audio.js';
 import { createBackgroundMusic } from './audio/background-music.js';
 import portfolio from './content/portfolio.json';
 import './styles/style.css';
+import './styles/play-mode.css';
 
 THREE.Cache.enabled = true;
 const scene = new THREE.Scene();
@@ -257,8 +260,93 @@ hologramFrame.visible = false;
 scene.add(hologramFrame);
 let game;
 let activeSection = null;
+let playing = false;
+let portfolioSliderValue = slider.value;
+let playPower = 7.25;
+const round = createPlayRound();
+const records = createRecordStore();
+const playUI = createPlayModeUI({
+  onToggle: () => setPlayMode(!playing),
+  onReplay: restartPlayRound,
+  onPortfolio: () => setPlayMode(false),
+  onSaveRecord: ({ name, country }) => {
+    if (!playing || !round.completed) return false;
+    const saved = records.save({ name, country, score: round.score });
+    updatePlayHud();
+    return saved;
+  },
+});
 function setStatus(message) { status.textContent = message; }
-function refreshDropButton() { dropButton.disabled = !game || game.inFlight || hologram.isOpen; }
+function refreshDropButton() {
+  dropButton.disabled = !game || game.inFlight || hologram.isOpen;
+  dropButton.querySelector('.drop-label').textContent = playing && round.completed ? 'Play again' : 'Launch ball';
+  slider.disabled = Boolean(playing && game?.inFlight);
+}
+function updatePlayHud() {
+  playUI.render(round, { playing, best: records.best, ready: Boolean(game) });
+  mount.dataset.mode = playing ? 'play' : 'portfolio';
+  mount.dataset.roundScore = String(round.score);
+  mount.dataset.ballsCompleted = String(round.shots.length);
+  refreshDropButton();
+}
+function clearPocketSelection() {
+  activeSection = null;
+  for (const pocket of POCKETS) {
+    const { material, accent } = pocketObjects.get(pocket.id);
+    material.emissiveIntensity = 0.008;
+    accent.emissiveIntensity = 0.035;
+    const label = pocketLabels.get(pocket.id);
+    label.classList.remove('is-active');
+    label.setAttribute('aria-pressed', 'false');
+  }
+  renderer.invalidate?.();
+}
+function resetRound() {
+  game.reset();
+  round.reset();
+  audio.stopRoll();
+  releaseRecoil = 0;
+  playUI.closeDialog();
+  clearPocketSelection();
+  delete mount.dataset.landingDestination;
+  delete mount.dataset.landingBounces;
+  delete mount.dataset.launchRoute;
+  delete mount.dataset.expectedBounces;
+  mount.dataset.pinHits = '0';
+}
+function restartPlayRound() {
+  if (!game || !playing) return;
+  resetRound();
+  updateLauncher();
+  updatePlayHud();
+  frameCamera();
+  setStatus('New round. Ten balls ready. Choose your launch strength.');
+  dropButton.focus({ preventScroll: true });
+}
+function setPlayMode(enabled) {
+  if (!game || enabled === playing) return;
+  if (enabled) portfolioSliderValue = slider.value;
+  else playPower = Number(slider.value);
+  playing = enabled;
+  resetRound();
+  hologram.close();
+  document.body.classList.toggle('play-mode', playing);
+  Object.assign(slider, playing ? { min: '0.5', max: '14', step: '0.05', value: String(playPower) }
+    : { min: '-3.2', max: '3.2', step: '0.05', value: portfolioSliderValue });
+  slider.setAttribute('aria-label', playing ? 'Launch strength' : 'Select destination');
+  for (const pocket of POCKETS) {
+    const label = pocketLabels.get(pocket.id);
+    label.innerHTML = playing ? `<span class="pocket-multiplier">${MULTIPLIERS[pocket.id]}×</span><span class="pocket-multiplier-caption">POINTS</span>`
+      : `<svg viewBox="0 0 24 24" aria-hidden="true">${pocketIcons[pocket.id]}</svg><span class="pocket-title">${pocket.label}</span>`;
+    label.setAttribute('aria-label', playing ? `${MULTIPLIERS[pocket.id]} times pin hits` : `Open ${pocket.label}`);
+    label.tabIndex = playing ? -1 : 0;
+  }
+  updateLauncher();
+  updatePlayHud();
+  frameCamera();
+  setStatus(playing ? 'Play mode. Ten balls. Pin hits multiplied by your landing pocket earn points.' : 'Portfolio mode. Choose a section and launch a ball.');
+}
+updatePlayHud();
 function selectPocket(section) {
   const pocket = POCKETS.find(item => item.id === section);
   if (!pocket) return;
@@ -279,6 +367,7 @@ function selectPocket(section) {
   beam.geometry.computeBoundingSphere();
 }
 function openSection(section) {
+  if (playing) return;
   const wasOpen = hologram.isOpen;
   selectPocket(section);
   hologram.open(section);
@@ -301,12 +390,22 @@ function frameCamera(immediate = false) {
   const open = hologram.isOpen && !mobile;
   const tangent = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
   const availableWidth = Math.max(200, width - (mobile ? 28 : 130));
-  const availableHeight = Math.max(180, height - (mobile ? (height <= 650 ? 310 : 255) : 215));
+  const playBounds = mobile && playing ? {
+    top: document.querySelector('.play-scoreboard').getBoundingClientRect().bottom + 12,
+    bottom: document.querySelector('.launch-dock').getBoundingClientRect().top - 18,
+  } : null;
+  const availableHeight = playBounds ? Math.max(120, playBounds.bottom - playBounds.top)
+    : Math.max(180, height - (mobile ? (height <= 650 ? 310 : 255) : 215));
   const distance = Math.max(CABINET_LAYOUT.fitHeight / (2 * tangent) * height / availableHeight,
     (open ? 20.5 : 10.6) / (2 * tangent * camera.aspect) * width / availableWidth);
   const centerX = open ? 3.7 : 0;
   desiredTarget.set(centerX, CABINET_LAYOUT.centerY, 0);
   desiredPosition.set(centerX + 0.7, CABINET_LAYOUT.centerY + 1.4, distance);
+  if (playBounds) {
+    const shift = ((playBounds.top + playBounds.bottom) / 2 - height / 2) * 2 * tangent * distance / height;
+    desiredPosition.y += shift;
+    desiredTarget.y += shift;
+  }
   if (!open) {
     const layoutCamera = camera.clone();
     layoutCamera.position.copy(desiredPosition);
@@ -398,7 +497,6 @@ function resize() {
 }
 window.addEventListener('resize', resize);
 resize();
-document.querySelector('#reset-view').addEventListener('click', () => frameCamera());
 function updateLauncher() {
   const value = Number(slider.value);
   const progress = (value - Number(slider.min)) / (Number(slider.max) - Number(slider.min));
@@ -408,6 +506,14 @@ function updateLauncher() {
   mount.dataset.springLength = springLength.toFixed(3);
   mount.dataset.springTension = (1 - progress).toFixed(3);
   mount.dataset.plungerY = (BOARD_SETTINGS.springBaseY + springLength + 0.08).toFixed(3);
+  if (playing) {
+    const percent = Math.round(progress * 100);
+    playPower = value;
+    slider.setAttribute('aria-valuetext', `${percent}% launch strength`);
+    slider.closest('.aim-control').style.setProperty('--destination-color', '#dfbd7b');
+    playUI.setPower(percent);
+    return;
+  }
   slider.setAttribute('aria-valuetext', destination.label);
   slider.dataset.destination = destination.id;
   slider.closest('.aim-control').style.setProperty('--destination-color', destination.color);
@@ -425,36 +531,52 @@ document.querySelectorAll('button[data-destination]').forEach(button => button.a
 }));
 updateLauncher();
 function dropBall() {
-  if (!game || hologram.isOpen || !game.launchDestination(slider.dataset.destination)) return;
+  if (!game || hologram.isOpen || playUI.dialogOpen || game.inFlight) return;
+  if (playing && round.completed) { restartPlayRound(); return; }
+  if (playing) {
+    if (!round.canLaunch || !game.launchFree(Number(slider.value))) return;
+    round.beginBall();
+    clearPocketSelection();
+    updatePlayHud();
+  } else if (!game.launchDestination(slider.dataset.destination)) return;
   const route = game.lastLaunchRoute;
-  const strength = (route.power - 0.5) / 13.5;
+  const power = playing ? Number(slider.value) : route.power;
+  const strength = (power - 0.5) / 13.5;
   const channelSeconds = BOARD_SETTINGS.channelSeconds
     + (BOARD_SETTINGS.channelFastSeconds - BOARD_SETTINGS.channelSeconds) * strength;
-  audio.launch(route.power, channelSeconds);
+  audio.launch(power, channelSeconds);
   if (!reducedMotion) {
-    if (framing) pendingCameraLaunch = route.power;
-    else launchCamera.start(route.power, viewport.mobile ? 0.75 : 1);
+    if (framing) pendingCameraLaunch = power;
+    else launchCamera.start(power, viewport.mobile ? 0.75 : 1);
   }
-  mount.dataset.launchRoute = route.id;
-  mount.dataset.launchPower = String(route.power);
-  mount.dataset.expectedBounces = String(route.bounces);
+  if (route) {
+    mount.dataset.launchRoute = route.id;
+    mount.dataset.expectedBounces = String(route.bounces);
+  } else {
+    delete mount.dataset.launchRoute;
+    delete mount.dataset.expectedBounces;
+  }
+  mount.dataset.launchPower = String(power);
+  mount.dataset.pinHits = '0';
   refreshDropButton();
   releaseRecoil = 1;
   setStatus('Ball rising from the bottom launcher…');
 }
 dropButton.addEventListener('click', dropBall);
 const handleGameKeys = event => {
-  if (hologram.isOpen || /INPUT|TEXTAREA|SELECT|BUTTON|A/.test(event.target.tagName)) return;
+  if (hologram.isOpen || playUI.dialogOpen || /INPUT|TEXTAREA|SELECT|BUTTON|A/.test(event.target.tagName)) return;
   if (event.code === 'Space') { event.preventDefault(); dropBall(); }
   if (event.code === 'ArrowLeft' || event.code === 'ArrowRight') {
+    if (slider.disabled) return;
     event.preventDefault();
-    slider.value = Math.max(-3.2, Math.min(3.2, Number(slider.value) + (event.code === 'ArrowLeft' ? -0.3 : 0.3)));
+    slider.value = Math.max(Number(slider.min), Math.min(Number(slider.max), Number(slider.value) + (event.code === 'ArrowLeft' ? -0.3 : 0.3)));
     updateLauncher();
   }
 };
 window.addEventListener('keydown', handleGameKeys);
 document.querySelector('.identity').addEventListener('click', event => {
   event.preventDefault();
+  if (playing) setPlayMode(false);
   hologram.close();
   frameCamera();
 });
@@ -466,13 +588,23 @@ async function initializeGame() {
       mount.dataset.landingDestination = result.pocket.id;
       mount.dataset.landingBounces = String(result.bounces);
       audio.land(result.x);
-      openSection(result.pocket.id);
-      setStatus(`${result.pocket.label} unlocked · ${result.bounces} peg bounces`);
+      if (playing) {
+        const shot = round.land({ pocketId: result.pocket.id, bounces: result.bounces });
+        selectPocket(result.pocket.id);
+        updatePlayHud();
+        frameCamera();
+        setStatus(`${shot.bounces} pin hits times ${shot.multiplier}: ${shot.points} points. Total ${round.score}.`);
+        if (round.completed) { audio.popup(); playUI.finish(round, records.best); }
+      } else {
+        openSection(result.pocket.id);
+        setStatus(`${result.pocket.label} unlocked · ${result.bounces} peg bounces`);
+      }
     }, hit => {
       mechanicalBoard.hitPin(hit);
       audio.pin(hit);
       mount.dataset.pinHits = String(Number(mount.dataset.pinHits || 0) + 1);
       mount.dataset.lastHitPin = String(hit.index);
+      if (playing) { round.hitPin(); updatePlayHud(); }
     });
     updateLauncher();
     mount.dataset.ready = 'true';
@@ -480,7 +612,7 @@ async function initializeGame() {
     mount.dataset.renderer = renderer.isSoftwareRenderer ? 'software' : 'webgl';
     renderer.invalidate?.();
     loading.classList.add('is-loaded');
-    refreshDropButton();
+    updatePlayHud();
     setStatus('');
   } catch (error) {
     console.error('Could not load portfolio stage:', error);
@@ -564,6 +696,7 @@ if (import.meta.hot) import.meta.hot.dispose(() => {
   controls.removeEventListener('start', handleOrbitStart);
   controls.dispose();
   game?.dispose();
+  playUI.dispose();
   audio.dispose();
   music.dispose();
   renderer.dispose();

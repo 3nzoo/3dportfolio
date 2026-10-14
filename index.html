@@ -4,8 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#071b18" />
-    <meta name="description" content="Explore Enzo's work, education, and experience through an interactive 3D pachinko portfolio." />
-    <title>Enzo — Mechanical board test</title>
+    <meta name="description" content="A portfolio you can play. Explore Enzo Dinglasan’s work through an interactive 3D pachinko board, then take on the ten-ball challenge." />
+    <meta name="author" content="Enzo Dinglasan" />
+    <title>Enzo Dinglasan — Full-Stack Engineer &amp; Game Developer</title>
+    <link rel="canonical" href="https://enzolabs.dev/" />
+
+    <!-- Keep sharing metadata in the initial HTML for social preview crawlers. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="EnzoLabs" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Enzo Dinglasan — Full-Stack Engineer &amp; Game Developer" />
+    <meta property="og:description" content="A portfolio you can play. Explore Enzo Dinglasan’s work through an interactive 3D pachinko board, then take on the ten-ball challenge." />
+    <meta property="og:url" content="https://enzolabs.dev/" />
+    <meta property="og:image" content="https://enzolabs.dev/assets/social-preview.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Enzo Dinglasan’s interactive portfolio: a brass pachinko board beside the words A portfolio you can play." />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Enzo Dinglasan — Full-Stack Engineer &amp; Game Developer" />
+    <meta name="twitter:description" content="A portfolio you can play. Explore Enzo Dinglasan’s work through an interactive 3D pachinko board, then take on the ten-ball challenge." />
+    <meta name="twitter:image" content="https://enzolabs.dev/assets/social-preview.png" />
+    <meta name="twitter:image:alt" content="Enzo Dinglasan’s interactive portfolio: a brass pachinko board beside the words A portfolio you can play." />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230b2924'/%3E%3Cpath d='M20 46V18h26v6H27v7h15v6H27v9z' fill='%23d5b36e'/%3E%3C/svg%3E" />
     <link rel="stylesheet" href="/src/styles/style.css" />
   </head>
@@ -35,8 +56,8 @@
           <input type="range" id="launch-position" min="-3.2" max="3.2" step="0.05" value="-0.8" aria-label="Select destination" />
           <div class="aim-ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
-        <button type="button" id="drop-ball" class="drop-button"><span class="drop-orb" aria-hidden="true"></span>Launch ball<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V5m-5 5 5-5 5 5" /></svg></button>
-        <button type="button" id="reset-view" class="reset-button" aria-label="Reset camera view" title="Reset camera view"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 2 8M4 4v6h6" /></svg></button>
+        <button type="button" id="drop-ball" class="drop-button"><span class="drop-orb" aria-hidden="true"></span><span class="drop-label">Launch ball</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V5m-5 5 5-5 5 5" /></svg></button>
+        <button type="button" id="toggle-play-mode" class="mode-button" aria-label="Enter play mode" aria-pressed="false" title="Play the ten ball challenge" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7Z" /></svg><span>Play</span></button>
       </div>
       <p id="game-status" class="sr-only" role="status" aria-live="polite"></p>
     </main>

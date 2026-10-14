@@ -40,6 +40,21 @@ For Cloudflare Pages, connect this repository and use:
 npm run test:physics
 npm run test:music
 npm run test:contact
+npm run test:play
 ```
 
 After changing the board layout or physics, regenerate the destination paths with `npm run record:paths`, then rerun the physics checks.
+
+## Ten-ball play mode
+
+Select **Play** beside the launcher to start a ten-ball round. The slider controls launch strength; balls use live physics without choosing a portfolio destination. Each real pin hit is worth one point, multiplied by the landing pocket (left to right: 2×, 3×, 1×, 2×). The ten silver balls show completed, active, and remaining launches. **Portfolio** exits a round immediately and restores the normal ten recorded routes per section.
+
+After all ten balls, a score above the current record opens the name and searchable country form. The starter record is **Enzo · Philippines · 500**. Records are saved only in this browser's local storage; they are not a shared leaderboard and do not use the contact form's Supabase connection. `src/game/play-round.js` owns round scoring and local record storage; `src/ui/play-mode.js` owns the scoreboard, country picker, and round dialog.
+
+## Social sharing
+
+The planned production address is `https://enzolabs.dev/`. `index.html` contains the canonical URL, Open Graph metadata, and a large-image X/Twitter Card directly in its initial HTML. The 1200 × 630 PNG preview is `public/assets/social-preview.png`; the editable vector source is beside it as `social-preview.svg`.
+
+Connect the domain to the deployed site before sharing: both the homepage and `https://enzolabs.dev/assets/social-preview.png` must be publicly accessible over HTTPS. If the domain changes, update the canonical link and every absolute sharing URL in `index.html`.
+
+After deployment, check the URL with LinkedIn Post Inspector and Facebook Sharing Debugger. They can refresh cached previews after metadata or image changes. These tags prepare link previews; the domain connection and deployment are separate steps.
