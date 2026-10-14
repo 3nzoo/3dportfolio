@@ -9,7 +9,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { SoftwareRenderer } from './renderers/software-renderer.js';
 import { createDestinationGamePhysics, POCKETS, BALL_RADIUS } from './game/physics.js';
 import { createHologram } from './ui/hologram.js';
-import { POCKET_GROUPS, normalizePortfolioSection, sectionForPocket, pocketForSection, pocketLabel, sectionName } from './ui/portfolio-sections.js';
+import { normalizePortfolioSection, sectionForPocket, pocketForSection, pocketLabel, sectionName } from './ui/portfolio-sections.js';
 import { createPlayModeUI } from './ui/play-mode.js';
 import { createPlayRound, createRecordStore, MULTIPLIERS } from './game/play-round.js';
 import { createBoardAudio } from './audio/board-audio.js';
@@ -165,9 +165,11 @@ const materials = {
 };
 const mechanicalBoard = createMechanicalBoard(scene);
 const identityElement = document.createElement('div');
-identityElement.className = 'board-monogram';
+identityElement.className = 'board-wordmark';
 identityElement.setAttribute('aria-hidden', 'true');
-identityElement.innerHTML = '<span>ED</span>';
+const boardWordmark = document.createElement('span');
+boardWordmark.textContent = portfolio.profile.boardLabel || 'ENZOLABS.DEV';
+identityElement.appendChild(boardWordmark);
 // A fixed-size surface follows the plate's perspective, unlike a CSS2D billboard.
 const boardIdentity = new CSS3DObject(identityElement);
 boardIdentity.position.set(0, NAMEPLATE_LAYOUT.y, NAMEPLATE_LAYOUT.z);
@@ -199,9 +201,10 @@ let selectionProgress = 0.375;
 let releaseRecoil = 0;
 const pocketObjects = new Map();
 const pocketLabels = new Map();
-const pocketLabelObjects = new Map();
 const pocketIcons = {
-  about: '<rect x="3" y="7" width="18" height="14" rx="1"/><path d="M8 7V3h8v4M3 12h18M10 12v3h4v-3"/>',
+  about: '<circle cx="12" cy="8" r="3.5"/><path d="M5 21v-3a7 7 0 0 1 14 0v3Z"/>',
+  education: '<path d="m2 9 10-5 10 5-10 5ZM6 12v5c4 3 8 3 12 0v-5M22 9v8"/>',
+  experience: '<rect x="3" y="7" width="18" height="14" rx="1"/><path d="M8 7V3h8v4M3 12h18M10 12v3h4v-3"/>',
   contact: '<rect x="2" y="5" width="20" height="15" rx="1"/><path d="m2 6 10 8 10-8"/>',
 };
 function box(width, height, depth, material, x, y, z) {
@@ -230,7 +233,6 @@ POCKETS.forEach(pocket => {
   label.position.set(pocket.x, 2.24, 0.7);
   scene.add(label);
   pocketLabels.set(pocket.id, button);
-  pocketLabelObjects.set(pocket.id, label);
   labels.domElement.appendChild(button);
 });
 [-3.6, -1.8, 0, 1.8, 3.6].forEach(x => {
@@ -327,18 +329,12 @@ function restartPlayRound() {
 }
 function updatePocketPresentation() {
   for (const pocket of POCKETS) {
-    const group = POCKET_GROUPS.find(group => group.pockets.includes(pocket.id));
-    const visible = playing || group.pockets[0] === pocket.id;
-    const object = pocketLabelObjects.get(pocket.id);
-    object.visible = visible;
-    object.position.x = playing ? pocket.x : group.pockets.reduce((sum, id) => sum + POCKETS.find(item => item.id === id).x, 0) / group.pockets.length;
     const label = pocketLabels.get(pocket.id);
     label.innerHTML = playing ? `<span class="pocket-multiplier">${MULTIPLIERS[pocket.id]}×</span><span class="pocket-multiplier-caption">POINTS</span>`
       : `<svg viewBox="0 0 24 24" aria-hidden="true">${pocketIcons[sectionForPocket(pocket.id)]}</svg><span class="pocket-title">${pocketLabel(pocket.id)}</span>`;
     label.setAttribute('aria-label', playing ? `${MULTIPLIERS[pocket.id]} times pin hits` : `Open ${pocketLabel(pocket.id)}`);
-    label.tabIndex = playing || !visible ? -1 : 0;
-    label.disabled = playing || !visible;
-    label.setAttribute('aria-hidden', String(!visible));
+    label.tabIndex = playing ? -1 : 0;
+    label.disabled = playing;
   }
 }
 function setPlayMode(enabled) {
@@ -573,9 +569,10 @@ function updateLauncher() {
 }
 slider.addEventListener('input', updateLauncher);
 document.querySelectorAll('button[data-destination]').forEach(button => button.addEventListener('click', () => {
-  const groupIndex = POCKET_GROUPS.findIndex(group => group.section === sectionForPocket(button.dataset.destination));
-  slider.value = Number(slider.min) + (groupIndex + 0.5) / POCKET_GROUPS.length * (Number(slider.max) - Number(slider.min));
+  const index = POCKETS.findIndex(pocket => pocket.id === button.dataset.destination);
+  slider.value = Number(slider.min) + (index + 0.5) / POCKETS.length * (Number(slider.max) - Number(slider.min));
   updateLauncher();
+  openDirectSection(sectionForPocket(button.dataset.destination), button);
 }));
 updateLauncher();
 function dropBall() {

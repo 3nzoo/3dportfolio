@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-:root { font-family: 'DM Sans', Arial, sans-serif; color: #edf7ef; background: #071b18; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; --gold: #dfbd7b; --mint: #95ecd1; --muted: #9caea3; --line: rgba(169,224,195,.19); --display: 'Space Grotesk', Arial, sans-serif; }
+:root { font-family: 'DM Sans', Arial, sans-serif; color: #edf7ef; background: #071b18; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; --gold: #dfbd7b; --mint: #95ecd1; --muted: #9caea3; --line: rgba(169,224,195,.19); --display: 'Space Grotesk', Arial, sans-serif; --board-font: 'DM Sans', Arial, sans-serif; }
 * { box-sizing: border-box; }
 html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
 body { min-width: 320px; background: radial-gradient(ellipse at 56% 43%,#234c35 0,#102f25 30%,#071b18 68%); }

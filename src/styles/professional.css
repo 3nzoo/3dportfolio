@@ -8,12 +8,6 @@
 .scene-caption h1 { display: block; font-size: clamp(32px,3.7vw,53px); font-weight: 500; line-height: 1.08; letter-spacing: -.055em; }
 .hero-role { margin: 13px 0 0; font-family: var(--display); font-size: 18px; line-height: 1.5; color: #e2c58b; }
 .scene-description { margin: 17px 0 20px; font-size: 14px; line-height: 1.75; color: #c1c8b8; letter-spacing: 0; }
-.hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; pointer-events: auto; }
-.hero-actions a { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 10px 12px; border-radius: 5px; font-size: 11px; font-weight: 500; }
-.hero-primary { background: #dfc18a; color: #15271b; border: 1px solid #dfc18a; text-shadow: none; }
-.hero-primary:hover { background: #f1d69f; }
-.hero-secondary { color: #d5cfb7; border: 1px solid #b89a6263; background: #0b1c14de; }
-.hero-secondary:hover { color: #ffe1ac; border-color: #d4b477; }
 .work-disclosures { display: grid; grid-template-columns: 1fr; align-items: start; gap: 9px; margin: 22px 0 0; }
 .work-disclosure { border: 1px solid #b89a6247; border-radius: 6px; background: #b6b27807; }
 .work-disclosure[open] { grid-column: 1 / -1; }
@@ -64,7 +58,6 @@
   .scene-caption .eyebrow { font-size: 9px; }
   .hero-role { font-size: 16px; }
   .scene-description { font-size: 12px; }
-  .hero-actions a { font-size: 10px; padding-inline: 10px; }
 }
 @media (max-width: 900px) {
   .portfolio-header { top: 15px; left: 22px; right: 22px; flex-wrap: wrap; gap: 8px 10px; }
@@ -76,8 +69,6 @@
   .scene-caption h1 { font-size: 33px; line-height: 1.1; }
   .hero-role { margin-top: 6px; font-size: 16px; }
   .scene-description { display: block; margin: 9px 0 12px; font-size: 12px; line-height: 1.65; max-width: 450px; }
-  .hero-actions { flex-wrap: nowrap; gap: 6px; }
-  .hero-actions a { font-size: 10px; min-height: 40px; padding: 9px 10px; white-space: nowrap; gap: 6px; }
   .play-scoreboard { top: 76px; }
   .destination-options button { font-size: 10px; }
   body:not(.play-mode) .pocket-label { min-width: 0; font-size: clamp(4px,calc((100dvh - 420px) * .018),9px); letter-spacing: 0; }
@@ -104,7 +95,6 @@
   .scene-caption { left: 18px; right: 18px; }
   .hologram-panel.is-overlay .hologram-tab { font-size: 10px; padding-inline: 7px; }
   .scene-caption h1 { font-size: 29px; }
-  .hero-actions a { padding-inline: 8px; font-size: 9px; }
   .hero-role { font-size: 15px; }
   .story-facts { grid-template-columns: 1fr; }
 }
@@ -113,7 +103,6 @@
   .scene-caption .eyebrow, .scene-description, .hero-invitation { display: none; }
   .scene-caption h1 { font-size: 27px; }
   .hero-role { margin-top: 4px; font-size: 14px; }
-  .hero-actions { margin-top: 10px; }
   .play-scoreboard { top: 74px; }
 }
 @media (max-height: 560px) and (min-width: 560px) and (max-width: 900px) {
@@ -126,21 +115,61 @@
   .scene-caption .eyebrow, .hero-invitation { display: none; }
   .hero-role { font-size: 13px; }
   .scene-description { margin-block: 6px 9px; font-size: 10px; }
-  .hero-actions a { min-height: 36px; padding: 8px; font-size: 9px; }
   .play-scoreboard { top: 64px; }
 }
 
-/* Two reading destinations; four scoring pockets still appear in play mode. */
-.destination-options { grid-template-columns: repeat(2,minmax(0,1fr)); }
-.pocket-label[aria-hidden="true"] { display: none !important; }
-.board-monogram { height: 108px; display: flex; align-items: center; justify-content: center; gap: 28px; color: #e5cb99; pointer-events: none; backface-visibility: hidden; }
-.board-monogram::before, .board-monogram::after { content: ''; width: 115px; height: 1px; background: linear-gradient(90deg,transparent,#b3955c); }
-.board-monogram::after { transform: rotate(180deg); }
-.board-monogram span { font-family: var(--display); font-size: 57px; line-height: 1; letter-spacing: -.07em; padding-right: 4px; }
+/* Four portfolio destinations share the same physical pockets as play mode. */
+.destination-options { grid-template-columns: repeat(4,minmax(0,1fr)); }
 .story-grid { gap: 14px; }
 .story-card .story-summary { margin-bottom: 0; }
 .story-details { margin-top: 14px; }
 @media (max-width: 900px) {
-  body:not(.play-mode) .pocket-label { font-size: clamp(6px,calc((100dvh - 350px) * .021),11px); }
+  body:not(.play-mode) .pocket-label { font-size: clamp(5px,calc((100dvh - 350px) * .018),10px); }
   .destination-options button { font-size: 11px; }
+}
+
+.board-wordmark { height: 108px; display: flex; align-items: center; justify-content: center; color: #e5cb99; pointer-events: none; backface-visibility: hidden; }
+.board-wordmark span { max-width: 100%; font-family: var(--board-font); font-size: 37px; line-height: 1.2; letter-spacing: .10em; white-space: nowrap; }
+@media (max-width: 380px) {
+  .destination-options button { font-size: 10px; }
+}
+
+/* Comfortable reading sizes on laptops and desktop displays. */
+@media (min-width: 901px) {
+  .scene-caption { width: min(380px,calc(50vw - 260px)); }
+  .hero-role { font-size: clamp(20px,1.5vw,22px); line-height: 1.5; }
+  .scene-description { font-size: clamp(18px,1.35vw,20px); line-height: 1.7; color: #d9dfcc; margin-top: 18px; }
+  .aim-control { width: clamp(360px,30vw,440px); }
+  .destination-options button { min-height: 44px; font-size: 14px; font-weight: 500; color: #c3cdbb; }
+  .destination-options button.is-selected { color: var(--destination-color); }
+  .drop-button { font-size: 15px; }
+  .mode-button { font-size: 14px; }
+  .hologram-panel[data-presentation="world"] .hologram-tab { font-size: 15px; }
+  .story-summary, .story-intro, .story-outcome p,
+  .story-detail-section p, .story-detail-section ul { font-size: 16px; color: #d2d9c5; }
+  .story-card h3 { font-size: 26px; }
+  .story-eyebrow, .story-facts dt, .story-outcome h4 { font-size: 12px; }
+  .story-number { flex-shrink: 0; font-size: 12px; }
+  .story-facts dd { font-size: 15px; }
+  .story-details summary, .career-details summary { font-size: 15px; }
+  .story-detail-section h4 { font-size: 16px; }
+  .story-tags li { font-size: 13px; }
+  .story-link { font-size: 16px; }
+  .work-disclosure summary strong { font-size: 16px; }
+  .hologram-panel[data-presentation="world"] .skill-group h4 { font-size: 14px; }
+  .hologram-panel[data-presentation="world"] .skill-tag { font-size: 13px; }
+  .hologram-panel[data-presentation="world"] .contact-links a { font-size: 16px; overflow-wrap: anywhere; }
+  .play-scoreboard { top: clamp(110px,18vh,180px); width: clamp(220px,22vw,310px); }
+  .play-kicker { font-size: 11px; }
+  .score-label { font-size: 11px; letter-spacing: .06em; }
+  .score-unit { font-size: 10px; }
+  .record-player { font-size: 14px; }
+  .shot-readout, .power-readout { font-size: 13px; }
+  .shot-result { font-size: 14px; }
+  .play-rule { font-size: 12px; }
+  #round-description { font-size: 16px; }
+  .round-breakdown, .round-secondary { font-size: 14px; }
+  #record-form label { font-size: 13px; }
+  #record-form input, #country-results li, .round-primary { font-size: 16px; }
+  .record-note { font-size: 13px; }
 }

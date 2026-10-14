@@ -1,6 +1,6 @@
 # Enzo — 3D Portfolio
 
-An interactive Plinko portfolio built with Three.js, Rapier physics, and Vite. Select a destination and launch the ball to explore Work & Skills or Contact. Includes scrollable content, CV downloads, sound effects, and calm background music.
+An interactive Plinko portfolio built with Three.js, Rapier physics, and Vite. Select a destination and launch the ball to explore About, Experience, Education, or Contact. Includes scrollable content, CV downloads, sound effects, and calm background music.
 
 ## Run locally
 
@@ -61,10 +61,10 @@ After deployment, check the URL with LinkedIn Post Inspector and Facebook Sharin
 
 ## Portfolio stories and direct navigation
 
-The opening screen shows Enzo's name and role once, with two direct actions: Work & Skills and Contact. The board carries a decorative ED monogram. There is no top navigation menu. Work & Skills leads with three concise project summaries; each has expandable details. Skills, career history, and education are optional disclosures in that same view. Contact contains the message form, professional links, and CV download.
+The opening screen shows Enzo's name and role once. The board carries `ENZOLABS.DEV`; change `profile.boardLabel` in `src/content/portfolio.json` to edit its text. There is no top menu or duplicate introduction shortcuts. The four buttons above the slider open About, Experience, Education, and Contact directly. Move the slider and launch a ball to use the interactive navigation instead.
 
-The four physical pockets are grouped into two reading destinations: the left pair opens Work & Skills, and the right pair opens Contact. Play mode restores all four separate scoring labels. Physical IDs, recorded trajectories, and scoring remain unchanged. `src/ui/portfolio-sections.js` maps pockets to content. Old hashes including `#work`, `#experiences`, `#education`, and `#build` redirect to `#about`; the Build/engineering section has been removed. Opening a portfolio view during play exits the round.
+About includes a short introduction, the Banana Banners, TRAQPLAN, and Arckyv project stories, and expandable skills. Experience contains the career timeline. Education has its own view. Contact contains the form, professional links, and CV download. Build remains removed. Play mode restores four separate scoring labels; physical IDs, recorded trajectories, and scoring are preserved.
 
-Edit `selectedWork` in `src/content/portfolio.json` to update the Banana Banners, TRAQPLAN, and Arckyv case studies. `src/ui/portfolio-stories.js` renders them, and `src/styles/professional.css` controls the introduction and story layouts. The social preview follows the simplified design and uses `?v=4` to distinguish this asset in sharing caches.
+`src/ui/portfolio-sections.js` maps pockets to content. Old `#work` and `#skills` links open About; `#experiences` and `#exp` open Experience; `#education` opens Education. Opening a portfolio view during play exits the round. `src/ui/portfolio-stories.js` renders case studies, and `src/styles/professional.css` controls the introduction and story layouts. The social preview matches the four destinations and board wordmark, and uses `?v=5` for sharing caches.
 
 These presentation and content updates require **no Supabase migration or policy changes**. The contact form continues to use the existing `portfolio_inquiries` table and the same four submitted fields. No leaderboard database integration is introduced.

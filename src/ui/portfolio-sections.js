@@ -1,13 +1,9 @@
-// Keep recorded physics pockets independent from the two portfolio destinations.
-export const SECTION_NAMES = { about: 'Work & Skills', contact: 'Let’s connect' };
-export const SECTION_LABELS = { about: 'Work & Skills', contact: 'Contact' };
-export const POCKET_GROUPS = [
-  { section: 'about', pockets: ['about', 'experiences'] },
-  { section: 'contact', pockets: ['education', 'contact'] },
-];
-const POCKET_CONTENT = Object.fromEntries(POCKET_GROUPS.flatMap(group => group.pockets.map(id => [id, group.section])));
-const SECTION_POCKETS = { about: 'about', contact: 'contact' };
-const ALIASES = { work: 'about', skills: 'about', experience: 'about', experiences: 'about', exp: 'about', build: 'about', education: 'about' };
+// Presentation names are independent from the recorded physics pocket IDs.
+export const SECTION_NAMES = { about: 'About', experience: 'Experience', education: 'Education', contact: 'Let’s connect' };
+export const SECTION_LABELS = { about: 'About', experience: 'Experience', education: 'Education', contact: 'Contact' };
+const POCKET_CONTENT = { about: 'about', experiences: 'experience', education: 'education', contact: 'contact' };
+const SECTION_POCKETS = Object.fromEntries(Object.entries(POCKET_CONTENT).map(([pocket, section]) => [section, pocket]));
+const ALIASES = { work: 'about', skills: 'about', experiences: 'experience', exp: 'experience', build: 'about' };
 export const normalizePortfolioSection = id => ALIASES[id] || id;
 export const sectionForPocket = id => POCKET_CONTENT[id];
 export const pocketForSection = id => SECTION_POCKETS[normalizePortfolioSection(id)];

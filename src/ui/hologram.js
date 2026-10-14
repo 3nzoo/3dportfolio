@@ -24,11 +24,13 @@ function renderSkills(portfolio) {
   return `<div class="skill-groups">${skillGroups.filter(group => !group.optional).map((group) => `<div class="skill-group"><h4>${escape(group.label || group.name)}</h4>${tags(group.items)}</div>`).join('')}</div>`;
 }
 
-function renderWorkSkills(portfolio) {
-  return `<section class="selected-work-section" aria-label="Selected work">${renderSelectedWork(portfolio, { showIntro: false })}</section>
+function renderAbout(portfolio) {
+  const profile = portfolio.profile || {};
+  return `<p class="profile-summary">${escape(profile.summary)}</p>
+    <h3 class="work-chapter-title">Selected work</h3>
+    <section class="selected-work-section" aria-label="Selected work">${renderSelectedWork(portfolio, { showIntro: false })}</section>
     <div class="work-disclosures">
       <details class="work-disclosure"><summary><strong>Skills &amp; tools</strong></summary><div class="work-disclosure-body">${renderSkills(portfolio)}</div></details>
-      <details class="work-disclosure"><summary><strong>Experience &amp; education</strong></summary><div class="work-disclosure-body">${renderExperience(portfolio)}<h3 class="work-chapter-title">Education</h3>${renderEducation(portfolio)}</div></details>
     </div>`;
 }
 
@@ -93,14 +95,14 @@ export function createHologram(portfolio) {
   element.setAttribute('aria-modal', 'true');
   element.setAttribute('aria-labelledby', 'hologram-title');
   element.setAttribute('aria-hidden', 'true');
-  element.innerHTML = `<header class="hologram-header"><div><p class="hologram-kicker"><i></i> <span class="hologram-code">01</span></p><h2 class="hologram-title" id="hologram-title">Work &amp; Skills</h2></div><button class="hologram-close" type="button" aria-label="Close portfolio panel">${ICON_CLOSE}</button></header>
+  element.innerHTML = `<header class="hologram-header"><div><p class="hologram-kicker"><i></i> <span class="hologram-code">01</span></p><h2 class="hologram-title" id="hologram-title">About</h2></div><button class="hologram-close" type="button" aria-label="Close portfolio panel">${ICON_CLOSE}</button></header>
     <nav class="hologram-nav" role="tablist" aria-label="Portfolio content">${SECTIONS.map((id) => `<button class="hologram-tab" id="hologram-tab-${id}" data-hologram-section="${id}" role="tab" type="button" aria-controls="hologram-content" aria-selected="false" tabindex="-1">${SECTION_LABELS[id]}</button>`).join('')}</nav>
     <div class="hologram-body" id="hologram-content" role="tabpanel" tabindex="0"></div>
     <footer class="hologram-footer"><span class="footer-signal"><i></i>ENZOLABS</span><span>SCROLL TO EXPLORE ↓</span></footer>`;
   const body = element.querySelector('.hologram-body');
   const closeButton = element.querySelector('.hologram-close');
   const tabs = [...element.querySelectorAll('.hologram-tab')];
-  const renders = { about: renderWorkSkills, contact: renderContact };
+  const renders = { about: renderAbout, experience: renderExperience, education: renderEducation, contact: renderContact };
   function setBackgroundInert(inert) {
     for (const selector of ['#game-hud', '#portfolio-header', '#scene-mount']) {
       document.querySelector(selector)?.toggleAttribute('inert', inert);
