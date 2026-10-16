@@ -30,3 +30,20 @@ After setup, verify that a valid form submission succeeds and that SELECT, UPDAT
 Submission is intentionally public. RLS protects record access; it is not a spam filter. If you need spam protection, use a server-verified CAPTCHA through an Edge Function rather than granting more database permissions.
 
 References: [API keys](https://supabase.com/docs/guides/getting-started/api-keys), [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security).
+
+## Shared high scores
+
+The game uses the same two public environment settings as Contact. No extra client library or secret browser key is needed.
+
+1. Run `supabase/migrations/202610160001_shared_high_scores.sql` in Supabase SQL Editor. It preserves existing `high_scores` rows, adds `country_code` and a unique retry identifier, enables public reads of visible scores, and provides the `submit_high_score` RPC for writes. It does not touch `portfolio_inquiries`. If there are no visible scores, it seeds Enzo / PH / 480. Existing records are never replaced by this seed.
+2. Run `supabase/tests/high_scores.sql` in SQL Editor. Its test data and visibility changes are rolled back.
+3. Keep `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.local`, then restart `npm run dev`. For Cloudflare Pages, keep the same build variables and redeploy.
+4. Enter Play mode. The top score is loaded on startup, when entering Play, and after the tenth ball lands. Beat the shared record, enter your name/country, and save. Success is shown only after Supabase confirms the insert. The new result is a new `high_scores` row; the existing Enzo row is retained. Refresh or use another browser to verify the shared record.
+
+The RPC recalculates the total from exactly ten shot results, serializes competing record submissions, and reuses the same submission ID on retries to prevent duplicate rows. New submissions are limited to one per minute per gateway-reported IP; people sharing a network share that limit. Rate-limit identifiers are kept in an unexposed private schema and old entries are pruned on new submissions. Visitors cannot directly insert, update, or delete scores.
+
+This verifies score arithmetic and input shape, not that browser-reported pin hits came from an honest game. Full cheat resistance would require server-issued sessions and independent replay verification. No such guarantee is implied. Contact's public insert policy is unchanged; its spam controls are a separate feature.
+
+A configured app never silently falls back to a local-only save on a network or database error. The form keeps the player's details and offers retry. An unconfigured app retains the existing browser-only mode. Shared records take precedence over stale browser records, including old 500-point starter records.
+
+`npm run test:scores` checks requests, failure handling, retry IDs, and shared-record cache replacement. The SQL test checks writes, scoring, ties, idempotency, and rate limits. If a save says the migration is missing, apply the high-score migration to the same project as the configured URL.

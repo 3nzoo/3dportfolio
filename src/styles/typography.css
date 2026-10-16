@@ -1,0 +1,122 @@
+/* Reading sizes live here so desktop and overlay panels share one scale.
+   Values in rem also follow the visitor's browser font-size preference. */
+:root {
+  --text-body: 1rem;
+  --text-secondary: .875rem;
+  --text-label: .75rem;
+  --text-ui: .875rem;
+  --text-fine: .6875rem;
+  --text-heading: 1.5rem;
+}
+@media (min-width: 901px) {
+  :root {
+    --text-body: 1.0625rem;
+    --text-secondary: .9375rem;
+    --text-label: .8125rem;
+    --text-ui: .9375rem;
+    --text-fine: .75rem;
+    --text-heading: 1.625rem;
+  }
+}
+
+.hologram-panel[data-presentation] {
+  --panel-copy: #d2d9c5;
+  --panel-muted: #bec6b2;
+}
+.hologram-panel[data-presentation] .hologram-body {
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.hologram-panel[data-presentation] :is(
+  .profile-summary, .intro-note, .timeline-description, .timeline-bullets,
+  .timeline-company, .timeline-project p, .story-intro, .story-summary,
+  .story-outcome p, .story-detail-section p, .story-detail-section ul,
+  .story-facts dd, .story-link, .contact-links a
+) {
+  font-size: var(--text-body);
+  line-height: 1.7;
+}
+.hologram-panel[data-presentation] :is(
+  .profile-summary, .intro-note, .timeline-description, .timeline-bullets,
+  .timeline-project p, .story-intro, .story-summary, .story-detail-section p,
+  .story-detail-section ul, .story-facts dd
+) { color: var(--panel-copy); }
+.hologram-panel[data-presentation] :is(
+  .timeline-period, .skills-hint, .story-tags li, .skill-tag, .resume-format,
+  .contact-note, .form-status
+) { font-size: var(--text-secondary); line-height: 1.6; }
+.hologram-panel[data-presentation] :is(
+  .story-eyebrow, .story-facts dt, .story-outcome h4, .form-field label
+) { font-size: var(--text-label); line-height: 1.6; letter-spacing: .045em; }
+.hologram-panel[data-presentation] .story-eyebrow { align-items: flex-start; }
+.hologram-panel[data-presentation] .story-number {
+  flex: 0 0 28px;
+  height: 28px;
+  font-size: var(--text-label);
+}
+.hologram-panel[data-presentation] :is(.work-chapter-title, .story-card h3, .timeline-entry h3, .contact-intro) {
+  font-size: var(--text-heading);
+  line-height: 1.35;
+}
+.hologram-panel[data-presentation] :is(.story-subtitle, .story-detail-section h4, .timeline-project h4, .skill-category h4) {
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+.hologram-panel[data-presentation] :is(.hologram-tab, .story-details summary, .career-details summary, .skill-button) {
+  font-size: var(--text-ui);
+  line-height: 1.5;
+  min-height: 44px;
+}
+.hologram-panel[data-presentation] .hologram-footer {
+  font-size: var(--text-fine);
+  letter-spacing: .05em;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.hologram-panel[data-presentation] :is(.form-field input, .form-field textarea, .contact-submit, .resume-download) {
+  font-size: 1rem;
+  line-height: 1.5;
+  min-height: 44px;
+}
+.hologram-panel[data-presentation] .contact-links a { overflow-wrap: anywhere; }
+.hologram-panel[data-presentation] .skills-hint { color: var(--panel-muted); }
+
+/* Screen-space controls need the same legibility as the reading panels. */
+.launch-dock :is(.drop-button, .mode-button) { font-size: var(--text-ui); min-height: 44px; }
+.destination-options button { font-size: var(--text-ui); min-height: 44px; }
+.power-readout { font-size: var(--text-secondary); }
+.play-scoreboard .play-kicker, .round-dialog .play-kicker { font-size: var(--text-label); letter-spacing: .08em; }
+.play-scoreboard :is(.score-label, .score-unit) { font-size: var(--text-label); letter-spacing: .04em; }
+.play-scoreboard :is(.record-player, .shot-readout, .shot-result, .play-rule) { font-size: var(--text-secondary); }
+.round-dialog :is(.round-breakdown, .record-note, .round-secondary, .record-saved) { font-size: var(--text-secondary); line-height: 1.6; }
+#round-description, #record-form input, #country-results li, .round-primary { font-size: 1rem; }
+#record-form label, .round-total span { font-size: var(--text-label); }
+.round-actions { flex-wrap: wrap; }
+
+@media (max-width: 900px) {
+  .scene-caption .scene-description { font-size: .9375rem; color: #d9dfcc; }
+  .scene-caption .hero-role { font-size: 1.0625rem; }
+  .hologram-panel.is-overlay .hologram-nav { padding-inline: 16px; }
+  .hologram-panel.is-overlay .hologram-tab { padding-inline: 7px; }
+  .hologram-panel.is-overlay .hologram-tab:first-child { padding-left: 0; }
+  .destination-options button { font-size: clamp(.75rem,3.5vw,.875rem); }
+  .launch-dock .drop-button { padding-inline: 12px; }
+  .play-scoreboard :is(.score-label, .score-unit), .play-scoreboard .play-kicker { font-size: .6875rem; }
+  .play-scoreboard :is(.shot-readout, .shot-result, .record-player) { font-size: .8125rem; }
+  .play-scoreboard .play-score-grid { gap: 12px; }
+  .play-scoreboard .best-record { column-gap: 8px; padding-left: 12px; }
+  .play-scoreboard .best-record .score-label { grid-column: 1 / -1; }
+  .play-scoreboard .record-score { grid-row: 2; }
+}
+@media (max-width: 560px) {
+  .hologram-panel .form-row, .hologram-panel .story-facts { grid-template-columns: 1fr; }
+  .hologram-panel.is-overlay .hologram-body { padding-inline: 16px; }
+  .hologram-panel .story-card { padding: 16px; }
+  .hologram-panel .hologram-footer { padding-inline: 16px; }
+}
+@media (max-width: 380px) {
+  .hologram-panel.is-overlay .hologram-nav { gap: 1px; }
+  .hologram-panel.is-overlay .hologram-tab { padding-inline: 2px; }
+  .play-scoreboard .play-score-grid { gap: 8px; }
+  .play-scoreboard .best-record { padding-left: 8px; column-gap: 5px; }
+}

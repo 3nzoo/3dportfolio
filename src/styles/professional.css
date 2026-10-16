@@ -1,0 +1,186 @@
+/* Professional identity and direct access sit alongside the interactive board. */
+.portfolio-header { gap: 20px; }
+.site-brand { margin-right: auto; pointer-events: auto; font-family: var(--display); font-weight: 600; font-size: 17px; letter-spacing: .09em; color: #f0e7cf; }
+.site-brand > span { font-weight: 400; color: #c0b28d; }
+.site-brand > i { color: #e5c184; font-style: normal; }
+.scene-caption { left: 4%; top: clamp(110px,18vh,180px); width: min(350px,calc(50vw - 265px)); max-width: none; max-height: calc(100dvh - 265px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: #9b804f transparent; padding: 3px 5px 8px 0; pointer-events: auto; }
+.scene-caption .eyebrow { margin-bottom: 16px; font-size: 10px; font-weight: 500; letter-spacing: .17em; color: #d8bd83; }
+.scene-caption h1 { display: block; font-size: clamp(32px,3.7vw,53px); font-weight: 500; line-height: 1.08; letter-spacing: -.055em; }
+.hero-role { margin: 13px 0 0; font-family: var(--display); font-size: 18px; line-height: 1.5; color: #e2c58b; }
+.scene-description { margin: 17px 0 20px; font-size: 14px; line-height: 1.75; color: #c1c8b8; letter-spacing: 0; }
+.work-chapter-title { margin: 0 0 12px; color: #e6d09e; font-family: var(--display); font-size: 22px; font-weight: 500; letter-spacing: -.035em; }
+.hologram-nav { overflow-x: auto; scrollbar-width: thin; scrollbar-color: #9b804f transparent; overscroll-behavior-x: contain; gap: 3px; }
+.hologram-world { overflow: clip !important; }
+.hologram-tab { flex: 0 0 auto; white-space: nowrap; min-height: 44px; }
+.hologram-panel[data-presentation="world"] .hologram-tab { font-size: 12px; padding-left: 10px; padding-right: 10px; }
+.hologram-panel :is(summary, a):focus-visible { outline: 2px solid #f0d7a3; outline-offset: 3px; }
+.story-intro { margin: 0 0 23px; color: #c3c8b6; font-size: 14px; }
+.story-grid { display: grid; gap: 22px; }
+.story-card { padding: 22px; border: 1px solid #b89a6247; border-radius: 9px 3px 9px 3px; background: linear-gradient(135deg,#26362755,#0a181144); }
+.story-card h3 { margin: 0 0 11px; color: #f0dfb6; font-family: var(--display); font-weight: 500; font-size: 23px; letter-spacing: -.035em; line-height: 1.3; }
+.story-eyebrow { display: flex; align-items: center; gap: 9px; margin: 0 0 14px; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: #c3b281; }
+.story-number { display: grid; place-items: center; width: 26px; height: 26px; border: 1px solid #b89a6263; border-radius: 50%; color: #ead5a5; letter-spacing: 0; }
+.story-subtitle { margin: -4px 0 13px; color: #dfc993; font-size: 15px; font-weight: 500; line-height: 1.5; }
+.story-summary { margin: 0 0 15px; font-size: 14px; color: #c1c7b5; }
+.story-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; padding: 14px 0; border-block: 1px solid #b89a622e; }
+.story-facts div { min-width: 0; }
+.story-facts dt { margin-bottom: 5px; font-size: 9px; color: #b8a879; text-transform: uppercase; letter-spacing: .08em; }
+.story-facts dd { margin: 0; color: #cbd1be; font-size: 12px; line-height: 1.65; }
+.story-outcome { margin: 18px 0; padding-left: 12px; border-left: 2px solid #ceb178; }
+.story-outcome h4 { margin: 0 0 5px; color: #e2c78e; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+.story-outcome p { margin: 0; font-size: 13px; color: #d2d5c1; }
+.story-details { border-top: 1px solid #b89a6238; margin-top: 16px; }
+.story-details summary, .career-details summary { padding: 13px 0; color: #d9c28f; font-size: 12px; cursor: pointer; line-height: 1.5; }
+.story-details summary::marker, .career-details summary::marker { color: #ad9666; font-size: 10px; }
+.story-details summary > span { display: none; }
+.story-detail-section + .story-detail-section { margin-top: 18px; }
+.story-detail-section h4 { margin: 7px 0; color: #e1d3af; font-size: 13px; font-weight: 500; }
+.story-detail-section p, .story-detail-section ul { margin: 6px 0; color: #b8c3af; font-size: 13px; line-height: 1.8; }
+.story-detail-section ul { padding-left: 18px; }
+.story-tags { display: flex; flex-wrap: wrap; gap: 5px; list-style: none; margin: 16px 0 0; padding: 0; }
+.story-tags li { padding: 4px 7px; border: 1px solid #b89a6238; border-radius: 3px; font-size: 10px; color: #b7c4ac; }
+.story-link { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; margin-top: 12px; color: #e5cc98; font-size: 13px; }
+.story-link:hover { color: #ffe8b8; }
+.career-details { margin-top: 12px; border-top: 1px solid #b89a622b; }
+.career-details .skill-tags { margin-top: 13px; }
+@media (min-width: 901px) and (max-width: 1100px) {
+  .portfolio-header { left: 28px; right: 28px; gap: 12px; }
+  .scene-caption .eyebrow { font-size: 9px; }
+  .hero-role { font-size: 16px; }
+  .scene-description { font-size: 12px; }
+}
+@media (max-width: 900px) {
+  .portfolio-header { top: 15px; left: 22px; right: 22px; flex-wrap: wrap; gap: 8px 10px; }
+  .site-brand { font-size: 15px; }
+  .header-audio { gap: 6px; }
+  .sound-button { width: 38px; height: 38px; flex-basis: 38px; padding: 8px; }
+  .scene-caption { top: 76px; left: 22px; right: 22px; width: auto; max-width: none; max-height: none; padding: 0; overflow: visible; }
+  .scene-caption .eyebrow { font-size: 8px; margin-bottom: 7px; }
+  .scene-caption h1 { font-size: 33px; line-height: 1.1; }
+  .hero-role { margin-top: 6px; font-size: 16px; }
+  .scene-description { display: block; margin: 9px 0 12px; font-size: 12px; line-height: 1.65; max-width: 450px; }
+  .play-scoreboard { top: 76px; }
+  .destination-options button { font-size: 10px; }
+  body:not(.play-mode) .pocket-label { min-width: 0; font-size: clamp(4px,calc((100dvh - 420px) * .018),9px); letter-spacing: 0; }
+  body:not(.play-mode) .pocket-label svg { width: 10px; height: 10px; }
+  .pocket-multiplier { font-size: clamp(8px,calc((100dvh - 440px) * .065),21px); }
+  .hologram-panel.is-overlay { width: calc(100% - 28px); top: 50%; max-height: calc(100dvh - 32px); height: min(760px,calc(100dvh - 32px)); }
+  .hologram-panel.is-overlay .hologram-body { padding: 20px; height: auto; flex: 1 1 auto; }
+  .hologram-panel.is-overlay .hologram-header { padding: 20px 20px 15px; }
+  .hologram-panel.is-overlay .hologram-title { font-size: 25px; }
+  .hologram-panel.is-overlay .hologram-close { width: 40px; height: 40px; }
+  .hologram-panel.is-overlay .hologram-nav { padding-inline: 20px; padding-top: 5px; }
+  .hologram-panel.is-overlay .hologram-tab { font-size: 11px; padding-inline: 11px; }
+  .hologram-footer { padding-inline: 20px; font-size: 7px; }
+  .story-card { padding: 17px; }
+  .story-card h3 { font-size: 22px; }
+  .story-facts { gap: 10px; }
+  .story-summary, .story-intro { font-size: 13px; }
+}
+@media (max-width: 380px) {
+  .portfolio-header { left: 18px; right: 18px; gap: 8px; }
+  .site-brand { font-size: 13px; }
+  .header-audio { gap: 4px; }
+  .sound-button { flex-basis: 34px; width: 34px; height: 38px; }
+  .scene-caption { left: 18px; right: 18px; }
+  .hologram-panel.is-overlay .hologram-tab { font-size: 10px; padding-inline: 7px; }
+  .scene-caption h1 { font-size: 29px; }
+  .hero-role { font-size: 15px; }
+  .story-facts { grid-template-columns: 1fr; }
+}
+@media (max-height: 680px) and (max-width: 560px) {
+  .scene-caption { top: 74px; }
+  .scene-caption .eyebrow, .scene-description, .hero-invitation { display: none; }
+  .scene-caption h1 { font-size: 27px; }
+  .hero-role { margin-top: 4px; font-size: 14px; }
+  .play-scoreboard { top: 74px; }
+}
+@media (max-height: 560px) and (min-width: 560px) and (max-width: 900px) {
+  .portfolio-header { top: 10px; left: 18px; right: 18px; flex-wrap: nowrap; gap: 9px; }
+  .site-brand { margin-right: auto; font-size: 13px; }
+  .header-audio { gap: 4px; }
+  .sound-button { width: 34px; height: 36px; flex-basis: 34px; }
+  .scene-caption { top: 78px; left: 22px; right: auto; width: 280px; max-height: calc(100dvh - 205px); overflow-y: auto; }
+  .scene-caption h1 { font-size: 29px; }
+  .scene-caption .eyebrow, .hero-invitation { display: none; }
+  .hero-role { font-size: 13px; }
+  .scene-description { margin-block: 6px 9px; font-size: 10px; }
+  .play-scoreboard { top: 64px; }
+}
+
+/* Four portfolio destinations share the same physical pockets as play mode. */
+.destination-options { grid-template-columns: repeat(4,minmax(0,1fr)); }
+.story-grid { gap: 14px; }
+.story-card .story-summary { margin-bottom: 0; }
+.story-details { margin-top: 14px; }
+@media (max-width: 900px) {
+  body:not(.play-mode) .pocket-label { font-size: clamp(5px,calc((100dvh - 350px) * .018),10px); }
+  .destination-options button { font-size: 11px; }
+}
+
+.board-wordmark { height: 108px; display: flex; align-items: center; justify-content: center; color: #e5cb99; pointer-events: none; backface-visibility: hidden; }
+.board-wordmark span { max-width: 100%; font-family: var(--board-font); font-size: 37px; line-height: 1.2; letter-spacing: .10em; white-space: nowrap; }
+@media (max-width: 380px) {
+  .destination-options button { font-size: 10px; }
+}
+
+/* Comfortable reading sizes on laptops and desktop displays. */
+@media (min-width: 901px) {
+  .scene-caption { width: min(380px,calc(50vw - 260px)); }
+  .hero-role { font-size: clamp(20px,1.5vw,22px); line-height: 1.5; }
+  .scene-description { font-size: clamp(18px,1.35vw,20px); line-height: 1.7; color: #d9dfcc; margin-top: 18px; }
+  .aim-control { width: clamp(360px,30vw,440px); }
+  .destination-options button { min-height: 44px; font-size: 14px; font-weight: 500; color: #c3cdbb; }
+  .destination-options button.is-selected { color: var(--destination-color); }
+  .drop-button { font-size: 15px; }
+  .mode-button { font-size: 14px; }
+  .hologram-panel[data-presentation="world"] .hologram-tab { font-size: 15px; }
+  .story-summary, .story-intro, .story-outcome p,
+  .story-detail-section p, .story-detail-section ul { font-size: 16px; color: #d2d9c5; }
+  .story-card h3 { font-size: 26px; }
+  .story-eyebrow, .story-facts dt, .story-outcome h4 { font-size: 12px; }
+  .story-number { flex-shrink: 0; font-size: 12px; }
+  .story-facts dd { font-size: 15px; }
+  .story-details summary, .career-details summary { font-size: 15px; }
+  .story-detail-section h4 { font-size: 16px; }
+  .story-tags li { font-size: 13px; }
+  .story-link { font-size: 16px; }
+  .hologram-panel[data-presentation="world"] .skill-group h4 { font-size: 14px; }
+  .hologram-panel[data-presentation="world"] .skill-tag { font-size: 13px; }
+  .hologram-panel[data-presentation="world"] .contact-links a { font-size: 16px; overflow-wrap: anywhere; }
+  .play-scoreboard { top: clamp(110px,18vh,180px); width: clamp(220px,22vw,310px); }
+  .play-kicker { font-size: 11px; }
+  .score-label { font-size: 11px; letter-spacing: .06em; }
+  .score-unit { font-size: 10px; }
+  .record-player { font-size: 14px; }
+  .shot-readout, .power-readout { font-size: 13px; }
+  .shot-result { font-size: 14px; }
+  .play-rule { font-size: 12px; }
+  #round-description { font-size: 16px; }
+  .round-breakdown, .round-secondary { font-size: 14px; }
+  #record-form label { font-size: 13px; }
+  #record-form input, #country-results li, .round-primary { font-size: 16px; }
+  .record-note { font-size: 13px; }
+}
+
+/* Skills stay visible after the project stories, with accessible year tooltips. */
+.skills-section { margin-top: 30px; padding-top: 24px; border-top: 1px solid #b89a6247; }
+.skills-hint { margin: -3px 0 20px; font-size: 13px; color: #b8c3ad; }
+.portfolio-skill-groups { display: grid; gap: 22px; }
+.skill-category h4 { margin: 0 0 12px; color: #e2cb96; font-size: 16px; font-weight: 500; }
+.skills-section .skill-tags { gap: 8px; }
+.skills-section .skill-button { min-height: 36px; max-width: 100%; padding: 8px 10px; border-color: #b89a6259; background: #b58b450c; font-size: 13px; line-height: 1.4; text-align: left; cursor: pointer; }
+.skills-section .skill-button:hover, .skills-section .skill-button[data-tooltip-open] { background: #b58b4524; border-color: #d4b477; color: #f0d7a3; }
+.skills-section .skill-button:focus-visible { outline: 2px solid #f0d7a3; outline-offset: 3px; }
+.skill-experience-tooltip { position: fixed; z-index: 1000; width: max-content; max-width: min(260px,calc(100vw - 24px)); padding: 9px 12px; border: 1px solid #c6a770; border-radius: 6px; background: #102218; color: #f1ddb2; box-shadow: 0 8px 25px #0007; font-family: 'DM Sans',Arial,sans-serif; font-size: 14px; line-height: 1.5; pointer-events: auto; }
+.skill-experience-tooltip[hidden] { display: none; }
+@media (max-width: 900px) {
+  .skill-category h4 { font-size: 15px; }
+  .skills-section .skill-button { min-height: 40px; }
+}
+
+/* Give the mobile cabinet more room without reducing readable type sizes. */
+@media (max-width: 900px) and (orientation: portrait) {
+  .scene-caption { top: 68px; }
+  .scene-caption .scene-description { margin-bottom: 0; }
+}

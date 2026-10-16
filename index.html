@@ -4,29 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#071b18" />
-    <meta name="description" content="A portfolio you can play. Explore Enzo Dinglasan’s work through an interactive 3D pachinko board, then take on the ten-ball challenge." />
+    <meta name="description" content="Full-stack web applications, APIs, and cloud delivery. Explore Enzo Dinglasan’s selected work and get in touch." />
     <meta name="author" content="Enzo Dinglasan" />
-    <title>Enzo Dinglasan — Full-Stack Engineer &amp; Game Developer</title>
+    <title>Enzo Dinglasan — Senior Full-Stack Engineer | EnzoLabs</title>
     <link rel="canonical" href="https://enzolabs.dev/" />
 
     <!-- Keep sharing metadata in the initial HTML for social preview crawlers. -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="EnzoLabs" />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:title" content="Enzo Dinglasan — Full-Stack Engineer &amp; Game Developer" />
-    <meta property="og:description" content="A portfolio you can play. Explore Enzo Dinglasan’s work through an interactive 3D pachinko board, then take on the ten-ball challenge." />
+    <meta property="og:title" content="Enzo Dinglasan — Senior Full-Stack Engineer | EnzoLabs" />
+    <meta property="og:description" content="Full-stack web applications, APIs, and cloud delivery. Explore Enzo Dinglasan’s selected work and get in touch." />
     <meta property="og:url" content="https://enzolabs.dev/" />
-    <meta property="og:image" content="https://enzolabs.dev/assets/social-preview.png" />
+    <meta property="og:image" content="https://enzolabs.dev/assets/social-preview.png?v=5" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Enzo Dinglasan’s interactive portfolio: a brass pachinko board beside the words A portfolio you can play." />
+    <meta property="og:image:alt" content="Enzo Dinglasan, Senior Full-Stack Engineer, beside a brass and green interactive portfolio board. Web applications. APIs. Cloud delivery." />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Enzo Dinglasan — Full-Stack Engineer &amp; Game Developer" />
-    <meta name="twitter:description" content="A portfolio you can play. Explore Enzo Dinglasan’s work through an interactive 3D pachinko board, then take on the ten-ball challenge." />
-    <meta name="twitter:image" content="https://enzolabs.dev/assets/social-preview.png" />
-    <meta name="twitter:image:alt" content="Enzo Dinglasan’s interactive portfolio: a brass pachinko board beside the words A portfolio you can play." />
+    <meta name="twitter:title" content="Enzo Dinglasan — Senior Full-Stack Engineer | EnzoLabs" />
+    <meta name="twitter:description" content="Full-stack web applications, APIs, and cloud delivery. Explore Enzo Dinglasan’s selected work and get in touch." />
+    <meta name="twitter:image" content="https://enzolabs.dev/assets/social-preview.png?v=5" />
+    <meta name="twitter:image:alt" content="Enzo Dinglasan, Senior Full-Stack Engineer, beside a brass and green interactive portfolio board. Web applications. APIs. Cloud delivery." />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230b2924'/%3E%3Cpath d='M20 46V18h26v6H27v7h15v6H27v9z' fill='%23d5b36e'/%3E%3C/svg%3E" />
     <link rel="stylesheet" href="/src/styles/style.css" />
   </head>
@@ -36,20 +36,23 @@
     <svg id="connector-layer" aria-hidden="true"><path id="connector-path" /><circle id="connector-origin" r="4" /></svg>
     <div id="hologram-mount"></div>
     <header class="portfolio-header" id="portfolio-header">
-      <a class="identity" href="#" aria-label="Enzo's portfolio home"><span class="identity-mark" id="portfolio-initials" aria-hidden="true">F</span><span class="identity-copy"><strong id="portfolio-name">Enzo</strong><span id="portfolio-role">Developer &amp; designer</span></span></a>
-      <a id="download-resume" class="resume-download header-resume" href="./assets/enzo.pdf" download hidden>Download CV<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v4h14v-4"/></svg></a>
+      <a class="site-brand" href="#" aria-label="EnzoLabs home">ENZO<span>LABS</span><i aria-hidden="true">.</i></a>
       <div class="header-audio" role="group" aria-label="Audio controls">
         <button type="button" id="music-toggle" class="sound-button" aria-label="Background music" aria-pressed="true" title="Mute background music"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13M9 8l11-2"/><ellipse cx="6" cy="18" rx="3" ry="2"/><ellipse cx="17" cy="16" rx="3" ry="2"/><path class="sound-muted-mark" d="m3 3 18 18"/></svg></button>
         <button type="button" id="sound-toggle" class="sound-button" aria-label="Sound effects" aria-pressed="true" title="Mute sound effects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4 6 8H3v8h3l5 4Z" /><g class="sound-waves"><path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14" /></g><path class="sound-muted-mark" d="m16 9 6 6m0-6-6 6" /></svg></button>
       </div>
     </header>
     <main class="game-hud" id="game-hud">
-      <div class="scene-caption"><p class="eyebrow">A CAREER IN MOTION</p><h1>Every drop <br />tells a story<span>.</span></h1><p class="scene-description">Drop a ball. Follow where it lands. <br />Discover the work behind the play.</p></div>
+      <section class="scene-caption" aria-labelledby="hero-name">
+        <h1 id="hero-name">Enzo Dinglasan<span>.</span></h1>
+        <p class="hero-role">Senior Full-Stack Engineer</p>
+        <p class="scene-description">I build and deliver full-stack web applications, from interface to APIs and cloud deployment.</p>
+      </section>
       <div class="launch-dock">
         <div class="aim-control">
           <div class="destination-options" aria-label="Choose a destination">
             <button type="button" data-destination="about" aria-pressed="false">About</button>
-            <button type="button" data-destination="experiences" aria-pressed="false">Experiences</button>
+            <button type="button" data-destination="experiences" aria-pressed="false">Experience</button>
             <button type="button" data-destination="education" aria-pressed="false">Education</button>
             <button type="button" data-destination="contact" aria-pressed="false">Contact</button>
           </div>
@@ -61,8 +64,8 @@
       </div>
       <p id="game-status" class="sr-only" role="status" aria-live="polite"></p>
     </main>
-    <div id="loading-screen" class="loading-screen" role="status" aria-live="polite"><div class="loading-orbit" aria-hidden="true"><i></i><span>ED</span></div><p class="eyebrow">WELCOME TO MY WORLD</p><h4>Preparing the 3D machine…</h4></div>
-    <!-- <noscript><div class="noscript-notice">This interactive portfolio needs JavaScript. Please enable it to explore the machine.</div></noscript> -->
+    <div id="loading-screen" class="loading-screen" role="status" aria-live="polite"><div class="loading-orbit" aria-hidden="true"><i></i><span>ED</span></div><p class="eyebrow">WELCOME TO MY WORLD</p><h4 id="loading-message">Preparing the 3D machine…</h4></div>
+    <noscript><style>#loading-screen{display:none}</style><div class="noscript-notice"><div><h1>Enzo Dinglasan</h1><p>Senior Full-Stack Engineer. Full-stack web applications, APIs, and cloud delivery.</p><p>Enable JavaScript to explore selected work and the interactive board.</p><a href="./assets/enzo.pdf" download>Download CV</a> · <a href="mailto:awsflorenzodinglasan@gmail.com">Contact Enzo</a></div></div></noscript>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
