@@ -26,10 +26,10 @@ export function createPlayModeUI({ onToggle, onReplay, onPortfolio, onSaveRecord
   scoreboard.setAttribute('aria-label', 'Play mode score');
   scoreboard.innerHTML = `<p class="play-kicker"><span></span>THE TEN BALL CHALLENGE</p>
     <div class="play-score-grid"><div class="current-score"><span class="score-label">YOUR SCORE</span><strong id="play-score">0</strong><span class="score-unit">POINTS</span></div>
-    <div class="best-record"><span class="score-label"><svg viewBox="0 0 24 24" aria-hidden="true">${TROPHY_ICON}</svg>TOP SCORE</span><strong class="record-score">500</strong><span class="record-player"><span class="record-flag" role="img" aria-label="Philippines">🇵🇭</span><span class="record-name">Enzo</span></span></div></div>
+    <div class="best-record"><span class="score-label"><svg viewBox="0 0 24 24" aria-hidden="true">${TROPHY_ICON}</svg>TOP SCORE</span><strong class="record-score">480</strong><span class="record-player"><span class="record-flag" role="img" aria-label="Philippines">🇵🇭</span><span class="record-name">Enzo</span></span></div></div>
     <div class="shot-readout"><span id="play-ball-count">Ball 1 / 10</span><span><b id="play-pin-hits">0</b> pin hits</span></div>
     <p class="shot-result" id="play-shot-result" role="status" aria-live="polite">Set your strength. Make every bounce count.</p>
-    <p class="play-rule">Pin hits × pocket multiplier = points</p>`;
+    <p class="play-rule">Pin hits × pocket multiplier = points</p><p class="play-rule leaderboard-status" role="status"></p>`;
   document.querySelector('#game-hud').append(scoreboard);
   const dialog = document.createElement('dialog');
   dialog.className = 'round-dialog';
@@ -47,7 +47,7 @@ export function createPlayModeUI({ onToggle, onReplay, onPortfolio, onSaveRecord
       <label for="record-country">Country or region</label>
       <div class="country-picker"><input id="record-country" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="country-results" autocomplete="off" placeholder="Search your country…" required /><ul id="country-results" role="listbox" aria-label="Countries and regions" hidden></ul></div>
       <button class="round-primary" type="submit">Save my score <span aria-hidden="true">↗</span></button>
-      <p class="record-note">Saved on this browser. A shared leaderboard is coming soon.</p>
+      <p class="record-note">Saved on this browser.</p>
     </form>
     <p class="record-saved" role="status" hidden></p>
     <div class="round-actions"><button type="button" class="round-primary" data-round-replay>Play again <span aria-hidden="true">↗</span></button><button type="button" class="round-secondary" data-round-portfolio>Back to portfolio</button></div>`;
@@ -58,6 +58,7 @@ export function createPlayModeUI({ onToggle, onReplay, onPortfolio, onSaveRecord
   const countryResults = dialog.querySelector('#country-results');
   const flag = dialog.querySelector('#record-country-flag');
   let selectedCountry = null, results = [], activeOption = -1;
+  let savePending = false, dialogVersion = 0;
   function closeCountries() {
     countryResults.hidden = true;
     countryInput.setAttribute('aria-expanded', 'false');
@@ -124,25 +125,47 @@ export function createPlayModeUI({ onToggle, onReplay, onPortfolio, onSaveRecord
     }
   });
   function closeDialog() {
+    dialogVersion++;
     closeCountries();
     if (dialog.open) dialog.close();
   }
-  form.addEventListener('submit', event => {
+  form.addEventListener('submit', async event => {
     event.preventDefault();
+    if (savePending) return;
     if (!selectedCountry || !nameInput.value.trim()) {
       nameInput.setCustomValidity(nameInput.value.trim() ? '' : 'Enter your name.');
       form.reportValidity();
       return;
     }
-    const saved = onSaveRecord({ name: nameInput.value, country: selectedCountry.code });
-    if (!saved) return;
-    form.hidden = true;
+    const version = dialogVersion;
+    const player = { name: nameInput.value.trim(), country: selectedCountry.code };
     const savedMessage = dialog.querySelector('.record-saved');
-    savedMessage.textContent = `${countryFlag(selectedCountry.code)} ${nameInput.value.trim()} — your record is on the board.`;
+    const submitButton = form.querySelector('button[type="submit"]');
+    savePending = true;
+    form.setAttribute('aria-busy', 'true');
+    form.querySelectorAll('input, button').forEach(input => { input.disabled = true; });
+    submitButton.textContent = 'Saving…';
+    savedMessage.textContent = 'Saving your score…';
     savedMessage.hidden = false;
-    dialog.querySelector('#round-title').textContent = 'You’re on the board.';
-    dialog.querySelector('#round-description').textContent = 'Your personal best is ready for the next challenger on this browser.';
-    dialog.querySelector('[data-round-replay]').focus();
+    try {
+      const result = await onSaveRecord(player);
+      if (version !== dialogVersion || !dialog.open) return;
+      if (!result || result.saved === false) throw new Error('Your score was not saved. Please try again.');
+      form.hidden = true;
+      savedMessage.textContent = `${countryFlag(player.country)} ${player.name} — your record is on the board.`;
+      dialog.querySelector('#round-title').textContent = 'You’re on the board.';
+      dialog.querySelector('#round-description').textContent = result.shared
+        ? 'Your score is saved to the shared leaderboard.'
+        : 'Your personal best is saved on this browser.';
+      dialog.querySelector('[data-round-replay]').focus();
+    } catch (error) {
+      if (version === dialogVersion && dialog.open) savedMessage.textContent = error.message || 'Your score was not saved. Please try again.';
+    } finally {
+      savePending = false;
+      form.setAttribute('aria-busy', 'false');
+      form.querySelectorAll('input, button').forEach(input => { input.disabled = false; });
+      submitButton.textContent = 'Save my score ↗';
+    }
   });
   nameInput.addEventListener('input', () => nameInput.setCustomValidity(''));
   modeButton.addEventListener('click', onToggle);
@@ -152,6 +175,11 @@ export function createPlayModeUI({ onToggle, onReplay, onPortfolio, onSaveRecord
   dialog.addEventListener('close', () => modeButton.focus({ preventScroll: true }));
   return {
     get dialogOpen() { return dialog.open; },
+    setRecordConnection({ shared = false, loading = false, error = '' } = {}) {
+      scoreboard.querySelector('.leaderboard-status').textContent = loading ? 'Loading shared record…'
+        : error ? 'Shared record unavailable. Retry saving when connected.' : shared ? 'Shared leaderboard' : 'Record saved on this browser';
+      dialog.querySelector('.record-note').textContent = error || (shared ? 'Your record will be saved to the shared leaderboard.' : 'Saved on this browser.');
+    },
     setPower(percent) { power.querySelector('output').textContent = `${percent}%`; },
     render(round, { playing, best, ready }) {
       rack.hidden = power.hidden = scoreboard.hidden = !playing;
@@ -177,12 +205,13 @@ export function createPlayModeUI({ onToggle, onReplay, onPortfolio, onSaveRecord
       scoreboard.querySelector('.record-name').textContent = best.name;
       const recordFlag = scoreboard.querySelector('.record-flag');
       recordFlag.textContent = countryFlag(best.country);
-      recordFlag.setAttribute('aria-label', COUNTRIES.find(country => country.code === best.country)?.name || best.country);
+      recordFlag.setAttribute('aria-label', COUNTRIES.find(country => country.code === best.country)?.name || 'Country not specified');
       const last = shots.at(-1);
       scoreboard.querySelector('#play-shot-result').textContent = round.inFlight ? 'Ball in play. Follow the bounces.'
         : last ? `${last.bounces} pin hits × ${last.multiplier} = +${last.points} points` : 'Set your strength. Make every bounce count.';
     },
     finish(round, best) {
+      dialogVersion++;
       const beaten = round.score > best.score;
       dialog.querySelector('#round-title').textContent = beaten ? 'A new high score.' : 'That’s a round.';
       dialog.querySelector('#round-description').textContent = beaten ? `You beat ${best.name}’s ${best.score.toLocaleString()} points. Leave your name on the board.`

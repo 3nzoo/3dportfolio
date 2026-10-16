@@ -12,12 +12,14 @@ import { createHologram } from './ui/hologram.js';
 import { normalizePortfolioSection, sectionForPocket, pocketForSection, pocketLabel, sectionName } from './ui/portfolio-sections.js';
 import { createPlayModeUI } from './ui/play-mode.js';
 import { createPlayRound, createRecordStore, MULTIPLIERS } from './game/play-round.js';
+import { createHighScoreClient } from './game/high-scores.js';
 import { createBoardAudio } from './audio/board-audio.js';
 import { createBackgroundMusic } from './audio/background-music.js';
 import portfolio from './content/portfolio.json';
 import './styles/style.css';
 import './styles/play-mode.css';
 import './styles/professional.css';
+import './styles/typography.css';
 
 THREE.Cache.enabled = true;
 const scene = new THREE.Scene();
@@ -268,17 +270,50 @@ let portfolioSliderValue = slider.value;
 let playPower = 7.25;
 const round = createPlayRound();
 const records = createRecordStore();
+const leaderboard = createHighScoreClient({
+  url: import.meta.env.VITE_SUPABASE_URL,
+  key: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+});
+let recordRequest = null;
+let roundVersion = 0;
+let submissionId = null;
 const playUI = createPlayModeUI({
   onToggle: () => setPlayMode(!playing),
   onReplay: restartPlayRound,
   onPortfolio: () => setPlayMode(false),
-  onSaveRecord: ({ name, country }) => {
+  onSaveRecord: async ({ name, country }) => {
     if (!playing || !round.completed) return false;
+    if (leaderboard.configured) {
+      submissionId ??= crypto.randomUUID();
+      const result = await leaderboard.submit({ submissionId, name, country, shots: round.shots });
+      if (result.best) records.replace(result.best);
+      updatePlayHud();
+      if (!result.saved) throw new Error('Another player set a higher record. Your score did not beat the latest shared record.');
+      return { saved: true, shared: true };
+    }
     const saved = records.save({ name, country, score: round.score });
     updatePlayHud();
-    return saved;
+    return { saved, shared: false };
   },
 });
+function refreshSharedRecord() {
+  if (!leaderboard.configured) return Promise.resolve();
+  if (recordRequest) return recordRequest;
+  playUI.setRecordConnection({ shared: true, loading: true });
+  recordRequest = leaderboard.loadBest().then(best => {
+    records.replace(best || { name: 'No record yet', score: 0, country: null });
+    playUI.setRecordConnection({ shared: true });
+    updatePlayHud();
+  }).catch(error => {
+    playUI.setRecordConnection({ shared: true, error: error.message });
+  }).finally(() => { recordRequest = null; });
+  return recordRequest;
+}
+async function finishPlayRound() {
+  const version = roundVersion;
+  await refreshSharedRecord();
+  if (playing && round.completed && version === roundVersion) playUI.finish(round, records.best);
+}
 function setStatus(message) { status.textContent = message; }
 function refreshDropButton() {
   dropButton.disabled = !game || game.inFlight || hologram.isOpen;
@@ -306,6 +341,8 @@ function clearPocketSelection() {
   renderer.invalidate?.();
 }
 function resetRound() {
+  roundVersion++;
+  submissionId = null;
   game.reset();
   round.reset();
   audio.stopRoll();
@@ -353,9 +390,12 @@ function setPlayMode(enabled) {
   updatePlayHud();
   frameCamera();
   setStatus(playing ? 'Play mode. Ten balls. Pin hits multiplied by your landing pocket earn points.' : 'Portfolio mode. Choose a section and launch a ball.');
+  if (playing) void refreshSharedRecord();
 }
 updatePocketPresentation();
 updatePlayHud();
+playUI.setRecordConnection({ shared: leaderboard.configured });
+void refreshSharedRecord();
 function selectPocket(section) {
   const pocket = POCKETS.find(item => item.id === section);
   if (!pocket) return;
@@ -434,17 +474,23 @@ function frameCamera(immediate = false) {
   const tangent = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
   const availableWidth = Math.max(200, width - (mobile ? 28 : 130));
   const landscape = mobile && width > height && height < 560;
-  const playBounds = mobile && !landscape ? {
-    top: (playing ? document.querySelector('.play-scoreboard') : document.querySelector('.scene-caption')).getBoundingClientRect().bottom + 18,
-    bottom: document.querySelector('.launch-dock').getBoundingClientRect().top - 18,
+  const portraitBoard = mobile && !landscape;
+  // Fit the cabinet more closely on phones while leaving room for its launch lean.
+  const mobileFraming = { fitHeight: 11, fitWidth: 9.5, edgeGap: 8 };
+  const playBounds = portraitBoard ? {
+    top: (playing ? document.querySelector('.play-scoreboard') : document.querySelector('.scene-caption')).getBoundingClientRect().bottom + mobileFraming.edgeGap,
+    bottom: document.querySelector('.launch-dock').getBoundingClientRect().top - mobileFraming.edgeGap,
   } : null;
   const availableHeight = playBounds ? Math.max(120, playBounds.bottom - playBounds.top)
     : Math.max(180, height - (mobile ? (height <= 650 ? 310 : 255) : 215));
-  const distance = Math.max(CABINET_LAYOUT.fitHeight / (2 * tangent) * height / availableHeight,
-    (open ? 20.5 : 10.6) / (2 * tangent * camera.aspect) * width / availableWidth);
+  const fitHeight = portraitBoard ? mobileFraming.fitHeight : CABINET_LAYOUT.fitHeight;
+  const fitWidth = portraitBoard ? mobileFraming.fitWidth : open ? 20.5 : 10.6;
+  const distance = Math.max(fitHeight / (2 * tangent) * height / availableHeight,
+    fitWidth / (2 * tangent * camera.aspect) * width / availableWidth);
   const centerX = open ? 3.7 : landscape && !playing ? -5 : 0;
-  desiredTarget.set(centerX, CABINET_LAYOUT.centerY, 0);
-  desiredPosition.set(centerX + 0.7, CABINET_LAYOUT.centerY + 1.4, distance);
+  const centerY = portraitBoard ? (CABINET_LAYOUT.topY + CABINET_LAYOUT.bottomY) / 2 : CABINET_LAYOUT.centerY;
+  desiredTarget.set(centerX, centerY, 0);
+  desiredPosition.set(centerX + 0.7, centerY + 1.4, distance);
   if (playBounds) {
     const shift = ((playBounds.top + playBounds.bottom) / 2 - height / 2) * 2 * tangent * distance / height;
     desiredPosition.y += shift;
@@ -462,7 +508,7 @@ function frameCamera(immediate = false) {
     const dockTop = document.querySelector('.launch-dock').getBoundingClientRect().top;
     const cabinetBottom = new THREE.Vector3(0, CABINET_LAYOUT.bottomY, 0.3).project(layoutCamera);
     const boardBottom = (1 - cabinetBottom.y) * height / 2;
-    const controlGap = mobile ? 20 : 28;
+    const controlGap = portraitBoard ? mobileFraming.edgeGap : mobile ? 20 : 28;
     const lift = Math.max(0, Math.max(pocketBottom, boardBottom) - dockTop + controlGap) * 2 * tangent * (distance - 0.7) / height;
     desiredPosition.y -= lift;
     desiredTarget.y -= lift;
@@ -639,7 +685,7 @@ async function initializeGame() {
         updatePlayHud();
         frameCamera();
         setStatus(`${shot.bounces} pin hits times ${shot.multiplier}: ${shot.points} points. Total ${round.score}.`);
-        if (round.completed) { audio.popup(); playUI.finish(round, records.best); }
+        if (round.completed) { audio.popup(); void finishPlayRound(); }
       } else {
         openSection(sectionForPocket(result.pocket.id), result.pocket.id);
         setStatus(`${pocketLabel(result.pocket.id)} unlocked · ${result.bounces} peg bounces`);

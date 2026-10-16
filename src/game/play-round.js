@@ -2,7 +2,7 @@ import { COUNTRY_CODES } from './countries.js';
 
 export const BALLS_PER_ROUND = 10;
 export const MULTIPLIERS = Object.freeze({ about: 2, experiences: 3, education: 1, contact: 2 });
-export const INITIAL_RECORD = Object.freeze({ name: 'Enzo', score: 500, country: 'PH' });
+export const INITIAL_RECORD = Object.freeze({ name: 'Enzo', score: 480, country: 'PH' });
 const RECORD_KEY = 'enzo-portfolio.play-record.v1';
 
 export function createPlayRound() {
@@ -36,10 +36,11 @@ export function createPlayRound() {
 
 function validRecord(record) {
   return record && typeof record.name === 'string' && record.name.trim().length > 0 && record.name.length <= 48
-    && Number.isSafeInteger(record.score) && record.score >= INITIAL_RECORD.score && COUNTRY_CODES.includes(record.country);
+    && Number.isSafeInteger(record.score) && record.score >= 0
+    && (record.country === null || COUNTRY_CODES.includes(record.country));
 }
 
-// A browser-only record until a shared leaderboard is connected.
+// Browser cache and offline fallback; a loaded shared record replaces this value.
 export function createRecordStore(storage) {
   let best = { ...INITIAL_RECORD };
   try {
@@ -49,9 +50,15 @@ export function createRecordStore(storage) {
   } catch { /* Private browsing or damaged storage: keep the starter record. */ }
   return {
     get best() { return { ...best }; },
+    replace(record) {
+      if (!validRecord(record)) return false;
+      best = { name: record.name, score: record.score, country: record.country };
+      try { storage?.setItem(RECORD_KEY, JSON.stringify(best)); } catch { /* Keep the shared record for this visit. */ }
+      return true;
+    },
     save({ name, country, score }) {
       const record = { name: Array.from(String(name).replace(/[\u0000-\u001f\u007f]/g, '').trim()).slice(0, 24).join(''), country, score };
-      if (!validRecord(record) || score <= best.score) return false;
+      if (!validRecord(record) || !COUNTRY_CODES.includes(country) || score <= best.score) return false;
       best = record;
       try { storage?.setItem(RECORD_KEY, JSON.stringify(best)); } catch { /* Keep the record for this visit. */ }
       return true;

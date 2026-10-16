@@ -23,6 +23,7 @@ function renderProject(project, index) {
   return `<article class="story-card">
     <p class="story-eyebrow"><span class="story-number">${escape(String(index + 1).padStart(2, '0'))}</span>${escape(project.eyebrow)}</p>
     <h3>${escape(project.title)}</h3>
+    ${project.subtitle ? `<p class="story-subtitle">${escape(project.subtitle)}</p>` : ''}
     <p class="story-summary">${escape(project.summary)}</p>
     <details class="story-details"><summary>Project details<span aria-hidden="true"> +</span></summary><div class="story-details-content">
       ${list(project.facts).length ? `<dl class="story-facts">${project.facts.map((fact) => `<div><dt>${escape(fact.label)}</dt><dd>${escape(fact.value)}</dd></div>`).join('')}</dl>` : ''}

@@ -142,9 +142,24 @@ export function createGamePhysics(RAPIER, pins, onLand = () => {}, onPinHit = ()
 
 // Routes are recorded offline against this exact board and Rapier version.
 // Only their launch speeds drive playback; all bounces still use live physics.
+function routeConfigurationsMatch(actual, expected) {
+  if (actual === expected) return true;
+  if (typeof actual === 'number' && typeof expected === 'number') {
+    // Bundled numeric literals and computed coordinates can differ by a few ULPs.
+    // This only compares metadata; collider coordinates and recordings stay exact.
+    return Number.isFinite(actual) && Number.isFinite(expected)
+      && Math.abs(actual - expected) <= Number.EPSILON * 8 * Math.max(1, Math.abs(actual), Math.abs(expected));
+  }
+  if (!actual || !expected || typeof actual !== 'object' || typeof expected !== 'object'
+    || Array.isArray(actual) !== Array.isArray(expected)) return false;
+  const keys = Object.keys(actual);
+  return keys.length === Object.keys(expected).length
+    && keys.every(key => Object.hasOwn(expected, key) && routeConfigurationsMatch(actual[key], expected[key]));
+}
+
 export function createDestinationGamePhysics(RAPIER, pins, onLand = () => {}, onPinHit = () => {}, { random = Math.random } = {}) {
   if (RAPIER.version() !== RECORDED_ROUTES.rapierVersion
-    || JSON.stringify(routeConfiguration(pins)) !== JSON.stringify(RECORDED_ROUTES.configuration)) {
+    || !routeConfigurationsMatch(routeConfiguration(pins), RECORDED_ROUTES.configuration)) {
     throw new Error('The board physics changed. Run npm run record:paths, then npm run test:physics to refresh its destinations.');
   }
   const pools = new Map(POCKETS.map(pocket => [pocket.id, RECORDED_ROUTES.destinations[pocket.id]]));

@@ -12,7 +12,9 @@
     "test:contact": "node scripts/verify-contact.mjs",
     "record:paths": "node scripts/record-destination-paths.mjs",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:skills": "node scripts/verify-skills.mjs",
+    "test:scores": "node scripts/verify-high-scores.mjs"
   },
   "devDependencies": {
     "vite": "7.0.6",

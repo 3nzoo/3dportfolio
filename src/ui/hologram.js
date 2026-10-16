@@ -1,6 +1,8 @@
 import { getResumeUrl, ICON_DOWNLOAD } from './resume.js';
 import { createInquiryClient } from '../contact/inquiries.js';
 import { renderSelectedWork } from './portfolio-stories.js';
+import { renderSkills, createSkillTooltips } from './skills.js';
+import skillYears from '../content/skill-years.json';
 import { SECTION_NAMES, SECTION_LABELS, normalizePortfolioSection as normalizeSection } from './portfolio-sections.js';
 
 const inquiries = createInquiryClient({
@@ -8,7 +10,6 @@ const inquiries = createInquiryClient({
   key: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
 });
 
-const SECTION_CODES = Object.fromEntries(Object.keys(SECTION_NAMES).map((id, index) => [id, String(index + 1).padStart(2, '0')]));
 const SECTIONS = Object.keys(SECTION_NAMES);
 const ICON_CLOSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>';
 const ICON_ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>';
@@ -19,19 +20,12 @@ const tags = (items = []) => list(items).length ? `<div class="skill-tags">${lis
 const bullets = (items = []) => list(items).length ? `<ul class="timeline-bullets">${list(items).map((item) => `<li>${escape(item)}</li>`).join('')}</ul>` : '';
 const safeUrl = (value = '') => /^(https?:\/\/|mailto:)/i.test(value) ? value : '';
 
-function renderSkills(portfolio) {
-  const skillGroups = list(portfolio.profile?.skills || portfolio.skills);
-  return `<div class="skill-groups">${skillGroups.filter(group => !group.optional).map((group) => `<div class="skill-group"><h4>${escape(group.label || group.name)}</h4>${tags(group.items)}</div>`).join('')}</div>`;
-}
-
 function renderAbout(portfolio) {
   const profile = portfolio.profile || {};
-  return `<p class="profile-summary">${escape(profile.summary)}</p>
+  return `${String(profile.summary || '').split(/\n\s*\n/).filter((paragraph) => paragraph.trim()).map((paragraph) => `<p class="profile-summary">${escape(paragraph)}</p>`).join('')}
     <h3 class="work-chapter-title">Selected work</h3>
     <section class="selected-work-section" aria-label="Selected work">${renderSelectedWork(portfolio, { showIntro: false })}</section>
-    <div class="work-disclosures">
-      <details class="work-disclosure"><summary><strong>Skills &amp; tools</strong></summary><div class="work-disclosure-body">${renderSkills(portfolio)}</div></details>
-    </div>`;
+    ${renderSkills(list(profile.skills || portfolio.skills), skillYears)}`;
 }
 
 function renderExperience(portfolio) {
@@ -95,13 +89,14 @@ export function createHologram(portfolio) {
   element.setAttribute('aria-modal', 'true');
   element.setAttribute('aria-labelledby', 'hologram-title');
   element.setAttribute('aria-hidden', 'true');
-  element.innerHTML = `<header class="hologram-header"><div><p class="hologram-kicker"><i></i> <span class="hologram-code">01</span></p><h2 class="hologram-title" id="hologram-title">About</h2></div><button class="hologram-close" type="button" aria-label="Close portfolio panel">${ICON_CLOSE}</button></header>
+  element.innerHTML = `<header class="hologram-header"><h2 class="hologram-title" id="hologram-title">About</h2><button class="hologram-close" type="button" aria-label="Close portfolio panel">${ICON_CLOSE}</button></header>
     <nav class="hologram-nav" role="tablist" aria-label="Portfolio content">${SECTIONS.map((id) => `<button class="hologram-tab" id="hologram-tab-${id}" data-hologram-section="${id}" role="tab" type="button" aria-controls="hologram-content" aria-selected="false" tabindex="-1">${SECTION_LABELS[id]}</button>`).join('')}</nav>
     <div class="hologram-body" id="hologram-content" role="tabpanel" tabindex="0"></div>
     <footer class="hologram-footer"><span class="footer-signal"><i></i>ENZOLABS</span><span>SCROLL TO EXPLORE ↓</span></footer>`;
   const body = element.querySelector('.hologram-body');
   const closeButton = element.querySelector('.hologram-close');
   const tabs = [...element.querySelectorAll('.hologram-tab')];
+  const skillTooltips = createSkillTooltips(element);
   const renders = { about: renderAbout, experience: renderExperience, education: renderEducation, contact: renderContact };
   function setBackgroundInert(inert) {
     for (const selector of ['#game-hud', '#portfolio-header', '#scene-mount']) {
@@ -128,6 +123,7 @@ export function createHologram(portfolio) {
   function close() {
     if (!activeSection) return;
     saveDraft();
+    skillTooltips.hide();
     const closedSection = activeSection;
     activeSection = null;
     element.classList.remove('is-open');
@@ -148,7 +144,6 @@ export function createHologram(portfolio) {
     saveDraft();
     activeSection = id;
     element.querySelector('.hologram-title').textContent = SECTION_NAMES[id];
-    element.querySelector('.hologram-code').textContent = SECTION_CODES[id];
     tabs.forEach((tab) => {
       const selected = tab.dataset.hologramSection === id;
       tab.setAttribute('aria-selected', String(selected));
@@ -158,6 +153,7 @@ export function createHologram(portfolio) {
     const navigation = element.querySelector('.hologram-nav');
     if (selectedTab) navigation.scrollLeft = selectedTab.offsetLeft - navigation.offsetLeft - 26;
     body.setAttribute('aria-labelledby', `hologram-tab-${id}`);
+    skillTooltips.hide();
     body.innerHTML = renders[id](portfolio);
     body.scrollTop = 0;
     if (id === 'contact') {
@@ -231,6 +227,7 @@ export function createHologram(portfolio) {
     dispose() {
       document.removeEventListener('keydown', handleKeyboard);
       closeCallbacks.clear();
+      skillTooltips.dispose();
       document.body.classList.remove('hologram-open');
       setBackgroundInert(false);
       element.remove();

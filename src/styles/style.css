@@ -92,8 +92,6 @@ body.hologram-open #scene-mount { pointer-events: none; }
 .hologram-panel :is(button,a,input,textarea,[tabindex]):focus-visible { outline-color: var(--panel-brass-bright); }
 .hologram-panel ::selection { background: #d4b477; color: #101e15; }
 .hologram-header { padding: 22px 26px 18px; display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; border-bottom: 1px solid var(--line); background: linear-gradient(115deg,#70451c12,transparent 80%); }
-.hologram-kicker { margin: 0 0 7px; color: var(--panel-brass); font-size: 8px; letter-spacing: .2em; text-transform: uppercase; display: flex; align-items: center; gap: 7px; }
-.hologram-kicker i { width: 4px; height: 4px; background: var(--panel-brass); box-shadow: 0 0 7px #d4b47755; border-radius: 50%; }
 .hologram-title { margin: 0; font-family: var(--display); font-size: 25px; font-weight: 400; letter-spacing: -.035em; }
 .hologram-close { height: 29px; width: 29px; border: 1px solid var(--line); border-radius: 4px; color: var(--panel-brass); background: #b58b4507; display: grid; place-items: center; transition: background .2s; }
 .hologram-close:hover { color: var(--panel-brass-bright); background: #b58b451a; }
@@ -171,7 +169,6 @@ body.hologram-open #scene-mount { pointer-events: none; }
 .hologram-panel[data-presentation="world"] .hologram-footer { flex-shrink: 0; }
 .hologram-panel[data-presentation="world"] .hologram-body { flex: 1 1 auto; height: auto; min-height: 0; font-size: 16px; overflow-wrap: break-word; }
 .hologram-panel[data-presentation="world"] .hologram-title { font-size: 32px; line-height: 1.2; }
-.hologram-panel[data-presentation="world"] .hologram-kicker { font-size: 10px; }
 .hologram-panel[data-presentation="world"] .hologram-close { width: 44px; height: 44px; flex-shrink: 0; }
 .hologram-panel[data-presentation="world"] .hologram-close svg { width: 18px; height: 18px; }
 .hologram-panel[data-presentation="world"] .hologram-tab { font-size: 14px; padding: 10px 12px 14px; }
@@ -203,16 +200,18 @@ body.hologram-open #scene-mount { pointer-events: none; }
 .hologram-panel[data-presentation="world"] .contact-submit { font-size: 16px; }
 .hologram-panel[data-presentation="world"] .contact-note { font-size: 13px; }
 .hologram-panel[data-presentation="world"] .form-status { font-size: 14px; }
-.loading-screen { position: fixed; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; flex-direction: column; background: radial-gradient(ellipse at 50% 44%,#193a2a,#071b17 65%); transition: opacity .6s,visibility .6s; }
+/* These startup styles are linked in index.html before app modules load.
+   Keep loader sizing here and use a local font to avoid late size/metric swaps. */
+.loading-screen { position: fixed; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 24px; text-align: center; font-family: Arial, Helvetica, sans-serif; background: radial-gradient(ellipse at 50% 44%,#193a2a,#071b17 65%); transition: opacity .6s,visibility .6s; }
 .loading-screen.is-loaded, .loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-.loading-orbit { width: 76px; height: 76px; margin-bottom: 36px; position: relative; display: grid; place-items: center; }
+.loading-orbit { flex: 0 0 76px; width: 76px; height: 76px; margin-bottom: 36px; position: relative; display: grid; place-items: center; }
 .loading-orbit::before { content: ''; position: absolute; inset: 0; border: 1px solid #68805b45; border-radius: 50%; }
 .loading-orbit i { position: absolute; inset: 0; animation: loading-rotate 3s linear infinite; }
 .loading-orbit i::after { content: ''; display: block; width: 8px; height: 8px; background: #d4b67c; border-radius: 50%; margin: -4px auto 0; box-shadow: 0 0 20px #d6b87880; }
-.loading-orbit > span { color: #d1b981; font-family: var(--display); font-size: 28px; }
-.loading-screen .eyebrow { margin-bottom: 12px; font-size: 11px; }
+.loading-orbit > span { color: #d1b981; font-family: inherit; font-size: 28px; font-weight: 500; line-height: 1; }
+.loading-screen .eyebrow { margin: 0 0 12px; font-size: .8125rem; font-weight: 500; line-height: 1.5; }
 .loading-screen h2 { font-family: var(--display); font-size: 30px; font-weight: 400; margin: 0 0 20px; letter-spacing: -.035em; }
-#loading-message { color: #99ac99; font-size: 11px; margin: 0; }
+#loading-message { max-width: 32rem; margin: 0; color: #bec6b2; font-size: 1rem; font-weight: 500; line-height: 1.5; }
 .loading-hint { margin: 26px 0 0; font-size: 8px; color: #5d7a62; letter-spacing: .04em; }
 .noscript-notice { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; background: #071b18; padding: 35px; text-align: center; font-size: 15px; line-height: 1.8; }
 @keyframes loading-rotate { to { transform: rotate(360deg); } }

@@ -8,36 +8,93 @@
     "location": "Quezon City, Philippines",
     "github": "https://github.com/3nzoo",
     "linkedin": "https://www.linkedin.com/in/florenzo-dinglasan",
-    "summary": "I build and deliver full-stack web applications across SaaS, e-commerce, fintech, and logistics. My work spans interfaces, APIs, databases, and deployment, using React, Next.js, TypeScript, Node.js, PostgreSQL, and AWS.",
+    "summary": "I build full-stack web applications that connect clear, usable interfaces with the APIs, data, and cloud infrastructure behind them. My work spans SaaS, e-commerce, fintech, and logistics, using React, Next.js, TypeScript, Node.js, Python, and PostgreSQL.\n\nComing from a frontend background, I’ve grown into backend development, technical ownership, and leading small teams. I’m comfortable building from scratch or taking over an existing product—understanding how it works, making practical technical decisions, and carrying changes through to deployment.",
     "skills": [
       {
-        "label": "Web & interfaces",
+        "label": "Frontend",
         "items": [
           "React",
-          "Next.js",
           "TypeScript",
+          "Next.js",
           "JavaScript",
-          "Angular",
+          "HTML5",
+          "CSS",
           "Tailwind CSS",
+          "Angular",
           "Redux",
-          "Zustand",
           "React Query",
-          "Material UI"
+          "Zustand",
+          "Vite",
+          "Jest",
+          "Axios",
+          "Apollo Client",
+          "Sass",
+          "Bootstrap",
+          "Material UI",
+          "Framer Motion",
+          "WordPress",
+          "Shopify",
+          "Phaser.js",
+          "ImpactJS"
         ]
       },
       {
         "label": "Backend & data",
         "items": [
           "Node.js",
-          "Express.js",
           "Python",
-          "Django",
+          "PostgreSQL",
+          "Express.js",
+          "FastAPI",
+          "Redis",
+          "MongoDB",
+          "MySQL",
+          "DynamoDB",
+          "Supabase",
+          "Cloudflare",
+          "Firestore",
+          "SQLite",
           "REST APIs",
           "GraphQL",
           "WebSockets",
-          "PostgreSQL",
-          "MongoDB",
-          "Firestore"
+          "Django",
+          "JWT",
+          "Sequelize",
+          "TypeORM",
+          "Mongoose",
+          "Postman",
+          "Mocha",
+          "Serverless"
+        ]
+      },
+      {
+        "label": "AI tools",
+        "items": [
+          "Codex",
+          "ChatGPT",
+          "Google Gemini",
+          "Claude",
+          "Google AI Studio"
+        ]
+      },
+      {
+        "label": "Cloud & others",
+        "items": [
+          "AWS services",
+          "Docker",
+          "Git",
+          "GitHub Actions",
+          "Microsoft Azure",
+          "Google Cloud",
+          "Firebase",
+          "Nginx",
+          "GitLab",
+          "Bitbucket",
+          "Heroku",
+          "cPanel",
+          "Figma",
+          "Jira",
+          "Power BI"
         ]
       },
       {
@@ -49,33 +106,16 @@
           "Rapier",
           "Cannon.js",
           "PixiJS",
-          "Phaser.js",
-          "Spine",
-          "ImpactJS"
+          "Spine"
         ],
         "optional": true
-      },
-      {
-        "label": "Cloud & delivery",
-        "items": [
-          "AWS",
-          "Docker",
-          "Nginx",
-          "GitHub Actions",
-          "Microsoft Azure",
-          "Google Cloud",
-          "Git",
-          "Figma",
-          "Jira",
-          "Power BI"
-        ]
       }
     ],
     "headline": "I build and deliver full-stack web applications, from interface to APIs and cloud deployment.",
     "proofPoints": [
       {
         "label": "Product ownership",
-        "detail": "From taking over existing SaaS to building independent products."
+        "detail": "From taking over existing SaaS to building products for clients."
       },
       {
         "label": "Across the stack",
@@ -91,9 +131,9 @@
   "projects": [
     {
       "title": "Arckyv",
-      "eyebrow": "AI-assisted independent project",
-      "period": "Latest independent project",
-      "description": "A chronological way to explore pop culture across movies, music, television, books, and video games.",
+      "eyebrow": "Client project · AI-assisted product development",
+      "period": "Current client project",
+      "description": "Building a client-commissioned social discovery platform where users curate movies, music, games, books, and TV shows into release-date timelines. Guiding API selection, data modeling, and testing through an AI-assisted development workflow using Gemini AI Studio.",
       "url": "https://www.arckyv.com/",
       "tags": [
         "Google AI Studio",
@@ -102,9 +142,10 @@
         "Firestore"
       ],
       "bullets": [
-        "Explore a shared cultural timeline with filters and flexible views.",
-        "Built with Google AI Studio / Gemini assisting development as part of my independent product work."
-      ]
+        "Users curate movies, music, games, books, and TV shows into release-date timelines.",
+        "Guiding API selection, data modeling, and testing through an AI-assisted workflow using Gemini AI Studio."
+      ],
+      "subtitle": "Cultural Discovery Timeline Platform"
     }
   ],
   "experience": [
@@ -115,6 +156,7 @@
       "summary": "Built interactive browser experiences, owning development from the initial technical setup to production delivery.",
       "bullets": [
         "Built 3D browser experiences from scratch with Three.js and TypeScript, including interaction and physics integration.",
+        "Used Claude as a learning aid to study Three.js and become familiar with 3D game development.",
         "Evaluated Rapier and Cannon.js to refine physics behavior and performance.",
         "Created 2D browser experiences with PixiJS and extended existing engine components for new layouts.",
         "Optimized Three.js for mobile devices and shipped browser applications to AWS S3 through GitHub Actions."
@@ -126,6 +168,7 @@
         "Cannon.js",
         "PixiJS",
         "Blender",
+        "Claude",
         "Vite",
         "AWS S3",
         "GitHub Actions"
@@ -405,7 +448,7 @@
       "title": "Bachelor of Science in Information Technology",
       "institution": "Systems Technology Institute",
       "period": "2005 - 2009",
-      "detail": "Undergraduate degree in Information Technology."
+      "detail": "Bachelor’s degree in Information Technology."
     },
     {
       "title": "Google Tools for Election Workshop",
@@ -427,7 +470,7 @@
     }
   ],
   "selectedWork": {
-    "intro": "Three projects that show how I build across the stack, take responsibility for existing products, and turn independent ideas into working experiences.",
+    "intro": "Three projects that show how I build across the stack, take responsibility for existing products, and deliver web applications for clients.",
     "projects": [
       {
         "id": "banana-banners",
@@ -531,39 +574,38 @@
       {
         "id": "arckyv",
         "title": "Arckyv",
-        "eyebrow": "Independent product · AI-assisted development",
-        "summary": "Built a cultural timeline with AI assistance, guiding API and stack choices, the data model, and the approach to testing updates.",
+        "eyebrow": "Client project · AI-assisted product development",
+        "summary": "Building a client-commissioned social discovery platform where users curate movies, music, games, books, and TV shows into release-date timelines. Guiding API selection, data modeling, and testing through an AI-assisted development workflow using Gemini AI Studio.",
         "facts": [
           {
             "label": "Context",
-            "value": "Independent product work"
+            "value": "Client-commissioned platform · In development"
           },
           {
             "label": "Development approach",
-            "value": "API and stack decisions, data model, and update-testing approach"
+            "value": "API selection, data modeling, and testing"
           },
           {
             "label": "Delivery approach",
             "value": "Google AI Studio / Gemini for fast deployment"
           }
         ],
-        "outcome": "A live timeline experience with filters and flexible views for exploring pop culture across different media.",
         "details": [
           {
             "title": "The product",
-            "body": "Explore movies, music, television, books, and video games through a shared cultural timeline, with filters and flexible views."
+            "body": "A social discovery platform where users curate movies, music, games, books, and TV shows into release-date timelines."
           },
           {
             "title": "My contribution",
             "bullets": [
-              "Decided which APIs and technologies to use.",
-              "Worked on the data model and defined how updates should be automatically tested.",
-              "Used AI-assisted development with Google AI Studio and Gemini, including the deployment workflow for a fast path to publishing."
+              "Guide API selection and technical stack decisions for the client’s product.",
+              "Shape the data model and the approach to automatically testing updates.",
+              "Use Gemini AI Studio for AI-assisted development and a straightforward deployment workflow."
             ]
           },
           {
             "title": "Development approach",
-            "body": "This is a new independent product. The focus is on product and technical decisions, using AI assistance to develop and deploy the experience."
+            "body": "This client project uses an AI-assisted workflow to develop the platform. My role centers on API choices, data modeling, and testing decisions, with Gemini AI Studio supporting development and deployment."
           }
         ],
         "tags": [
@@ -573,7 +615,8 @@
           "Firestore"
         ],
         "url": "https://www.arckyv.com/",
-        "linkLabel": "Explore Arckyv"
+        "linkLabel": "Explore Arckyv",
+        "subtitle": "Cultural Discovery Timeline Platform"
       }
     ]
   }
