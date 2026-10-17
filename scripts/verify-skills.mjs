@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { renderSkills, skillExperienceText } from '../src/ui/skills.js';
 
+import { renderSelectedWork } from '../src/ui/portfolio-stories.js';
+
 const portfolio = JSON.parse(await readFile(new URL('../src/content/portfolio.json', import.meta.url)));
 const years = JSON.parse(await readFile(new URL('../src/content/skill-years.json', import.meta.url)));
 const groups = portfolio.profile.skills.filter(group => !group.optional);
@@ -26,3 +28,13 @@ const escaped = renderSkills([{label:'<img>',items:['<script>"&']}], {});
 assert(!escaped.includes('<script>') && !escaped.includes('<img>'));
 assert(escaped.includes('&lt;script&gt;&quot;&amp;'));
 console.log(`Skill checks passed: ${names.length} visible tools, requested categories, editable year values, honest fallbacks and escaped markup.`);
+
+const projectHtml = renderSelectedWork({selectedWork:{projects:[{
+  title:'Example', tags:['React','Unlisted tool'],
+}]}}, {yearsBySkill:{React:7}});
+assert(projectHtml.includes('data-skill="React" data-experience="7 years of use"'), 'Project tags must use the supplied year data');
+assert(projectHtml.includes('data-skill="Unlisted tool" data-experience="Experience available on request"'), 'Unlisted tags must not invent years');
+const actualProjects = renderSelectedWork(portfolio, {yearsBySkill:years});
+const projectTags = portfolio.selectedWork.projects.flatMap(project => project.tags || []);
+assert.equal((actualProjects.match(/class="skill-tag skill-button"/g) || []).length, projectTags.length);
+console.log(`Project tag checks passed: ${projectTags.length} selected-work tags share Skills tooltip markup and year data.`);

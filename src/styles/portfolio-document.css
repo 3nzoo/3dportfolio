@@ -1,0 +1,19 @@
+/* Readable initial document. The interactive panels reuse this HTML on startup. */
+.portfolio-document { position: fixed; inset: 0; z-index: 20; overflow: auto; padding: clamp(24px,5vw,64px); background: #071b18; color: #edf7ef; font-size: 16px; line-height: 1.7; }
+.portfolio-document-content { max-width: 900px; margin: 0 auto; }
+.portfolio-document h1, .portfolio-document h2, .portfolio-document h3, .portfolio-document h4 { color: #ead5a5; line-height: 1.3; }
+.portfolio-document h1 { font-size: clamp(30px,6vw,48px); }
+.portfolio-document nav { display: flex; flex-wrap: wrap; gap: 20px; margin: 28px 0; }
+.portfolio-document a { color: #dfbd7b; text-decoration: underline; text-underline-offset: 4px; }
+.portfolio-document section[id] { padding-block: 24px; border-top: 1px solid #b89a6247; scroll-margin-top: 20px; }
+.portfolio-document summary { cursor: pointer; color: #dfbd7b; padding-block: 10px; }
+.portfolio-document .story-card, .portfolio-document .timeline-entry { margin-block: 24px; }
+.portfolio-document .skill-button { font: inherit; }
+.portfolio-document .story-tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; }
+.portfolio-document .contact-links { display: flex; flex-wrap: wrap; gap: 20px; margin-block: 20px; }
+.portfolio-document svg { width: 20px; height: 20px; fill: none; stroke: currentColor; vertical-align: middle; }
+body:has(#portfolio-document) #game-hud, body:has(#portfolio-document) #portfolio-header { visibility: hidden; }
+
+.portfolio-document .skills-hint { display: none; }
+.portfolio-document .skill-button { cursor: default; }
+.portfolio-document .skill-button::after { content: " · " attr(data-experience); font-size: .8em; }

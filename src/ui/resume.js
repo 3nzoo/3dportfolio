@@ -2,6 +2,7 @@
 export function getResumeUrl(profile = {}) {
   const path = profile.resume || '';
   if (!/^assets\/[\w./-]+\.pdf$/i.test(path) || path.split('/').includes('..')) return '';
+  if (typeof document === 'undefined') return `./${path}`;
   return new URL(path, new URL(import.meta.env.BASE_URL, document.baseURI)).href;
 }
 

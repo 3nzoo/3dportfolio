@@ -38,7 +38,7 @@
 .story-detail-section p, .story-detail-section ul { margin: 6px 0; color: #b8c3af; font-size: 13px; line-height: 1.8; }
 .story-detail-section ul { padding-left: 18px; }
 .story-tags { display: flex; flex-wrap: wrap; gap: 5px; list-style: none; margin: 16px 0 0; padding: 0; }
-.story-tags li { padding: 4px 7px; border: 1px solid #b89a6238; border-radius: 3px; font-size: 10px; color: #b7c4ac; }
+.story-tags li { padding: 0; border: 0; font-size: 10px; color: #b7c4ac; }
 .story-link { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; margin-top: 12px; color: #e5cc98; font-size: 13px; }
 .story-link:hover { color: #ffe8b8; }
 .career-details { margin-top: 12px; border-top: 1px solid #b89a622b; }
@@ -169,14 +169,14 @@
 .portfolio-skill-groups { display: grid; gap: 22px; }
 .skill-category h4 { margin: 0 0 12px; color: #e2cb96; font-size: 16px; font-weight: 500; }
 .skills-section .skill-tags { gap: 8px; }
-.skills-section .skill-button { min-height: 36px; max-width: 100%; padding: 8px 10px; border-color: #b89a6259; background: #b58b450c; font-size: 13px; line-height: 1.4; text-align: left; cursor: pointer; }
-.skills-section .skill-button:hover, .skills-section .skill-button[data-tooltip-open] { background: #b58b4524; border-color: #d4b477; color: #f0d7a3; }
-.skills-section .skill-button:focus-visible { outline: 2px solid #f0d7a3; outline-offset: 3px; }
+.hologram-panel .skill-button { min-height: 36px; max-width: 100%; padding: 8px 10px; border-color: #b89a6259; background: #b58b450c; font-size: 13px; line-height: 1.4; text-align: left; cursor: pointer; }
+.hologram-panel .skill-button:hover, .hologram-panel .skill-button[data-tooltip-open] { background: #b58b4524; border-color: #d4b477; color: #f0d7a3; }
+.hologram-panel .skill-button:focus-visible { outline: 2px solid #f0d7a3; outline-offset: 3px; }
 .skill-experience-tooltip { position: fixed; z-index: 1000; width: max-content; max-width: min(260px,calc(100vw - 24px)); padding: 9px 12px; border: 1px solid #c6a770; border-radius: 6px; background: #102218; color: #f1ddb2; box-shadow: 0 8px 25px #0007; font-family: 'DM Sans',Arial,sans-serif; font-size: 14px; line-height: 1.5; pointer-events: auto; }
 .skill-experience-tooltip[hidden] { display: none; }
 @media (max-width: 900px) {
   .skill-category h4 { font-size: 15px; }
-  .skills-section .skill-button { min-height: 40px; }
+  .hologram-panel .skill-button { min-height: 40px; }
 }
 
 /* Give the mobile cabinet more room without reducing readable type sizes. */

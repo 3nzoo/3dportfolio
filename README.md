@@ -83,3 +83,9 @@ Edit `src/content/skill-years.json` to update years of use. Each key must match 
 Skills & Tools is always visible after the About projects. Categories and tool order live in `profile.skills`: Frontend, Backend & data, AI tools, and Cloud & others. The optional historical 3D group stays hidden. Core full-stack tools lead each relevant list, informed by adoption in the [2026 Stack Overflow technology survey](https://survey.stackoverflow.co/2026/technology/data); the order is editorial and is not a measured job-vacancy ranking.
 
 Hover or focus a tool for its tooltip. Click/tap to keep it visible; tap again, select another tool, or tap outside to dismiss. Escape dismisses the tooltip before closing the portfolio panel. The tooltip is positioned in the viewport so it stays inside small screens and avoids clipping in the scrolling 3D panel. `src/ui/skills.js` handles the renderer and interactions. Run `npm run test:skills` for data/rendering checks.
+
+### Initial HTML and readable portfolio
+
+The Vite HTML plugin generates About, selected work, Experience, Education, Skills, and contact links from `src/content/portfolio.json` and `src/content/skill-years.json` for both development and production. Keep editing those JSON files; do not maintain a separate HTML copy. With JavaScript, the initial content moves into the existing 3D portfolio tabs. Without JavaScript, visitors can read the document, expand project details, download the CV, and use the contact links.
+
+Run `npm run build` followed by `npm run test:html` to verify the production HTML includes the current content.
