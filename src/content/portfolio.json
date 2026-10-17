@@ -3,7 +3,7 @@
     "name": "Enzo Dinglasan",
     "initials": "FD",
     "role": "Senior Full-Stack Engineer",
-    "email": "awsflorenzodinglasan@gmail.com",
+    "email": "hello@enzolabs.dev",
     "resume": "assets/enzo.pdf",
     "location": "Quezon City, Philippines",
     "github": "https://github.com/3nzoo",
@@ -130,7 +130,7 @@
   },
   "projects": [
     {
-      "title": "Arckyv",
+      "title": "Arckyv.com",
       "eyebrow": "Client project · AI-assisted product development",
       "period": "Current client project",
       "description": "Building a client-commissioned social discovery platform where users curate movies, music, games, books, and TV shows into release-date timelines. Guiding API selection, data modeling, and testing through an AI-assisted development workflow using Gemini AI Studio.",
@@ -150,16 +150,38 @@
   ],
   "experience": [
     {
-      "company": "Pixelbro",
+      "company": "Arckyv.com",
+      "role": "AI-assisted WebApp Developer",
+      "period": "Sept 2026 - Present",
+      "summary": "Developing a client-commissioned cultural discovery platform through prompt-driven development in Gemini AI Studio, translating client requirements into personal timelines and social features.",
+      "bullets": [
+        "Translate client requirements into application features and user flows.",
+        "Use iterative prompting in Gemini AI Studio to generate and refine the application.",
+        "Develop Google and email authentication flows.",
+        "Build content discovery across movies, music, games, books, and TV shows.",
+        "Create personal category timelines organized by original release date.",
+        "Develop a social activity feed with likes and comments."
+      ],
+      "tags": [
+        "Google AI Studio",
+        "Gemini",
+        "Firebase",
+        "Firestore",
+        "Vite",
+        "React"
+      ]
+    },
+    {
+      "company": "PixelBro Solutions",
       "role": "3D Game Developer",
       "period": "Feb 2025 - Aug 2026",
       "summary": "Built interactive browser experiences, owning development from the initial technical setup to production delivery.",
       "bullets": [
-        "Built 3D browser experiences from scratch with Three.js and TypeScript, including interaction and physics integration.",
-        "Used Claude as a learning aid to study Three.js and become familiar with 3D game development.",
-        "Evaluated Rapier and Cannon.js to refine physics behavior and performance.",
-        "Created 2D browser experiences with PixiJS and extended existing engine components for new layouts.",
-        "Optimized Three.js for mobile devices and shipped browser applications to AWS S3 through GitHub Actions."
+        "Built 3D browser experiences with Three.js and TypeScript, including interactive elements and physics integration.",
+        "Used Claude and ChatGPT to support learning, prototyping, coding, and debugging across slot and 3D game projects.",
+        "Evaluated Rapier and Cannon.js to improve physics behavior and performance.",
+        "Created 2D browser experiences with PixiJS and extended existing engine components to support new layouts.",
+        "Optimized Three.js experiences for mobile devices and deployed browser applications to AWS S3 using GitHub Actions."
       ],
       "tags": [
         "Three.js",
@@ -171,6 +193,7 @@
         "Claude",
         "Vite",
         "AWS S3",
+        "ChatGPT",
         "GitHub Actions"
       ]
     },
@@ -466,7 +489,7 @@
       "title": "Adobe Flash ActionScript 3.0",
       "institution": "Philippine Center for Creative Imaging",
       "period": "2013",
-      "detail": "Professional training in ActionScript 3.0."
+      "detail": "Professional training in Adobe Flash ActionScript 3.0."
     }
   ],
   "selectedWork": {
@@ -573,7 +596,7 @@
       },
       {
         "id": "arckyv",
-        "title": "Arckyv",
+        "title": "Arckyv.com",
         "eyebrow": "Client project · AI-assisted product development",
         "summary": "Building a client-commissioned social discovery platform where users curate movies, music, games, books, and TV shows into release-date timelines. Guiding API selection, data modeling, and testing through an AI-assisted development workflow using Gemini AI Studio.",
         "facts": [
