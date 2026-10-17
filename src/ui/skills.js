@@ -7,6 +7,10 @@ export function skillExperienceText(years) {
   return `${years} ${years === 1 ? 'year' : 'years'} of use`;
 }
 
+export function renderSkillTag(name, yearsBySkill = {}) {
+  return `<button type="button" class="skill-tag skill-button" data-skill="${escape(name)}" data-experience="${escape(skillExperienceText(yearsBySkill[name]))}">${escape(name)}</button>`;
+}
+
 export function renderSkills(groups = [], yearsBySkill = {}) {
   const visibleGroups = groups.filter(group => !group.optional);
   return `<section class="skills-section" aria-labelledby="skills-heading">
@@ -14,7 +18,7 @@ export function renderSkills(groups = [], yearsBySkill = {}) {
     <p class="skills-hint">Select a tool to see years of use.</p>
     <div class="portfolio-skill-groups">${visibleGroups.map(group => `<section class="skill-category">
       <h4>${escape(group.label || group.name)}</h4>
-      <div class="skill-tags">${(group.items || []).map(name => `<button type="button" class="skill-tag skill-button" data-skill="${escape(name)}" data-experience="${escape(skillExperienceText(yearsBySkill[name]))}">${escape(name)}</button>`).join('')}</div>
+      <div class="skill-tags">${(group.items || []).map(name => renderSkillTag(name, yearsBySkill)).join('')}</div>
     </section>`).join('')}</div>
   </section>`;
 }

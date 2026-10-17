@@ -267,6 +267,7 @@ let activePocket = null;
 let pendingPanelFocus = false;
 let playing = false;
 let portfolioSliderValue = slider.value;
+let hasDestinationSelection = false;
 let playPower = 7.25;
 const round = createPlayRound();
 const records = createRecordStore();
@@ -423,6 +424,10 @@ function openSection(section, landedPocket) {
   const pocketId = landedPocket && sectionForPocket(landedPocket) === section ? landedPocket : pocketForSection(section);
   if (!pocketId) return;
   const wasOpen = hologram.isOpen;
+  hasDestinationSelection = true;
+  const pocketIndex = POCKETS.findIndex(pocket => pocket.id === pocketId);
+  slider.value = Number(slider.min) + (pocketIndex + 0.5) / POCKETS.length * (Number(slider.max) - Number(slider.min));
+  updateLauncher();
   selectPocket(pocketId);
   hologram.open(section);
   if (!wasOpen && hologram.isOpen) audio.popup();
@@ -604,17 +609,21 @@ function updateLauncher() {
     playUI.setPower(percent);
     return;
   }
-  slider.setAttribute('aria-valuetext', pocketLabel(destination.id));
+  slider.setAttribute('aria-valuetext', hasDestinationSelection ? pocketLabel(destination.id) : 'Choose a destination');
   slider.dataset.destination = destination.id;
-  slider.closest('.aim-control').style.setProperty('--destination-color', destination.color);
+  slider.closest('.aim-control').style.setProperty('--destination-color', hasDestinationSelection ? destination.color : '#dfbd7b');
   document.querySelectorAll('button[data-destination]').forEach(button => {
-    const selected = sectionForPocket(button.dataset.destination) === sectionForPocket(destination.id);
+    const selected = hasDestinationSelection && sectionForPocket(button.dataset.destination) === sectionForPocket(destination.id);
     button.classList.toggle('is-selected', selected);
     button.setAttribute('aria-pressed', String(selected));
   });
 }
-slider.addEventListener('input', updateLauncher);
+slider.addEventListener('input', () => {
+  if (!playing) hasDestinationSelection = true;
+  updateLauncher();
+});
 document.querySelectorAll('button[data-destination]').forEach(button => button.addEventListener('click', () => {
+  hasDestinationSelection = true;
   const index = POCKETS.findIndex(pocket => pocket.id === button.dataset.destination);
   slider.value = Number(slider.min) + (index + 0.5) / POCKETS.length * (Number(slider.max) - Number(slider.min));
   updateLauncher();
@@ -629,7 +638,11 @@ function dropBall() {
     round.beginBall();
     clearPocketSelection();
     updatePlayHud();
-  } else if (!game.launchDestination(slider.dataset.destination)) return;
+  } else {
+    if (!game.launchDestination(slider.dataset.destination)) return;
+    hasDestinationSelection = true;
+    updateLauncher();
+  }
   const route = game.lastLaunchRoute;
   const power = playing ? Number(slider.value) : route.power;
   const strength = (power - 0.5) / 13.5;
@@ -660,6 +673,7 @@ const handleGameKeys = event => {
   if (event.code === 'ArrowLeft' || event.code === 'ArrowRight') {
     if (slider.disabled) return;
     event.preventDefault();
+    if (!playing) hasDestinationSelection = true;
     slider.value = Math.max(Number(slider.min), Math.min(Number(slider.max), Number(slider.value) + (event.code === 'ArrowLeft' ? -0.3 : 0.3)));
     updateLauncher();
   }

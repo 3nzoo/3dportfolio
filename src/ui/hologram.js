@@ -1,7 +1,7 @@
 import { getResumeUrl, ICON_DOWNLOAD } from './resume.js';
 import { createInquiryClient } from '../contact/inquiries.js';
 import { renderSelectedWork } from './portfolio-stories.js';
-import { renderSkills, createSkillTooltips } from './skills.js';
+import { renderSkills, renderSkillTag, createSkillTooltips } from './skills.js';
 import skillYears from '../content/skill-years.json';
 import { SECTION_NAMES, SECTION_LABELS, normalizePortfolioSection as normalizeSection } from './portfolio-sections.js';
 
@@ -16,7 +16,7 @@ const ICON_ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 1
 
 const escape = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 const list = (value) => Array.isArray(value) ? value : value ? [value] : [];
-const tags = (items = []) => list(items).length ? `<div class="skill-tags">${list(items).map((item) => `<span class="skill-tag">${escape(item)}</span>`).join('')}</div>` : '';
+const tags = (items = []) => list(items).length ? `<div class="skill-tags">${list(items).map((item) => renderSkillTag(item, skillYears)).join('')}</div>` : '';
 const bullets = (items = []) => list(items).length ? `<ul class="timeline-bullets">${list(items).map((item) => `<li>${escape(item)}</li>`).join('')}</ul>` : '';
 const safeUrl = (value = '') => /^(https?:\/\/|mailto:)/i.test(value) ? value : '';
 
@@ -24,7 +24,7 @@ function renderAbout(portfolio) {
   const profile = portfolio.profile || {};
   return `${String(profile.summary || '').split(/\n\s*\n/).filter((paragraph) => paragraph.trim()).map((paragraph) => `<p class="profile-summary">${escape(paragraph)}</p>`).join('')}
     <h3 class="work-chapter-title">Selected work</h3>
-    <section class="selected-work-section" aria-label="Selected work">${renderSelectedWork(portfolio, { showIntro: false })}</section>
+    <section class="selected-work-section" aria-label="Selected work">${renderSelectedWork(portfolio, { showIntro: false, yearsBySkill: skillYears })}</section>
     ${renderSkills(list(profile.skills || portfolio.skills), skillYears)}`;
 }
 
@@ -37,7 +37,7 @@ function renderExperience(portfolio) {
       ${experience.summary ? `<p class="timeline-description">${escape(experience.summary)}</p>` : ''}
       <details class="career-details"><summary>Scope &amp; technical details</summary>
       ${bullets(experience.bullets)}
-      ${list(experience.projects).map((project) => `<div class="timeline-project"><h4>${escape(project.title || project.name)}</h4><p>${escape(project.description)}</p>${bullets(project.bullets)}</div>`).join('')}
+      ${list(experience.projects).map((project) => `<div class="timeline-project"><h4>${escape(project.title || project.name)}</h4><p>${escape(project.description)}</p>${bullets(project.bullets)}${tags(project.tags)}</div>`).join('')}
       ${tags(experience.tags)}
       </details>
     </article>`).join('')}</div>`;
