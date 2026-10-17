@@ -1,3 +1,4 @@
+import { portfolioHtmlPlugin } from './scripts/lib/portfolio-html.js';
 import { defineConfig, loadEnv } from "vite";
 import wasm from "vite-plugin-wasm";
 import topLevelAwait from "vite-plugin-top-level-await";
@@ -14,6 +15,7 @@ export default defineConfig(({ mode }) => {
   }
   return {
   plugins: [
+    portfolioHtmlPlugin(),
     wasm(), // WASM plugin
     topLevelAwait(), // Top-level await support
   ],

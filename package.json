@@ -14,6 +14,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test:skills": "node scripts/verify-skills.mjs",
+    "test:html": "node scripts/verify-initial-html.mjs",
     "test:scores": "node scripts/verify-high-scores.mjs"
   },
   "devDependencies": {

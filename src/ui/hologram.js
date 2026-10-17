@@ -1,7 +1,6 @@
-import { getResumeUrl, ICON_DOWNLOAD } from './resume.js';
 import { createInquiryClient } from '../contact/inquiries.js';
-import { renderSelectedWork } from './portfolio-stories.js';
-import { renderSkills, renderSkillTag, createSkillTooltips } from './skills.js';
+import { createSkillTooltips } from './skills.js';
+import { renderAbout, renderExperience, renderEducation, renderContactLinks } from './portfolio-content.js';
 import skillYears from '../content/skill-years.json';
 import { SECTION_NAMES, SECTION_LABELS, normalizePortfolioSection as normalizeSection } from './portfolio-sections.js';
 
@@ -14,54 +13,8 @@ const SECTIONS = Object.keys(SECTION_NAMES);
 const ICON_CLOSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>';
 const ICON_ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>';
 
-const escape = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
-const list = (value) => Array.isArray(value) ? value : value ? [value] : [];
-const tags = (items = []) => list(items).length ? `<div class="skill-tags">${list(items).map((item) => renderSkillTag(item, skillYears)).join('')}</div>` : '';
-const bullets = (items = []) => list(items).length ? `<ul class="timeline-bullets">${list(items).map((item) => `<li>${escape(item)}</li>`).join('')}</ul>` : '';
-const safeUrl = (value = '') => /^(https?:\/\/|mailto:)/i.test(value) ? value : '';
-
-function renderAbout(portfolio) {
-  const profile = portfolio.profile || {};
-  return `${String(profile.summary || '').split(/\n\s*\n/).filter((paragraph) => paragraph.trim()).map((paragraph) => `<p class="profile-summary">${escape(paragraph)}</p>`).join('')}
-    <h3 class="work-chapter-title">Selected work</h3>
-    <section class="selected-work-section" aria-label="Selected work">${renderSelectedWork(portfolio, { showIntro: false, yearsBySkill: skillYears })}</section>
-    ${renderSkills(list(profile.skills || portfolio.skills), skillYears)}`;
-}
-
-function renderExperience(portfolio) {
-  return `<p class="intro-note">From building products from scratch to taking ownership of existing systems. Explore the roles below for scope and technical details.</p>
-    <div class="timeline">${list(portfolio.experience || portfolio.experiences).map((experience) => `<article class="timeline-entry">
-      <p class="timeline-period">${escape(experience.period)}</p>
-      <h3>${escape(experience.role)}</h3>
-      <p class="timeline-company">${escape(experience.company)}</p>
-      ${experience.summary ? `<p class="timeline-description">${escape(experience.summary)}</p>` : ''}
-      <details class="career-details"><summary>Scope &amp; technical details</summary>
-      ${bullets(experience.bullets)}
-      ${list(experience.projects).map((project) => `<div class="timeline-project"><h4>${escape(project.title || project.name)}</h4><p>${escape(project.description)}</p>${bullets(project.bullets)}${tags(project.tags)}</div>`).join('')}
-      ${tags(experience.tags)}
-      </details>
-    </article>`).join('')}</div>`;
-}
-
-function renderEducation(portfolio) {
-  const entries = [...list(portfolio.education || portfolio.profile?.education), ...list(portfolio.certifications)];
-  return `<p class="intro-note">The foundations, qualifications, and learning that shaped my work.</p><div class="timeline">${entries.map((entry, index) => `<article class="timeline-entry education-entry ${index === 0 ? 'is-featured' : ''}">
-    <p class="timeline-period">${escape(entry.period || entry.year || '')}</p>
-    <h3>${escape(entry.title || entry.degree || entry.name)}</h3>
-    <p class="timeline-company">${escape(entry.institution || entry.issuer)}</p>
-    ${entry.detail || entry.description ? `<p class="timeline-description">${escape(entry.detail || entry.description)}</p>` : ''}
-    ${bullets(entry.bullets)}
-  </article>`).join('')}</div>`;
-}
-
 function renderContact(portfolio) {
-  const profile = portfolio.profile || {};
-  const email = profile.email || portfolio.contact?.email || '';
-  const resumeUrl = getResumeUrl(profile);
-  const links = [{ href: email ? `mailto:${email}` : '', label: email }, { href: profile.github, label: 'GitHub' }, { href: profile.linkedin, label: 'LinkedIn' }].filter((link) => safeUrl(link.href));
-  return `<h3 class="contact-intro">Have something in mind?</h3><p class="intro-note">I’d love to hear about your project, an opportunity, or a good idea.</p>
-    <div class="contact-links">${links.map((link) => `<a href="${escape(link.href)}" ${link.href.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''}>${escape(link.label)}</a>`).join('')}</div>
-    ${resumeUrl ? `<div class="contact-resume"><a class="resume-download" href="${escape(resumeUrl)}" download>Download CV${ICON_DOWNLOAD}</a><span class="resume-format">PDF</span></div>` : ''}
+  return `${renderContactLinks(portfolio)}
     <form class="contact-form">
       <div class="form-row">
         <div class="form-field"><label for="contact-name">YOUR NAME</label><input id="contact-name" name="name" autocomplete="name" placeholder="Your name" maxlength="100" required /></div>
@@ -97,7 +50,23 @@ export function createHologram(portfolio) {
   const closeButton = element.querySelector('.hologram-close');
   const tabs = [...element.querySelectorAll('.hologram-tab')];
   const skillTooltips = createSkillTooltips(element);
-  const renders = { about: renderAbout, experience: renderExperience, education: renderEducation, contact: renderContact };
+  const initialDocument = document.querySelector('#portfolio-document');
+  const sectionContent = new Map(
+    [...(initialDocument?.querySelectorAll('[data-portfolio-content]') || [])]
+      .map(section => [section.dataset.portfolioContent, section]),
+  );
+  const renders = {
+    about: () => renderAbout(portfolio, skillYears),
+    experience: () => renderExperience(portfolio, skillYears),
+    education: () => renderEducation(portfolio),
+    contact: () => renderContact(portfolio),
+  };
+  // Move the initial content into its actual tabs; keep all sections in the DOM.
+  for (const section of sectionContent.values()) {
+    section.hidden = true;
+    body.appendChild(section);
+  }
+  initialDocument?.remove();
   function setBackgroundInert(inert) {
     for (const selector of ['#game-hud', '#portfolio-header', '#scene-mount']) {
       document.querySelector(selector)?.toggleAttribute('inert', inert);
@@ -154,7 +123,18 @@ export function createHologram(portfolio) {
     if (selectedTab) navigation.scrollLeft = selectedTab.offsetLeft - navigation.offsetLeft - 26;
     body.setAttribute('aria-labelledby', `hologram-tab-${id}`);
     skillTooltips.hide();
-    body.innerHTML = renders[id](portfolio);
+    let content = sectionContent.get(id);
+    if (!content) {
+      content = document.createElement('div');
+      content.dataset.portfolioContent = id;
+      content.innerHTML = renders[id]();
+      sectionContent.set(id, content);
+      body.appendChild(content);
+    } else if (id === 'contact') {
+      // Preserve the existing form/draft lifecycle; only public links are prerendered.
+      content.innerHTML = renders.contact();
+    }
+    for (const [sectionId, section] of sectionContent) section.hidden = sectionId !== id;
     body.scrollTop = 0;
     if (id === 'contact') {
       body.querySelectorAll('input, textarea').forEach((field) => { field.value = contactDraft[field.name] || ''; });
