@@ -48,7 +48,7 @@
 .hologram-panel[data-presentation] :is(
   .story-eyebrow, .story-facts dt, .story-outcome h4, .form-field label
 ) { font-size: var(--text-label); line-height: 1.6; letter-spacing: .045em; }
-.hologram-panel[data-presentation] .story-eyebrow { align-items: flex-start; }
+.hologram-panel[data-presentation] .story-eyebrow { align-items: center; }
 .hologram-panel[data-presentation] .story-number {
   flex: 0 0 28px;
   height: 28px;
