@@ -89,3 +89,9 @@ Hover or focus a tool for its tooltip. Click/tap to keep it visible; tap again, 
 The Vite HTML plugin generates About, selected work, Experience, Education, Skills, and contact links from `src/content/portfolio.json` and `src/content/skill-years.json` for both development and production. Keep editing those JSON files; do not maintain a separate HTML copy. With JavaScript, the initial content moves into the existing 3D portfolio tabs. Without JavaScript, visitors can read the document, expand project details, download the CV, and use the contact links.
 
 Run `npm run build` followed by `npm run test:html` to verify the production HTML includes the current content.
+
+### Asset size and game loading
+
+The deployed site uses WebP copies of the background and material atlas. Original PNGs and unused historical models are preserved in `source-assets/`, outside Vite's published `public/` directory. See [source asset notes](source-assets/README.md) for regeneration commands.
+
+The 3D scene and portfolio tabs load immediately. Rapier and its WebAssembly load only on the first **Launch ball** or **Play** action. The controls display **Preparing game…** during that first download; subsequent launches reuse the loaded physics. Direct portfolio navigation works without it.

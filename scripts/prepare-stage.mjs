@@ -1,8 +1,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
 
-// Reuse all geometry from the copied game while removing casino texture atlases.
-// The original asset remains intact and the scene is recolored in main.js.
-const source = new URL('../public/assets/Plinkov11.gltf', import.meta.url);
+// Retain the historical geometry-preparation workflow outside the published assets.
+// The live board is procedural and does not load these archived models.
+const source = new URL('../source-assets/legacy/Plinkov11.gltf', import.meta.url);
 const stage = JSON.parse(await readFile(source, 'utf8'));
 stage.materials = stage.materials.map((material, index) => ({
   name: material.name || `StageMaterial_${index}`,
@@ -19,6 +19,6 @@ delete stage.extensionsUsed;
 delete stage.extensionsRequired;
 stage.asset.generator = 'Ezo portfolio / adapted from Slots-Pachinko';
 stage.asset.extras = { source: 'Plinkov11.gltf', author: 'Enzo Dinglasan' };
-const target = new URL('../public/assets/portfolio-stage.gltf', import.meta.url);
+const target = new URL('../source-assets/legacy/portfolio-stage.gltf', import.meta.url);
 await writeFile(target, JSON.stringify(stage));
 console.log(`Prepared ${target.pathname}`);
