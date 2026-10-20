@@ -1,0 +1,6 @@
+project_id = "3dportfolio"
+
+# Public game: no player sign-in is required. Validation and rate limiting are
+# enforced by the Edge handler and its server-only database submission path.
+[functions.submit-high-score]
+verify_jwt = false

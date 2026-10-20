@@ -41,6 +41,8 @@
 .story-tags li { padding: 0; border: 0; font-size: 10px; color: #b7c4ac; }
 .story-link { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; margin-top: 12px; color: #e5cc98; font-size: 13px; }
 .story-link:hover { color: #ffe8b8; }
+.experience-links { display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: 8px; }
+.experience-links .story-link { margin-top: 0; }
 .career-details { margin-top: 12px; border-top: 1px solid #b89a622b; }
 .career-details .skill-tags { margin-top: 13px; }
 @media (min-width: 901px) and (max-width: 1100px) {

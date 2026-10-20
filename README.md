@@ -95,3 +95,7 @@ Run `npm run build` followed by `npm run test:html` to verify the production HTM
 The deployed site uses WebP copies of the background and material atlas. Original PNGs and unused historical models are preserved in `source-assets/`, outside Vite's published `public/` directory. See [source asset notes](source-assets/README.md) for regeneration commands.
 
 The 3D scene and portfolio tabs load immediately. Rapier and its WebAssembly load only on the first **Launch ball** or **Play** action. The controls display **Preparing game…** during that first download; subsequent launches reuse the loaded physics. Direct portfolio navigation works without it.
+
+### Server-only high-score submissions
+
+See [the score backend deployment guide](docs/score-backend-deployment.md) before deploying changes to the leaderboard. The database preparation, Supabase Edge Function, Cloudflare frontend deployment, and final RPC permission restriction must happen in that order for an existing live site. Publishing the frontend does not deploy the Edge Function or apply SQL migrations.

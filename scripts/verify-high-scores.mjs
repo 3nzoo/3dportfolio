@@ -20,6 +20,7 @@ assert.equal(requests[0].options.cache, 'no-store');
 const submitted = await client.submit({ submissionId, name: ' Visitor ', country: 'JP', shots });
 assert.equal(submitted.saved, true);
 assert.equal(submitted.best.score, 600);
+assert.match(requests[1].url, /\/functions\/v1\/submit-high-score$/, 'Writes must go through the Edge Function.');
 const body = JSON.parse(requests[1].options.body);
 assert.equal(body.p_player_name, 'Visitor');
 assert.equal(body.p_submission_id, submissionId);
@@ -54,3 +55,7 @@ assert.equal(store.best.score, 480, 'A stale local record must not override the 
 assert.equal(JSON.parse(cached).score, 480);
 assert.equal(store.replace({ name: 'Invalid', score: -1, country: 'PH' }), false);
 console.log('High-score checks passed: shared loading, validated submissions, failures, retry IDs, timeouts, and authoritative shared records.');
+
+const backendMissing = createHighScoreClient(settings, async () => Response.json({code:'SCORE_BACKEND_NOT_READY'}, {status:503}));
+await assert.rejects(backendMissing.submit({submissionId,name:'Visitor',country:'JP',shots}), /setup migration and Edge Function/);
+assert.equal(requests.some(request => request.url.includes('/rest/v1/rpc/')), false, 'The browser must never fall back to a privileged direct RPC');
