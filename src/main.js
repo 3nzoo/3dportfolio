@@ -180,7 +180,7 @@ identityElement.style.width = `${NAMEPLATE_LAYOUT.halfWidth * 2 / boardIdentity.
 nameplateScene.add(boardIdentity);
 let textureLoadActive = true;
 const textureViews = [];
-const atlasUrl = new URL(`${import.meta.env.BASE_URL}assets/classic-materials.png`, document.baseURI).href;
+const atlasUrl = new URL(`${import.meta.env.BASE_URL}assets/classic-materials.webp`, document.baseURI).href;
 const materialAtlas = new THREE.TextureLoader().load(atlasUrl, atlas => {
   if (!textureLoadActive) return;
   atlas.colorSpace = THREE.SRGBColorSpace;
@@ -262,6 +262,8 @@ hologramFrame.rotation.copy(hologramObject.rotation);
 hologramFrame.visible = false;
 scene.add(hologramFrame);
 let game;
+let gameLoading = false;
+let gameLoadPromise = null;
 let activeSection = null;
 let activePocket = null;
 let pendingPanelFocus = false;
@@ -279,7 +281,13 @@ let recordRequest = null;
 let roundVersion = 0;
 let submissionId = null;
 const playUI = createPlayModeUI({
-  onToggle: () => setPlayMode(!playing),
+  onToggle: async () => {
+    if (gameLoading) return;
+    try {
+      await ensureGame();
+      if (!hologram.isOpen && !playUI.dialogOpen) setPlayMode(!playing);
+    } catch { /* The load failure is shown in the launch controls. */ }
+  },
   onReplay: restartPlayRound,
   onPortfolio: () => setPlayMode(false),
   onSaveRecord: async ({ name, country }) => {
@@ -317,12 +325,12 @@ async function finishPlayRound() {
 }
 function setStatus(message) { status.textContent = message; }
 function refreshDropButton() {
-  dropButton.disabled = !game || game.inFlight || hologram.isOpen;
-  dropButton.querySelector('.drop-label').textContent = playing && round.completed ? 'Play again' : 'Launch ball';
+  dropButton.disabled = Boolean(gameLoading || game?.inFlight || hologram.isOpen);
+  dropButton.querySelector('.drop-label').textContent = gameLoading ? 'Preparing game…' : playing && round.completed ? 'Play again' : 'Launch ball';
   slider.disabled = Boolean(playing && game?.inFlight);
 }
 function updatePlayHud() {
-  playUI.render(round, { playing, best: records.best, ready: Boolean(game) });
+  playUI.render(round, { playing, best: records.best, ready: !gameLoading });
   mount.dataset.mode = playing ? 'play' : 'portfolio';
   mount.dataset.roundScore = String(round.score);
   mount.dataset.ballsCompleted = String(round.shots.length);
@@ -630,8 +638,11 @@ document.querySelectorAll('button[data-destination]').forEach(button => button.a
   openDirectSection(sectionForPocket(button.dataset.destination), button);
 }));
 updateLauncher();
-function dropBall() {
-  if (!game || hologram.isOpen || playUI.dialogOpen || game.inFlight) return;
+async function dropBall() {
+  if (gameLoading || hologram.isOpen || playUI.dialogOpen || game?.inFlight) return;
+  try { await ensureGame(); } catch { return; }
+  // A visitor may open a portfolio section while the first physics download is pending.
+  if (hologram.isOpen || playUI.dialogOpen || game.inFlight) return;
   if (playing && round.completed) { restartPlayRound(); return; }
   if (playing) {
     if (!round.canLaunch || !game.launchFree(Number(slider.value))) return;
@@ -716,18 +727,41 @@ async function initializeGame() {
     mount.dataset.pinCount = String(pins.length);
     mount.dataset.renderer = renderer.isSoftwareRenderer ? 'software' : 'webgl';
     renderer.invalidate?.();
-    loading.classList.add('is-loaded');
     updatePlayHud();
-    setStatus('');
+    if (!hologram.isOpen) setStatus('');
+    return game;
   } catch (error) {
     console.error('Could not load portfolio stage:', error);
-    document.querySelector('#loading-message').textContent = 'The stage could not load. You can still explore the portfolio using the navigation.';
-    loading.classList.add('has-error');
-    loading.classList.add('is-loaded');
-    setStatus('Choose a section to read the archive');
+    setStatus('Game physics could not load. Try Launch or Play again, or choose a section to explore.');
+    throw error;
   }
 }
-initializeGame();
+function ensureGame() {
+  if (game) return Promise.resolve(game);
+  if (gameLoadPromise) return gameLoadPromise;
+  gameLoading = true;
+  mount.dataset.physicsState = 'loading';
+  updatePlayHud();
+  setStatus('Preparing game physics…');
+  gameLoadPromise = initializeGame().then(result => {
+    mount.dataset.physicsState = 'ready';
+    return result;
+  }).catch(error => {
+    mount.dataset.physicsState = 'error';
+    throw error;
+  }).finally(() => {
+    gameLoading = false;
+    gameLoadPromise = null;
+    updatePlayHud();
+  });
+  return gameLoadPromise;
+}
+// The visual board and portfolio navigation do not need the physics download.
+mount.dataset.ready = 'true';
+mount.dataset.physicsState = 'idle';
+mount.dataset.pinCount = String(mechanicalBoard.pins.length);
+mount.dataset.renderer = renderer.isSoftwareRenderer ? 'software' : 'webgl';
+loading.classList.add('is-loaded');
 openHashSection();
 const projectedPocket = new THREE.Vector3();
 function updateConnector() {

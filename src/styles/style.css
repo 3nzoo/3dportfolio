@@ -299,7 +299,7 @@ body::before {
   inset: -4px;
   opacity: 1;
   mask-image: none;
-  background-image: linear-gradient(90deg,#05090866,transparent 42%,#05090822),url('/assets/workshop-background.png');
+  background-image: linear-gradient(90deg,#05090866,transparent 42%,#05090822),url('/assets/workshop-background.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

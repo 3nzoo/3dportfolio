@@ -8,6 +8,13 @@ const tags = (items = [], yearsBySkill = {}) => list(items).length ? `<div class
 const bullets = (items = []) => list(items).length ? `<ul class="timeline-bullets">${list(items).map((item) => `<li>${escape(item)}</li>`).join('')}</ul>` : '';
 const safeUrl = (value = '') => /^(https?:\/\/|mailto:)/i.test(value) ? value : '';
 
+function renderExperienceLinks(items = []) {
+  const links = list(items).filter((link) => {
+    try { return new URL(link.url).protocol === 'https:'; } catch { return false; }
+  });
+  return links.length ? `<div class="experience-links">${links.map((link) => `<a class="story-link" href="${escape(link.url)}" target="_blank" rel="noopener noreferrer">${escape(link.label || 'View live project')}<span aria-hidden="true"> ↗</span></a>`).join('')}</div>` : '';
+}
+
 export function renderAbout(portfolio, yearsBySkill = {}) {
   const profile = portfolio.profile || {};
   return `${String(profile.summary || '').split(/\n\s*\n/).filter((paragraph) => paragraph.trim()).map((paragraph) => `<p class="profile-summary">${escape(paragraph)}</p>`).join('')}
@@ -23,9 +30,10 @@ export function renderExperience(portfolio, yearsBySkill = {}) {
       <h3>${escape(experience.role)}</h3>
       <p class="timeline-company">${escape(experience.company)}</p>
       ${experience.summary ? `<p class="timeline-description">${escape(experience.summary)}</p>` : ''}
+      ${renderExperienceLinks(experience.links)}
       <details class="career-details"><summary>Scope &amp; technical details</summary>
       ${bullets(experience.bullets)}
-      ${list(experience.projects).map((project) => `<div class="timeline-project"><h4>${escape(project.title || project.name)}</h4><p>${escape(project.description)}</p>${bullets(project.bullets)}${tags(project.tags, yearsBySkill)}</div>`).join('')}
+      ${list(experience.projects).map((project) => `<div class="timeline-project"><h4>${escape(project.title || project.name)}</h4><p>${escape(project.description)}</p>${bullets(project.bullets)}${tags(project.tags, yearsBySkill)}${renderExperienceLinks(project.links)}</div>`).join('')}
       ${tags(experience.tags, yearsBySkill)}
       </details>
     </article>`).join('')}</div>`;

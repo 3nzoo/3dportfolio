@@ -154,6 +154,12 @@
       "role": "AI-assisted WebApp Developer",
       "period": "Sept 2026 - Present",
       "summary": "Developing a client-commissioned cultural discovery platform through prompt-driven development in Gemini AI Studio, translating client requirements into personal timelines and social features.",
+      "links": [
+        {
+          "label": "Live project · Arckyv",
+          "url": "https://www.arckyv.com/"
+        }
+      ],
       "bullets": [
         "Translate client requirements into application features and user flows.",
         "Use iterative prompting in Gemini AI Studio to generate and refine the application.",
@@ -223,6 +229,12 @@
       "role": "Full-Stack Developer",
       "period": "Mar 2023 - Mar 2024",
       "summary": "Delivered features across planning, fintech, and equipment-rental products while taking over existing applications and supporting production releases.",
+      "links": [
+        {
+          "label": "Company website · Mir Tech",
+          "url": "https://mirtech.io/"
+        }
+      ],
       "bullets": [
         "Worked across frontend applications, backend APIs, database structures, security fixes, and cloud deployments.",
         "Adapted to existing Angular and Django applications and guided a junior developer on implementation work."
@@ -242,6 +254,12 @@
         {
           "title": "TRAQPLAN — Project planning & portfolio visualization",
           "description": "Took over an existing Angular 13 and Express.js SaaS application after the lead developer's departure.",
+          "links": [
+            {
+              "label": "Live project · TRAQPLAN",
+              "url": "https://traqplan.com/"
+            }
+          ],
           "bullets": [
             "Continued feature delivery across Angular, RxJS, PrimeNG, Express.js, PostgreSQL, and Power BI.",
             "Supported the core application, Power BI solution, and Next.js marketing-site deployments using Docker, Rancher, and Microsoft Azure.",
@@ -262,6 +280,12 @@
         {
           "title": "TERASEKONE — Fintech web platform",
           "description": "Joined an existing fintech application to help deliver the project, adapting to Python and Django while working across the frontend and backend.",
+          "links": [
+            {
+              "label": "Live project · TERASEKONE",
+              "url": "https://terasekone.com/"
+            }
+          ],
           "bullets": [
             "Built React / Vite components and Django API endpoints in an existing PostgreSQL application.",
             "Worked with AWS S3 and RDS alongside the lead developer."
@@ -280,6 +304,12 @@
         {
           "title": "SMARTRENTAL — Equipment rental & subscriptions",
           "description": "Developed features for an office-equipment rental e-commerce platform.",
+          "links": [
+            {
+              "label": "Live project · SMARTRENTAL",
+              "url": "https://www.smartrental.asia/en"
+            }
+          ],
           "bullets": [
             "Implemented Next.js frontend features and GraphQL integrations, contributing to data-structure decisions.",
             "Guided a junior developer through assigned components and provided technical support."
@@ -317,6 +347,12 @@
       "role": "Full-Stack Developer",
       "period": "Oct 2022 - Nov 2022",
       "summary": "Delivered dashboard pages and features for the ToothAndCoin app.",
+      "links": [
+        {
+          "label": "Company website · DEFI DEVSHOP",
+          "url": "https://defidevshop.com/"
+        }
+      ],
       "bullets": [
         "Built application interfaces using Next.js, TypeScript, Material UI, and Tailwind CSS.",
         "Integrated data with Sequelize and PostgreSQL in a Docker-based environment."
@@ -356,6 +392,16 @@
       "role": "Web Developer",
       "period": "Jun 2020 - Jan 2021",
       "summary": "Developed features for Upflowy, a SaaS platform for building customer flows and improving conversion.",
+      "links": [
+        {
+          "label": "Live project · Upflowy",
+          "url": "https://upflowy.com/"
+        },
+        {
+          "label": "Company website · Experience Digital",
+          "url": "https://experience.digital/"
+        }
+      ],
       "bullets": [
         "Built reusable components with React, TypeScript, Node.js, GrapesJS, and Tailwind CSS.",
         "Integrated and maintained Firebase / Firestore and HubSpot services for application data and customer workflows."

@@ -15,7 +15,8 @@
     "preview": "vite preview",
     "test:skills": "node scripts/verify-skills.mjs",
     "test:html": "node scripts/verify-initial-html.mjs",
-    "test:scores": "node scripts/verify-high-scores.mjs"
+    "test:scores": "node scripts/verify-high-scores.mjs",
+    "test:score-edge": "node scripts/verify-score-edge.mjs"
   },
   "devDependencies": {
     "vite": "7.0.6",

@@ -33,17 +33,29 @@ References: [API keys](https://supabase.com/docs/guides/getting-started/api-keys
 
 ## Shared high scores
 
-The game uses the same two public environment settings as Contact. No extra client library or secret browser key is needed.
+The game reads the visible leaderboard with the existing two public project settings. Score submissions now go to the `submit-high-score` Edge Function, which uses a server-only database bridge. No elevated key belongs in the browser. Contact remains a separate public insert-only flow.
 
-1. Run `supabase/migrations/202610160001_shared_high_scores.sql` in Supabase SQL Editor. It preserves existing `high_scores` rows, adds `country_code` and a unique retry identifier, enables public reads of visible scores, and provides the `submit_high_score` RPC for writes. It does not touch `portfolio_inquiries`. If there are no visible scores, it seeds Enzo / PH / 480. Existing records are never replaced by this seed.
-2. Run `supabase/tests/high_scores.sql` in SQL Editor. Its test data and visibility changes are rolled back.
-3. Keep `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env.local`, then restart `npm run dev`. For Cloudflare Pages, keep the same build variables and redeploy.
-4. Enter Play mode. The top score is loaded on startup, when entering Play, and after the tenth ball lands. Beat the shared record, enter your name/country, and save. Success is shown only after Supabase confirms the insert. The new result is a new `high_scores` row; the existing Enzo row is retained. Refresh or use another browser to verify the shared record.
+Follow [the score backend deployment guide](score-backend-deployment.md) in order: prepare the database, deploy the Edge Function, deploy and test the website, then revoke direct database RPC access. Existing projects already have `202610160001_shared_high_scores.sql`; new projects need that original schema before the backend migrations. Do not remove anon execution from the original RPC until the new website and Edge path are working.
 
-The RPC recalculates the total from exactly ten shot results, serializes competing record submissions, and reuses the same submission ID on retries to prevent duplicate rows. New submissions are limited to one per minute per gateway-reported IP; people sharing a network share that limit. Rate-limit identifiers are kept in an unexposed private schema and old entries are pruned on new submissions. Visitors cannot directly insert, update, or delete scores.
+The database still computes the total from ten shots, serializes competing records, preserves idempotent retries, and limits each visitor connection to one valid submission per minute. People sharing a network share this limit. Old records remain, and the browser does not silently switch to local-only saves or back to the legacy RPC on errors. The server role, not anon or authenticated, retains execution after cutover. Public reads stay subject to the visible-row RLS policy.
 
-This verifies score arithmetic and input shape, not that browser-reported pin hits came from an honest game. Full cheat resistance would require server-issued sessions and independent replay verification. No such guarantee is implied. Contact's public insert policy is unchanged; its spam controls are a separate feature.
+`npm run test:scores` tests the browser client, `npm run test:score-edge` tests the HTTP backend, and `supabase/tests/high_scores.sql` checks final database permissions and scoring in a rolled-back transaction after all migrations. Browser-reported pin hits remain a trust limitation; this is not independent server replay verification.
 
-A configured app never silently falls back to a local-only save on a network or database error. The form keeps the player's details and offers retry. An unconfigured app retains the existing browser-only mode. Shared records take precedence over stale browser records, including old 500-point starter records.
+## Restrict the automatic-RLS administrative function
 
-`npm run test:scores` checks requests, failure handling, retry IDs, and shared-record cache replacement. The SQL test checks writes, scoring, ties, idempotency, and rate limits. If a save says the migration is missing, apply the high-score migration to the same project as the configured URL.
+If Security Advisor flags `public.rls_auto_enable()` as executable by API roles, run `supabase/migrations/202610200001_restrict_rls_auto_enable.sql` in SQL Editor as the database administrator. This optional Supabase event-trigger function is not part of the portfolio API. The migration revokes EXECUTE from PUBLIC, anon, and authenticated only on this function; it preserves SECURITY DEFINER, its owner, the event trigger, table RLS, contact data, and the score-submission functions. It skips projects that have not installed automatic RLS and can be rerun.
+
+After applying it, verify both results are false, then refresh Security Advisor:
+
+```sql
+select
+  has_function_privilege('anon', 'public.rls_auto_enable()', 'EXECUTE') as anon_can_execute,
+  has_function_privilege('authenticated', 'public.rls_auto_enable()', 'EXECUTE') as authenticated_can_execute;
+```
+
+Applying this SQL changes the database directly; deploying the website alone does not apply migrations. No website rebuild is needed for this permission fix.
+
+
+## Earlier signed-in-only restriction
+
+`202610200002_restrict_high_score_authenticated.sql` was the intermediate restriction for the old browser RPC. The complete Edge cutover supersedes it by revoking both anon and authenticated execution in `202610200004_lock_down_score_rpc.sql`. See [the deployment guide](score-backend-deployment.md) before applying the final restriction.
