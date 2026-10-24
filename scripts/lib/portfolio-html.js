@@ -29,7 +29,11 @@ export function portfolioHtmlPlugin() {
     transformIndexHtml(html) {
       const portfolio = JSON.parse(readFileSync(new URL('../../src/content/portfolio.json', import.meta.url), 'utf8'));
       const years = JSON.parse(readFileSync(new URL('../../src/content/skill-years.json', import.meta.url), 'utf8'));
-      return html.replace('<!--portfolio-document-->', () => renderPortfolioDocument(portfolio, years));
+      const startupStyles = readFileSync(new URL('../../src/styles/startup.css', import.meta.url), 'utf8');
+      const startupScript = readFileSync(new URL('../../src/startup.js', import.meta.url), 'utf8');
+      return html.replace('<!--board-startup-styles-->', () => `<style>${startupStyles}</style>`)
+        .replace('<!--board-startup-->', () => `<script id="board-startup">${startupScript}</script>`)
+        .replace('<!--portfolio-document-->', () => renderPortfolioDocument(portfolio, years));
     },
   };
 }

@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import './portfolio-document.css';
 :root { font-family: 'DM Sans', Arial, sans-serif; color: #edf7ef; background: #071b18; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; --gold: #dfbd7b; --mint: #95ecd1; --muted: #9caea3; --line: rgba(169,224,195,.19); --display: 'Space Grotesk', Arial, sans-serif; --board-font: 'DM Sans', Arial, sans-serif; }
 * { box-sizing: border-box; }
@@ -201,7 +200,7 @@ body.hologram-open #scene-mount { pointer-events: none; }
 .hologram-panel[data-presentation="world"] .contact-submit { font-size: 16px; }
 .hologram-panel[data-presentation="world"] .contact-note { font-size: 13px; }
 .hologram-panel[data-presentation="world"] .form-status { font-size: 14px; }
-/* These startup styles are linked in index.html before app modules load.
+/* These startup styles are also inlined in index.html before app modules load.
    Keep loader sizing here and use a local font to avoid late size/metric swaps. */
 .loading-screen { position: fixed; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 24px; text-align: center; font-family: Arial, Helvetica, sans-serif; background: radial-gradient(ellipse at 50% 44%,#193a2a,#071b17 65%); transition: opacity .6s,visibility .6s; }
 .loading-screen.is-loaded, .loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }

@@ -28,7 +28,6 @@ const WORKSHOP_REFLECTIONS = 0.3;
 const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 180);
 const mount = document.querySelector('#scene-mount');
 const hologramMount = document.querySelector('#hologram-mount');
-const loading = document.querySelector('#loading-screen');
 const status = document.querySelector('#game-status');
 const dropButton = document.querySelector('#drop-ball');
 const slider = document.querySelector('#launch-position');
@@ -73,36 +72,63 @@ function renderPixelRatio(software = false) {
   return Math.min(Math.max(devicePixelRatio || 1, minimum), 2);
 }
 function makeRenderer() {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('webgl2', { alpha: true, antialias: true, premultipliedAlpha: false });
-  if (!context) {
-    const fallback = new SoftwareRenderer();
-    fallback.setPixelRatio(renderPixelRatio(true));
-    return fallback;
+  let webgl;
+  try {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('webgl2', { alpha: true, antialias: true, premultipliedAlpha: false });
+    if (context) {
+      webgl = new THREE.WebGLRenderer({ canvas, context, alpha: true, antialias: true, premultipliedAlpha: false });
+      webgl.setPixelRatio(renderPixelRatio());
+      webgl.setClearColor(0x000000, 0);
+      webgl.outputColorSpace = THREE.SRGBColorSpace;
+      webgl.toneMapping = THREE.ACESFilmicToneMapping;
+      webgl.toneMappingExposure = 0.98;
+      webgl.shadowMap.enabled = true;
+      webgl.shadowMap.type = THREE.PCFSoftShadowMap;
+      // The cabinet and light stay fixed: render its contact shadows once.
+      webgl.shadowMap.autoUpdate = false;
+      webgl.shadowMap.needsUpdate = true;
+      const pmrem = new THREE.PMREMGenerator(webgl);
+      const environment = new RoomEnvironment();
+      scene.environment = pmrem.fromScene(environment, 0.04).texture;
+      scene.environmentIntensity = WORKSHOP_REFLECTIONS;
+      environment.dispose();
+      pmrem.dispose();
+      return webgl;
+    }
+  } catch (error) {
+    console.warn('WebGL initialization failed; using the canvas board:', error);
+    webgl?.dispose();
+    scene.environment = null;
   }
-  const webgl = new THREE.WebGLRenderer({ canvas, context, alpha: true, antialias: true, premultipliedAlpha: false });
-  webgl.setPixelRatio(renderPixelRatio());
-  webgl.setClearColor(0x000000, 0);
-  webgl.outputColorSpace = THREE.SRGBColorSpace;
-  webgl.toneMapping = THREE.ACESFilmicToneMapping;
-  webgl.toneMappingExposure = 0.98;
-  webgl.shadowMap.enabled = true;
-  webgl.shadowMap.type = THREE.PCFSoftShadowMap;
-  // The cabinet and light stay fixed: render its contact shadows once.
-  webgl.shadowMap.autoUpdate = false;
-  webgl.shadowMap.needsUpdate = true;
-  const pmrem = new THREE.PMREMGenerator(webgl);
-  const environment = new RoomEnvironment();
-  scene.environment = pmrem.fromScene(environment, 0.04).texture;
-  scene.environmentIntensity = WORKSHOP_REFLECTIONS;
-  environment.dispose();
-  pmrem.dispose();
-  return webgl;
+  const fallback = new SoftwareRenderer();
+  fallback.setPixelRatio(renderPixelRatio(true));
+  return fallback;
 }
 const renderer = makeRenderer();
 renderer.domElement.className = 'game-canvas';
 renderer.domElement.setAttribute('aria-label', 'Mechanical 3D portfolio board with an exposed spring and a bottom launch channel.');
 mount.appendChild(renderer.domElement);
+let renderPaused = false;
+let revealBoardAfterRender = true;
+function boardLoadingEvent(type, detail) { window.dispatchEvent(new CustomEvent(`board:${type}`, { detail })); }
+const handleContextLost = event => {
+  event.preventDefault();
+  renderPaused = true;
+  mount.dataset.ready = 'false';
+  audio.stopRoll();
+  refreshDropButton();
+  boardLoadingEvent('waiting', { title: 'Restoring the board…', message: 'Your browser paused the 3D view. Restoring it now; reload if it does not return.' });
+};
+const handleContextRestored = () => {
+  renderPaused = false;
+  revealBoardAfterRender = true;
+  renderer.shadowMap.needsUpdate = true;
+  resize();
+  updatePlayHud();
+};
+renderer.domElement.addEventListener('webglcontextlost', handleContextLost);
+renderer.domElement.addEventListener('webglcontextrestored', handleContextRestored);
 const labels = new CSS2DRenderer();
 labels.domElement.className = 'world-labels';
 labels.domElement.style.pointerEvents = 'none';
@@ -179,6 +205,14 @@ boardIdentity.scale.setScalar(0.01);
 identityElement.style.width = `${NAMEPLATE_LAYOUT.halfWidth * 2 / boardIdentity.scale.x}px`;
 nameplateScene.add(boardIdentity);
 let textureLoadActive = true;
+let materialsSettled = false;
+// Give the normal texture a chance to arrive; a failed/slow texture must not
+// hide an otherwise usable board forever.
+const materialWaitTimer = setTimeout(() => {
+  if (!textureLoadActive) return;
+  materialsSettled = true;
+  if (mount.dataset.materialsReady !== 'true') mount.dataset.materialsReady = 'fallback';
+}, 8000);
 const textureViews = [];
 const atlasUrl = new URL(`${import.meta.env.BASE_URL}assets/classic-materials.webp`, document.baseURI).href;
 const materialAtlas = new THREE.TextureLoader().load(atlasUrl, atlas => {
@@ -198,7 +232,14 @@ const materialAtlas = new THREE.TextureLoader().load(atlasUrl, atlas => {
   mechanicalBoard.applyTextures({ walnut: crop(0, 0.5), brass: crop(0.5, 0.5), enamel: crop(0, 0), circuits: crop(0.5, 0) });
   renderer.invalidate?.();
   mount.dataset.materialsReady = 'true';
-}, undefined, () => { mount.dataset.materialsReady = 'fallback'; });
+  materialsSettled = true;
+  clearTimeout(materialWaitTimer);
+}, undefined, () => {
+  if (!textureLoadActive) return;
+  mount.dataset.materialsReady = 'fallback';
+  materialsSettled = true;
+  clearTimeout(materialWaitTimer);
+});
 let selectionProgress = 0.375;
 let releaseRecoil = 0;
 const pocketObjects = new Map();
@@ -325,12 +366,12 @@ async function finishPlayRound() {
 }
 function setStatus(message) { status.textContent = message; }
 function refreshDropButton() {
-  dropButton.disabled = Boolean(gameLoading || game?.inFlight || hologram.isOpen);
+  dropButton.disabled = Boolean(renderPaused || gameLoading || game?.inFlight || hologram.isOpen);
   dropButton.querySelector('.drop-label').textContent = gameLoading ? 'Preparing game…' : playing && round.completed ? 'Play again' : 'Launch ball';
   slider.disabled = Boolean(playing && game?.inFlight);
 }
 function updatePlayHud() {
-  playUI.render(round, { playing, best: records.best, ready: !gameLoading });
+  playUI.render(round, { playing, best: records.best, ready: !gameLoading && !renderPaused });
   mount.dataset.mode = playing ? 'play' : 'portfolio';
   mount.dataset.roundScore = String(round.score);
   mount.dataset.ballsCompleted = String(round.shots.length);
@@ -600,6 +641,18 @@ function resize() {
 }
 window.addEventListener('resize', resize);
 resize();
+// Recheck the existing framing when late fonts change the caption or dock.
+let layoutFrame = null;
+const reframeLayout = () => {
+  if (layoutFrame !== null) return;
+  layoutFrame = requestAnimationFrame(() => {
+    layoutFrame = null;
+    if (viewport.mobile) frameCamera(true);
+  });
+};
+const layoutObserver = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(reframeLayout);
+for (const element of document.querySelectorAll('.scene-caption, .play-scoreboard, .launch-dock')) layoutObserver?.observe(element);
+document.fonts?.ready.then(reframeLayout);
 function updateLauncher() {
   const value = Number(slider.value);
   const progress = (value - Number(slider.min)) / (Number(slider.max) - Number(slider.min));
@@ -662,7 +715,7 @@ async function dropBall() {
   audio.launch(power, channelSeconds);
   if (!reducedMotion) {
     if (framing) pendingCameraLaunch = power;
-    else launchCamera.start(power, viewport.mobile ? 0.75 : 1);
+    else launchCamera.start(power);
   }
   if (route) {
     mount.dataset.launchRoute = route.id;
@@ -723,7 +776,6 @@ async function initializeGame() {
       if (playing) { round.hitPin(); updatePlayHud(); }
     });
     updateLauncher();
-    mount.dataset.ready = 'true';
     mount.dataset.pinCount = String(pins.length);
     mount.dataset.renderer = renderer.isSoftwareRenderer ? 'software' : 'webgl';
     renderer.invalidate?.();
@@ -757,11 +809,10 @@ function ensureGame() {
   return gameLoadPromise;
 }
 // The visual board and portfolio navigation do not need the physics download.
-mount.dataset.ready = 'true';
+mount.dataset.ready = 'false';
 mount.dataset.physicsState = 'idle';
 mount.dataset.pinCount = String(mechanicalBoard.pins.length);
 mount.dataset.renderer = renderer.isSoftwareRenderer ? 'software' : 'webgl';
-loading.classList.add('is-loaded');
 openHashSection();
 const projectedPocket = new THREE.Vector3();
 function updateConnector() {
@@ -780,6 +831,11 @@ function updateConnector() {
 }
 let previousTime = performance.now();
 renderer.setAnimationLoop(now => {
+  // Pause the round while graphics are unavailable instead of scoring invisibly.
+  if (renderPaused || (!renderer.isSoftwareRenderer && renderer.getContext().isContextLost())) {
+    previousTime = now;
+    return;
+  }
   const delta = Math.min((now - previousTime) / 1000, 0.1);
   previousTime = now;
   if (framing) {
@@ -791,7 +847,7 @@ renderer.setAnimationLoop(now => {
   }
   if (!framing && controls.enabled) {
     if (pendingCameraLaunch !== null) {
-      launchCamera.start(pendingCameraLaunch, viewport.mobile ? 0.75 : 1);
+      launchCamera.start(pendingCameraLaunch);
       pendingCameraLaunch = null;
     }
     if (!document.hidden) launchCamera.update(delta);
@@ -826,10 +882,24 @@ renderer.setAnimationLoop(now => {
   }
   hologramFrame.visible = hologram.isOpen && !viewport.mobile;
   beam.visible = hologramFrame.visible && Boolean(activePocket);
-  renderer.render(scene, camera);
+  try {
+    renderer.render(scene, camera);
+  } catch (error) {
+    console.error('Could not draw the portfolio board:', error);
+    renderPaused = true;
+    mount.dataset.ready = 'false';
+    refreshDropButton();
+    boardLoadingEvent('error');
+    return;
+  }
   labels.render(scene, camera);
   nameplateRenderer.render(nameplateScene, camera);
   if (!viewport.mobile) hologramRenderer.render(hologramScene, camera);
+  if (revealBoardAfterRender && materialsSettled) {
+    revealBoardAfterRender = false;
+    mount.dataset.ready = 'true';
+    boardLoadingEvent('ready');
+  }
   // CSS3DRenderer attaches the panel on its first render; focus after that move.
   if (pendingPanelFocus && hologram.isOpen) {
     hologram.element.querySelector('.hologram-close').focus({ preventScroll: true });
@@ -839,6 +909,7 @@ renderer.setAnimationLoop(now => {
 });
 if (import.meta.hot) import.meta.hot.dispose(() => {
   textureLoadActive = false;
+  clearTimeout(materialWaitTimer);
   materialAtlas.dispose(); textureViews.forEach(texture => texture.dispose());
   renderer.setAnimationLoop(null);
   launchCamera.stop();
@@ -855,6 +926,10 @@ if (import.meta.hot) import.meta.hot.dispose(() => {
   nameplateRenderer.domElement.remove();
   hologram.dispose();
   scene.traverse(object => { if (object.isMesh) object.geometry.dispose(); });
+  renderer.domElement.removeEventListener('webglcontextlost', handleContextLost);
+  renderer.domElement.removeEventListener('webglcontextrestored', handleContextRestored);
+  layoutObserver?.disconnect();
+  if (layoutFrame !== null) cancelAnimationFrame(layoutFrame);
   window.removeEventListener('resize', resize);
   window.removeEventListener('keydown', handleGameKeys);
   window.removeEventListener('hashchange', openHashSection);

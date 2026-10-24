@@ -99,3 +99,9 @@ The 3D scene and portfolio tabs load immediately. Rapier and its WebAssembly loa
 ### Server-only high-score submissions
 
 See [the score backend deployment guide](docs/score-backend-deployment.md) before deploying changes to the leaderboard. The database preparation, Supabase Edge Function, Cloudflare frontend deployment, and final RPC permission restriction must happen in that order for an existing live site. Publishing the frontend does not deploy the Edge Function or apply SQL migrations.
+
+## Board loading
+
+The original rotating-ball loader, welcome text, and page layout are preserved. Its styles and status handler are in the initial HTML, and a small boot entry lets the loader paint before the 3D application starts. The loading page closes only after a successful board frame and a settled texture request. A missing texture uses the existing board materials; a slow texture is allowed eight seconds before that fallback. Optional Google Fonts do not block startup. Physics still downloads on the first Launch or Play action.
+
+Run `npm run test:startup`, `npm run build`, and `npm run test:html` when changing the loading path.

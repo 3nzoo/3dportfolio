@@ -1,0 +1,17 @@
+/* Original loading presentation, inlined so it paints before app downloads. */
+.loading-screen { position: fixed; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 24px; text-align: center; font-family: Arial, Helvetica, sans-serif; background: radial-gradient(ellipse at 50% 44%,#193a2a,#071b17 65%); transition: opacity .6s,visibility .6s; }
+.loading-screen.is-loaded, .loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.loading-orbit { flex: 0 0 76px; width: 76px; height: 76px; margin-bottom: 36px; position: relative; display: grid; place-items: center; }
+.loading-orbit::before { content: ''; position: absolute; inset: 0; border: 1px solid #68805b45; border-radius: 50%; }
+.loading-orbit i { position: absolute; inset: 0; animation: loading-rotate 3s linear infinite; }
+.loading-orbit i::after { content: ''; display: block; width: 8px; height: 8px; background: #d4b67c; border-radius: 50%; margin: -4px auto 0; box-shadow: 0 0 20px #d6b87880; }
+.loading-orbit > span { color: #d1b981; font-family: inherit; font-size: 28px; font-weight: 500; line-height: 1; }
+.loading-screen .eyebrow { margin: 0 0 12px; font-size: .8125rem; font-weight: 500; line-height: 1.5; }
+.loading-screen h2 { font-family: var(--display); font-size: 30px; font-weight: 400; margin: 0 0 20px; letter-spacing: -.035em; }
+#loading-message { max-width: 32rem; margin: 0; color: #bec6b2; font-size: 1rem; font-weight: 500; line-height: 1.5; }
+.loading-hint { margin: 26px 0 0; font-size: 8px; color: #5d7a62; letter-spacing: .04em; }
+.noscript-notice { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; background: #071b18; padding: 35px; text-align: center; font-size: 15px; line-height: 1.8; }
+@keyframes loading-rotate { to { transform: rotate(360deg); } }
+
+.loading-screen { color: #edf7ef; }
+.loading-screen .eyebrow { color: #dfbd7b; letter-spacing: .22em; }

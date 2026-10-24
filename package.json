@@ -15,6 +15,7 @@
     "preview": "vite preview",
     "test:skills": "node scripts/verify-skills.mjs",
     "test:html": "node scripts/verify-initial-html.mjs",
+    "test:startup": "node scripts/verify-startup.mjs",
     "test:scores": "node scripts/verify-high-scores.mjs",
     "test:score-edge": "node scripts/verify-score-edge.mjs"
   },
