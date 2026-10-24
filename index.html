@@ -28,7 +28,10 @@
     <meta name="twitter:image" content="https://enzolabs.dev/assets/social-preview.png?v=5" />
     <meta name="twitter:image:alt" content="Enzo Dinglasan, Senior Full-Stack Engineer, beside a brass and green interactive portfolio board. Web applications. APIs. Cloud delivery." />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230b2924'/%3E%3Cpath d='M20 46V18h26v6H27v7h15v6H27v9z' fill='%23d5b36e'/%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="/src/styles/style.css" />
+    <!--board-startup-styles-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" media="print" onload="this.media='all'" />
   </head>
   <body>
     <div id="scene-mount" aria-label="Interactive 3D pachinko portfolio"></div>
@@ -67,6 +70,7 @@
     <div id="loading-screen" class="loading-screen" role="status" aria-live="polite"><div class="loading-orbit" aria-hidden="true"><i></i><span>ED</span></div><p class="eyebrow">WELCOME TO MY WORLD</p><h4 id="loading-message">Preparing the 3D machine…</h4></div>
     <!--portfolio-document-->
     <noscript><style>#loading-screen{display:none}</style></noscript>
-    <script type="module" src="/src/main.js"></script>
+    <!--board-startup-->
+    <script type="module" src="/src/boot.js"></script>
   </body>
 </html>
