@@ -27,9 +27,19 @@ export function createPlayModeUI({ onToggle, onReplay, onPortfolio, onSaveRecord
   scoreboard.innerHTML = `<p class="play-kicker"><span></span>THE TEN BALL CHALLENGE</p>
     <div class="play-score-grid"><div class="current-score"><span class="score-label">YOUR SCORE</span><strong id="play-score">0</strong><span class="score-unit">POINTS</span></div>
     <div class="best-record"><span class="score-label"><svg viewBox="0 0 24 24" aria-hidden="true">${TROPHY_ICON}</svg>TOP SCORE</span><strong class="record-score">480</strong><span class="record-player"><span class="record-flag" role="img" aria-label="Philippines">🇵🇭</span><span class="record-name">Enzo</span></span></div></div>
-    <div class="shot-readout"><span id="play-ball-count">Ball 1 / 10</span><span><b id="play-pin-hits">0</b> pin hits</span></div>
-    <p class="shot-result" id="play-shot-result" role="status" aria-live="polite">Set your strength. Make every bounce count.</p>
-    <p class="play-rule">Pin hits × pocket multiplier = points</p><p class="play-rule leaderboard-status" role="status"></p>`;
+    <details class="score-details" open>
+      <summary class="score-details-summary">Round details<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+      <div class="score-details-body">
+        <div class="shot-readout"><span id="play-ball-count">Ball 1 / 10</span><span><b id="play-pin-hits">0</b> pin hits</span></div>
+        <p class="shot-result" id="play-shot-result" role="status" aria-live="polite">Set your strength. Make every bounce count.</p>
+        <p class="play-rule">Pin hits × pocket multiplier = points</p><p class="play-rule leaderboard-status" role="status"></p>
+      </div>
+    </details>`;
+  const scoreDetails = scoreboard.querySelector('.score-details');
+  const compactScoreboard = window.matchMedia('(max-width: 900px) and (height < 800px)');
+  const syncScoreDetails = () => { scoreDetails.open = !compactScoreboard.matches; };
+  syncScoreDetails();
+  compactScoreboard.addEventListener('change', syncScoreDetails);
   document.querySelector('#game-hud').append(scoreboard);
   const dialog = document.createElement('dialog');
   dialog.className = 'round-dialog';
@@ -232,6 +242,6 @@ export function createPlayModeUI({ onToggle, onReplay, onPortfolio, onSaveRecord
       else dialog.querySelector('[data-round-replay]').focus({ preventScroll: true });
     },
     closeDialog,
-    dispose() { closeDialog(); modeButton.removeEventListener('click', onToggle); rack.remove(); power.remove(); scoreboard.remove(); dialog.remove(); },
+    dispose() { closeDialog(); compactScoreboard.removeEventListener('change', syncScoreDetails); modeButton.removeEventListener('click', onToggle); rack.remove(); power.remove(); scoreboard.remove(); dialog.remove(); },
   };
 }
