@@ -283,10 +283,10 @@ POCKETS.forEach(pocket => {
   box(0.028, 0.84, 0.028, materials.trim, x, 2.18, 0.58);
 });
 const ball = new THREE.InstancedMesh(new THREE.SphereGeometry(BALL_RADIUS, 32, 24),
-  new THREE.MeshStandardMaterial({ color: 0xcbd2c8, metalness: 0.92, roughness: 0.13,
-    // Keep the original soft silver finish with a little extra reflected light.
+  new THREE.MeshStandardMaterial({ color: 0xffd238, metalness: 0.35, roughness: 0.25,
+    emissive: 0xe9aa14, emissiveIntensity: 0.14,
     envMap: scene.environment, envMapIntensity: 0.4 }), 1);
-ball.name = 'SilverBall';
+ball.name = 'GoldenBall';
 ball.count = 0;
 ball.frustumCulled = false;
 scene.add(ball);

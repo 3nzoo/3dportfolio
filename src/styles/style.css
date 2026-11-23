@@ -325,7 +325,7 @@ body::before {
   transform: translateY(var(--nameplate-role-offset,5px));
 }
 .board-identity:focus-visible { outline: 1px solid #d4b477; outline-offset: 4px; }
-.pocket-label { flex-direction: column; gap: 3px; padding: 3px 0; background: none; border-color: transparent; box-shadow: none; backdrop-filter: none; color: #dfc28b; font-size: 12px; letter-spacing: .025em; }
+.pocket-label { flex-direction: column; gap: 3px; padding: 3px 0; background: none; border-color: transparent; box-shadow: none; backdrop-filter: none; color: #f0e7d5; font-size: 12px; font-weight: 600; letter-spacing: .025em; }
 .pocket-label svg { width: 18px; height: 18px; stroke-width: 1.35; }
 .pocket-label:hover,.pocket-label.is-active { background: none; border-color: transparent; box-shadow: none; color: #ffe1a2; text-shadow: 0 0 15px #d4bb8050; }
 .launch-dock { border-color: #b28e5740; background: #0d1a13e8; }

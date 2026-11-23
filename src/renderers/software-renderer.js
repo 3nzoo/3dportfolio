@@ -352,7 +352,7 @@ export class SoftwareRenderer {
       const { x, y, radius, ballRadius, depth, kind, pulse, opacity } = ball;
       if (kind === 'pin-ripple') {
         ctx.save(); ctx.globalAlpha = opacity * 0.5;
-        ctx.strokeStyle = '#e9c17e'; ctx.lineWidth = Math.max(0.6, radius * 0.08);
+        ctx.strokeStyle = '#dcecf5'; ctx.lineWidth = Math.max(0.6, radius * 0.08);
         ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
         continue;
       }
@@ -378,10 +378,10 @@ export class SoftwareRenderer {
       }
       ctx.clip();
       const gradient = ctx.createRadialGradient(x - radius * 0.3, y - radius * 0.4, 0, x, y, radius);
-      gradient.addColorStop(0, kind === 'pin' ? '#fff0bf' : '#ffffff');
-      gradient.addColorStop(0.23, kind === 'pin' ? (pulse > 0.15 ? '#f8d18b' : '#d7b779') : '#eff0e3');
-      gradient.addColorStop(0.65, kind === 'pin' ? '#926b35' : '#8c9c87');
-      gradient.addColorStop(1, kind === 'pin' ? '#322719' : '#25392f');
+      gradient.addColorStop(0, kind === 'pin' ? '#f7fbff' : '#fff8ce');
+      gradient.addColorStop(0.23, kind === 'pin' ? (pulse > 0.15 ? '#e6f5ff' : '#c6d1d8') : '#ffe357');
+      gradient.addColorStop(0.65, kind === 'pin' ? '#7c8b94' : '#dca325');
+      gradient.addColorStop(1, kind === 'pin' ? '#34434a' : '#765110');
       ctx.fillStyle = gradient;
       ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
       ctx.restore();
