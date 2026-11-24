@@ -151,9 +151,9 @@
   "experience": [
     {
       "company": "Arckyv.com",
-      "role": "AI-assisted WebApp Developer",
+      "role": "Full-Stack Developer (AI Integration)",
       "period": "Sept 2026 - Present",
-      "summary": "Developing a client-commissioned cultural discovery platform through prompt-driven development in Gemini AI Studio, translating client requirements into personal timelines and social features.",
+      "summary": "Developing a cultural discovery platform for a client, with AI-powered search, personal timelines, and social features.",
       "links": [
         {
           "label": "Live project · Arckyv",
@@ -164,7 +164,7 @@
         "Translate client requirements into application features and user flows.",
         "Use iterative prompting in Gemini AI Studio to generate and refine the application.",
         "Develop Google and email authentication flows.",
-        "Build content discovery across movies, music, games, books, and TV shows.",
+        "Integrated an AI API to power search results for movies, music, games, books, and TV shows.",
         "Create personal category timelines organized by original release date.",
         "Develop a social activity feed with likes and comments."
       ],

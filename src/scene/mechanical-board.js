@@ -23,6 +23,8 @@ export function createMechanicalBoard(scene) {
   const playfield = material(0x0c251b, 0.08, 0.68);
   forest.envMapIntensity = playfield.envMapIntensity = 0.2;
   const steel = material(0xa8b4a1, 0.9, 0.22);
+  const pinHead = material(0xffffff, 0.56, 0.38);
+  const pinHardware = material(0x83929b, 0.66, 0.43);
   const circuitInk = material(0x35412c, 0.2, 0.78);
   const shadow = new THREE.MeshBasicMaterial({ color: 0x05110b });
   function finishMaterial(mat, map, strength, base, relief, weathering) {
@@ -53,8 +55,8 @@ export function createMechanicalBoard(scene) {
   const pinReactions = pins.map(() => ({ age: 1, strength: 0, directionX: 0, directionY: 0 }));
   const pinMatrix = new THREE.Matrix4();
   const pinColor = new THREE.Color();
-  const restingPinColors = pins.map((pin, index) => new THREE.Color(0xb29358).multiplyScalar(0.94 + Math.sin(index * 17.3) * 0.06));
-  const struckPinColor = new THREE.Color(0xffd78c);
+  const restingPinColors = pins.map((pin, index) => new THREE.Color(0xbfcbd3).multiplyScalar(0.94 + Math.sin(index * 17.3) * 0.06));
+  const struckPinColor = new THREE.Color(0xedf8ff);
   const add = (geometry, mat, x, y, z) => {
     const mesh = new THREE.Mesh(geometry, mat);
     mesh.position.set(x, y, z);
@@ -171,8 +173,7 @@ export function createMechanicalBoard(scene) {
   }
   const headGeometry = new THREE.SphereGeometry(BOARD_SETTINGS.pinRadius, 12, 8);
   // One draw call for all moving pin heads; their colliders and bases stay fixed.
-  const heads = new THREE.InstancedMesh(headGeometry, brass.clone(), pins.length);
-  heads.material.color.set(0xffffff);
+  const heads = new THREE.InstancedMesh(headGeometry, pinHead, pins.length);
   heads.name = 'PortfolioPin-Heads';
   heads.frustumCulled = false;
   heads.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
@@ -199,8 +200,8 @@ export function createMechanicalBoard(scene) {
     heads.setMatrixAt(index, pinMatrix); heads.setColorAt(index, restingPinColors[index]);
     pinMatrix.makeScale(0, 0, 0); ripples.setMatrixAt(index, pinMatrix); ripples.setColorAt(index, restingPinColors[index]);
     add(pinSeatGeometry, darkBrass, pin.x, pin.y, -0.062);
-    const stem = add(stemGeometry, darkBrass, pin.x, pin.y, 0.025); stem.rotation.x = Math.PI / 2;
-    const base = add(baseGeometry, brass, pin.x, pin.y, -0.055); base.rotation.x = Math.PI / 2;
+    const stem = add(stemGeometry, pinHardware, pin.x, pin.y, 0.025); stem.rotation.x = Math.PI / 2;
+    const base = add(baseGeometry, pinHardware, pin.x, pin.y, -0.055); base.rotation.x = Math.PI / 2;
   }
 
   // Open-backed half-pipe: its mouth faces the camera, exposing the rising
