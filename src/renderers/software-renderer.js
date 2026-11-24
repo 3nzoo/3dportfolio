@@ -378,10 +378,10 @@ export class SoftwareRenderer {
       }
       ctx.clip();
       const gradient = ctx.createRadialGradient(x - radius * 0.3, y - radius * 0.4, 0, x, y, radius);
-      gradient.addColorStop(0, kind === 'pin' ? '#f7fbff' : '#fff8ce');
-      gradient.addColorStop(0.23, kind === 'pin' ? (pulse > 0.15 ? '#e6f5ff' : '#c6d1d8') : '#ffe357');
-      gradient.addColorStop(0.65, kind === 'pin' ? '#7c8b94' : '#dca325');
-      gradient.addColorStop(1, kind === 'pin' ? '#34434a' : '#765110');
+      gradient.addColorStop(0, kind === 'pin' ? '#f7fbff' : '#fff3d6');
+      gradient.addColorStop(0.23, kind === 'pin' ? (pulse > 0.15 ? '#e6f5ff' : '#c6d1d8') : '#f0cd83');
+      gradient.addColorStop(0.65, kind === 'pin' ? '#7c8b94' : '#b98a42');
+      gradient.addColorStop(1, kind === 'pin' ? '#34434a' : '#6f4d28');
       ctx.fillStyle = gradient;
       ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
       ctx.restore();

@@ -5,10 +5,10 @@
 .destination-options[hidden], .ball-rack[hidden], .power-readout[hidden], .play-scoreboard[hidden], .round-dialog [hidden] { display: none !important; }
 .ball-rack { display: grid; grid-template-columns: repeat(10,minmax(0,1fr)); gap: 8px; list-style: none; padding: 6px 0 10px; margin: 0; }
 .rack-slot { display: grid; place-items: center; min-width: 0; height: 20px; }
-.rack-ball { display: block; width: 15px; height: 15px; border-radius: 50%; border: 1px solid #d4b64b80; background: radial-gradient(circle at 32% 24%,#fff8ce 1%,#ffe357 24%,#dca325 64%,#765110 90%); box-shadow: 0 3px 4px #0008,inset 0 0 2px #fff3; transition: opacity .2s,box-shadow .2s,transform .2s; }
+.rack-ball { display: block; width: 15px; height: 15px; border-radius: 50%; border: 1px solid #cba55e80; background: radial-gradient(circle at 32% 24%,#fff3d6 1%,#f0cd83 24%,#b98a42 64%,#6f4d28 90%); box-shadow: 0 3px 4px #0008,inset 0 0 2px #fff3; transition: opacity .2s,box-shadow .2s,transform .2s; }
 .rack-slot[data-state="queued"] .rack-ball { opacity: .55; }
 .rack-slot[data-state="next"] .rack-ball, .rack-slot[data-state="active"] .rack-ball { outline: 1px solid #dfbd7b; outline-offset: 4px; box-shadow: 0 0 17px #dfbd7b66; }
-.rack-slot[data-state="active"] .rack-ball { animation: ball-in-play 1.5s ease-in-out infinite; background: radial-gradient(circle at 32% 24%,#fff9d8,#ffe761 35%,#b57715); }
+.rack-slot[data-state="active"] .rack-ball { animation: ball-in-play 1.5s ease-in-out infinite; background: radial-gradient(circle at 32% 24%,#fff5df,#f3d492 35%,#a97835); }
 .rack-slot[data-state="used"] .rack-ball { opacity: .28; transform: scale(.64); background: #5a6752; box-shadow: none; }
 .power-readout { display: flex; justify-content: space-between; margin-top: 7px; font-size: 10px; letter-spacing: .03em; color: #b1b9a4; }
 .power-readout output { color: #e9c989; font-variant-numeric: tabular-nums; }
